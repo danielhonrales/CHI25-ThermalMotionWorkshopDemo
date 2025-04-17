@@ -72,3 +72,11 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Ignore Oculus folder, but not important files
+!Assets/Oculus/
+Assets/Oculus/*
+!Assets/Oculus/_IMPORT_VERSION.txt
+!Assets/Oculus/_IMPORT_VERSION.txt.meta
+!Assets/Oculus/OculusProjectConfig.asset
+!Assets/Oculus/OculusProjectConfig.asset.meta

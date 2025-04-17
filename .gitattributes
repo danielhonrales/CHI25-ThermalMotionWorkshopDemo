@@ -1,0 +1,5 @@
+Assets/Oculus/Avatar2_SampleAssets/SampleAssets/SampleAssets/PresetAvatars_Quest_Light.zip filter=lfs diff=lfs merge=lfs -text
+Assets/Oculus/Avatar2_SampleAssets/SampleAssets/SampleAssets/PresetAvatars_Rift_Light.zip filter=lfs diff=lfs merge=lfs -text
+Assets/Samples/Meta[[:space:]]Avatars[[:space:]]SDK/35.1.0/Sample[[:space:]]Scenes/Environments/NeutralRig/Directional_flipped.hdr filter=lfs diff=lfs merge=lfs -text
+Assets/Oculus/Avatar2_SampleAssets/SampleAssets/SampleAssets/PresetAvatars_Quest.zip filter=lfs diff=lfs merge=lfs -text
+Assets/Oculus/Avatar2_SampleAssets/SampleAssets/SampleAssets/PresetAvatars_Rift.zip filter=lfs diff=lfs merge=lfs -text
