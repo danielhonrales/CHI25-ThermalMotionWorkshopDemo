@@ -1,0 +1,1 @@
+{"keypoints":["[0, 3, 0, 3000, 0, 0, 100, 0, 0]"],"thermalKeypoints":["[0, 1, 0, 3000, {0}]"],"preheat":0,"warmup":0,"loopCount":0,"tempChange":9.0,"voltage":"1.5","scalePattern":"LINEAR","participant":"PX","trialNumber":"0","duration":"5000","thermalLocation":"M","motionDirection":"Top"}
