@@ -73,6 +73,7 @@ public class LEDAnimationManager : MonoBehaviour
 
     public IEnumerator PlayLights(int mode)
     {
+
         float cap = duration / (ledNodes.Length - 1);
         overlap = Mathf.Min(overlap, cap);
         singleDuration = duration - (overlap * (ledNodes.Length - 1));
@@ -80,6 +81,17 @@ public class LEDAnimationManager : MonoBehaviour
         if (mode == 0)
         {
             Debug.Log("Mode 0");
+            if(isFire)
+            {
+                activeMaterial = fire;
+                lightColor = fireColor;
+            }
+            
+            if (isIce)
+            {
+                activeMaterial = ice;
+                lightColor = iceColor;
+            }
             /*foreach (LEDNode ledNode in Array.Reverse(ledNodes))
             {
 
@@ -97,6 +109,10 @@ public class LEDAnimationManager : MonoBehaviour
         }
         else
         {
+            isFire = false;
+            isIce = false;
+            activeMaterial = neutral;
+            lightColor = new Color32(0, 0, 0, 0);
             for (int j = 0; j < ledNodes.Length; j++)
             {
                 ledNodes[j].GetComponent<Renderer>().material = activeMaterial;

@@ -61,10 +61,12 @@ public class OrbController : NetworkBehaviour
 
         gameController.TriggerChargeVisuals(gameObject.name);
 
-        float shrinkStep = transform.localScale.x / 1000f;
-        for (int i = 0; i < 100; i++) {
+        float steps = 100f;
+        float shrinkStep = transform.localScale.x / steps;
+        Debug.Log("Shrink " + shrinkStep);
+        for (int i = 0; i < steps; i++) {
             transform.localScale = transform.localScale - new Vector3(shrinkStep, shrinkStep, shrinkStep);
-            yield return new WaitForSeconds(3f / 100f);
+            yield return new WaitForSeconds(3f / steps);
         }
         
         // Finish charge
@@ -114,7 +116,11 @@ public class OrbController : NetworkBehaviour
             findTargetTries--;
             yield return new WaitForSeconds(1f);
         }
-        Debug.Log("Found local right hand");
+        if (hand != null) {
+            Debug.Log("Found local right hand");
+        } else {
+            StartCoroutine(FindLocalHand());
+        }
     }
 
     public enum OrbState

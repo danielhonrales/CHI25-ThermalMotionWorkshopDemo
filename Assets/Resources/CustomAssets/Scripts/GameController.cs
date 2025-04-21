@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Meta.XR.MultiplayerBlocks.NGO;
 using Unity.Netcode;
 using UnityEngine;
@@ -6,19 +7,26 @@ using UnityEngine;
 public class GameController : NetworkBehaviour
 {
 
+    public GameObject cameraRig;
     public GameObject rightGrabInteractor;
     public AvatarSpawnerNGO avatarSpawnerNGO;
     public OrbController currentOrbController;
     public GameObject hotOrbPrefab;
     public GameObject coldOrbPrefab;
-    public GameObject beam;
-    public GameObject hotBeam;
-    public GameObject coldBeam;
+    public GameObject beamPrefab;
+    public List<GameObject> hotOrbs;
+    public List<GameObject> coldOrbs;
+    public List<GameObject> beams;
+    public Transform playerPoint1;
+    public Transform playerPoint2;
+    public Transform orbsSpawnPoint1;
+    public Transform orbsSpawnPoint2;
     public GameObject hand;
     public CommunicationController communicationController;
     public SignalSender signalSender;
     public LEDAnimationManager lEDAnimationManager;
     public Material neutralMaterial;
+    public List<ulong> connectedClients;
 
     int hotChargeMessage = 3;
     int hotDischargeMessage = 2;
@@ -27,25 +35,63 @@ public class GameController : NetworkBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
+    }
 
+    public void HandleClientConnected(ulong clientId) {
+        if (!IsServer) return;
+        if (connectedClients.Count < 2 && clientId != 0) {
+            Debug.Log("New client: " + clientId);
+            connectedClients.Add(clientId);
+            Debug.Log("Spawning client objects");
+            
+            GameObject hotOrb = SpawnOrb("Hot");
+            hotOrbs.Add(hotOrb);
+            GameObject coldOrb = SpawnOrb("Cold");
+            coldOrbs.Add(coldOrb);
+
+            GameObject beam = Instantiate(beamPrefab);
+            beam.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
+            beams.Add(beam);
+
+            if (connectedClients.Count == 1) {
+                Debug.Log("Assigned new client to 1");
+                hotOrb.transform.position = orbsSpawnPoint1.position + new Vector3(-0.2f, 0, 0);
+                coldOrb.transform.position = orbsSpawnPoint1.position + new Vector3(0.2f, 0, 0);
+            } else if (connectedClients.Count == 2) {
+                Debug.Log("Assigned new client to 2");
+                hotOrb.transform.position = orbsSpawnPoint2.position + new Vector3(-0.2f, 0, 0);
+                coldOrb.transform.position = orbsSpawnPoint2.position + new Vector3(0.2f, 0, 0);
+            }
+        } else {
+            NetworkManager.Singleton.DisconnectClient(clientId);
+            Debug.Log("Only 2 players! Disconnecting client " + clientId);
+        }
+    }
+
+    public void HandleClientDisconnected(ulong clientId) {
+        if (!IsServer) return;
+        int clientIndex = connectedClients.IndexOf(clientId);
+        hotOrbs[clientIndex].GetComponent<NetworkObject>().Despawn();
+        hotOrbs.RemoveAt(clientIndex);
+        coldOrbs[clientIndex].GetComponent<NetworkObject>().Despawn();
+        coldOrbs.RemoveAt(clientIndex);
+        beams[clientIndex].GetComponent<NetworkObject>().Despawn();
+        beams.RemoveAt(clientIndex);
+        connectedClients.Remove(clientId);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (IsServer) {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                RequestClientsToSpawnAvatarsClientRpc();
-            }
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                StartCoroutine(FindLocalHand());
-            }
-            if (Input.GetKeyDown(KeyCode.M))
-            {
-                SpawnOrbs();
-            }
+        if (!IsServer) return;
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            RequestClientsToSpawnAvatarsClientRpc();
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            StartCoroutine(FindLocalHand());
         }
     }
 
@@ -53,9 +99,13 @@ public class GameController : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         StartCoroutine(FindLocalHand());
-
-        if (!IsServer) {
-            currentOrbController.gameObject.SetActive(true);
+        if (!IsServer) return;
+        if (NetworkManager.Singleton != null) {
+            NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnected;
+            NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnected;
+            Debug.Log("Server listening for clients");
+        } else {
+            throw new System.Exception("NetworkManager does not exist yet!");
         }
     }
 
@@ -69,11 +119,13 @@ public class GameController : NetworkBehaviour
     }
 
     public void SpawnOrbs() {
+        if (!IsServer) return;
         SpawnOrb("Hot");
         //SpawnOrb("Cold");
     }
 
     public void ResetOrb(string type) {
+        if (!IsServer) return;
         currentOrbController.gameObject.GetComponent<NetworkObject>().Despawn();
         if (type.Contains("Hot")) {
             SpawnOrb("Hot");
@@ -82,7 +134,8 @@ public class GameController : NetworkBehaviour
         }
     }
 
-    public void SpawnOrb(string type) {
+    public GameObject SpawnOrb(string type) {
+        if (!IsServer) return null;
         GameObject orbObject;
         if (type.Contains("Hot")) {
             orbObject = Instantiate(hotOrbPrefab);
@@ -90,10 +143,12 @@ public class GameController : NetworkBehaviour
             orbObject = Instantiate(coldOrbPrefab);
         }
         orbObject.GetComponent<NetworkObject>().Spawn();
+        return orbObject;
     }
 
     public void DetectedReleasePose()
     {
+        if (!IsOwner) return;
         Debug.Log("Detected release pose");
         if (currentOrbController) {
             currentOrbController.OnRelease();
@@ -151,18 +206,23 @@ public class GameController : NetworkBehaviour
         lEDAnimationManager.activeMaterial = neutralMaterial;
         lEDAnimationManager.lightColor = new Color32(0, 0, 0, 0);
         lEDAnimationManager.PlayDischargeAnimation();
+
+        GameObject clientBeam = beams[connectedClients.IndexOf(NetworkManager.Singleton.LocalClientId)];
         if (type.Contains("Hot")){
-            hotBeam.SetActive(true);
-            coldBeam.SetActive(false);
+            clientBeam.GetComponent<BeamController>().SetHotActiveStateServerRpc(true);
+            clientBeam.GetComponent<BeamController>().SetHotActiveStateServerRpc(false);
         } else {
-            hotBeam.SetActive(false);
-            coldBeam.SetActive(true);
+            clientBeam.GetComponent<BeamController>().SetHotActiveStateServerRpc(false);
+            clientBeam.GetComponent<BeamController>().SetHotActiveStateServerRpc(true);
         }
     }
 
     public void FinishInteraction(string type) {
         ResetOrb(type);
         currentOrbController = null;
+        GameObject clientBeam = beams[connectedClients.IndexOf(NetworkManager.Singleton.LocalClientId)];
+        clientBeam.GetComponent<BeamController>().SetHotActiveStateServerRpc(false);
+        clientBeam.GetComponent<BeamController>().SetHotActiveStateServerRpc(false);
     }
 
     public IEnumerator FindLocalHand()
@@ -183,6 +243,27 @@ public class GameController : NetworkBehaviour
             findTargetTries--;
             yield return new WaitForSeconds(1f);
         }
-        Debug.Log("Found local right hand");
+        if (hand != null) {
+            Debug.Log("Found local right hand");
+        } else {
+            StartCoroutine(FindLocalHand());
+        }
+    }
+
+    public void TeleportPlayer(int player) {
+        if (player == 1) {
+            cameraRig.transform.position = playerPoint1.transform.position;
+        } else {
+            cameraRig.transform.position = playerPoint2.transform.position;
+        }
+    }
+
+    public void ListGameObjects() {
+        GameObject[] allObjects = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+
+        foreach (GameObject go in allObjects)
+        {
+            Debug.Log($"[ObjectLister] Found object: {go.name} (active: {go.activeInHierarchy})");
+        }
     }
 }

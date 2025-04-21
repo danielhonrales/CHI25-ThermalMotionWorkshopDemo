@@ -35,28 +35,29 @@ public class SleevePositioner : MonoBehaviour
     {
         if (gameObject.name.Contains("Right"))
         {
-            endPos = GameObject.Find("Joint RightArmLower").transform;
-            startPos = GameObject.Find("Joint RightHandWrist").transform;
-        }
-        else if (gameObject.name.Contains("Left"))
-        {
-            endPos = GameObject.Find("Joint LeftArmLower").transform;
-            startPos = GameObject.Find("Joint LeftHandWrist").transform;
+            GameObject lower = GameObject.Find("Joint RightArmLower");
+            GameObject upper = GameObject.Find("Joint RightHandWrist");
+
+            if (lower != null && upper != null) {
+                endPos = lower.transform;
+                startPos = upper.transform;
+                /*midPos = (endPos.position + startPos.position) / 2.0f;
+                LED_tube.transform.position = midPos;*/
+                Vector3 direction = endPos.position - startPos.position;
+
+
+                // Calculate the midpoint between startPos and endPos
+                Vector3 midpoint = (startPos.position + endPos.position) / 2f;
+
+                // Update the position of the GameObject to the midpoint
+                LED_tube.transform.position = midpoint + offset;
+
+                // Rotate the GameObject to match the direction from startPos to endPos
+                LED_tube.transform.rotation = Quaternion.LookRotation(endPos.position - startPos.position, Vector3.up) * Quaternion.Euler(0f, -90f, 0f);
+            }
         }
         
-        /*midPos = (endPos.position + startPos.position) / 2.0f;
-        LED_tube.transform.position = midPos;*/
-        Vector3 direction = endPos.position - startPos.position;
-
-
-        // Calculate the midpoint between startPos and endPos
-        Vector3 midpoint = (startPos.position + endPos.position) / 2f;
-
-        // Update the position of the GameObject to the midpoint
-        LED_tube.transform.position = midpoint + offset;
-
-        // Rotate the GameObject to match the direction from startPos to endPos
-        LED_tube.transform.rotation = Quaternion.LookRotation(endPos.position - startPos.position, Vector3.up) * Quaternion.Euler(0f, -90f, 0f);
+        
 
 
 

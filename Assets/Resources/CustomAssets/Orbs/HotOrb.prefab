@@ -29,7 +29,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5584724001614041099
 Transform:
   m_ObjectHideFlags: 0
@@ -228,6 +228,7 @@ MonoBehaviour:
   dischargeAudio: {fileID: 5634476286275325599}
   hotAudio: {fileID: 2495735495608997556}
   coldAudio: {fileID: 1593079432223661159}
+  visuals: {fileID: 1731305247423650139}
 --- !u!114 &3701112233579225487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,7 +290,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 1ebcbfb0c1c4bc54196f6dc227a31a1a, type: 3}
   m_Resource: {fileID: 8300000, guid: 1ebcbfb0c1c4bc54196f6dc227a31a1a, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -386,7 +387,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: a9ac65df9542fc34ca9ef04fd076fbc7, type: 3}
   m_Resource: {fileID: 8300000, guid: a9ac65df9542fc34ca9ef04fd076fbc7, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -483,7 +484,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 376e4fee8df678d478853dc42ada8412, type: 3}
   m_Resource: {fileID: 8300000, guid: 376e4fee8df678d478853dc42ada8412, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -580,7 +581,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 37bfb456dc95153459ed491796719818, type: 3}
   m_Resource: {fileID: 8300000, guid: 37bfb456dc95153459ed491796719818, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -823,7 +824,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2495321881796061956, guid: cd4bfcfd8d34d714a9309c3a93479930, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2495321881796061957, guid: cd4bfcfd8d34d714a9309c3a93479930, type: 3}
       propertyPath: m_InitialEventNameOverriden
@@ -870,6 +871,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd4bfcfd8d34d714a9309c3a93479930, type: 3}
+--- !u!1 &1731305247423650139 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2495321881796061959, guid: cd4bfcfd8d34d714a9309c3a93479930, type: 3}
+  m_PrefabInstance: {fileID: 4226627102503498332}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1731305247423650142 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2495321881796061954, guid: cd4bfcfd8d34d714a9309c3a93479930, type: 3}

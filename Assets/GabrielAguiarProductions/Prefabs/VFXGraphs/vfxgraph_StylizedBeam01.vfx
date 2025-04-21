@@ -665,7 +665,7 @@ MonoBehaviour:
     x: 347
     y: -2295
     width: 4968
-    height: 7122
+    height: 7129
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7868,7 +7868,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"276d9e395ae18fe40a9b4988549f2349","type":3}}'
+      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"27aa58f2adbfe234c8e5e055e418c4ec","type":3}}'
     m_Space: -1
   m_Property:
     name: _MainTex
@@ -8292,7 +8292,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"d858e6e8880207042ac59d62dbe70b77","type":3}}'
+      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"27aa58f2adbfe234c8e5e055e418c4ec","type":3}}'
     m_Space: -1
   m_Property:
     name: _MainTex
@@ -10523,7 +10523,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"b68baef8731047547928690f092f2d6f","type":3}}'
+      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"b5345f9d41c77514e8538b623fbb141a","type":3}}'
     m_Space: -1
   m_Property:
     name: _Mask
@@ -32408,7 +32408,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"22278f48a55f6f24488e572cec13a1eb","type":3}}'
+      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"0dbeee96a2cc7534087b899e9edf5847","type":3}}'
     m_Space: -1
   m_Property:
     name: mainTexture
@@ -36039,7 +36039,8 @@ MonoBehaviour:
     - outputSlot: {fileID: 8926484042661616428}
       inputSlot: {fileID: 8926484042661614895}
     position: {x: 1772, y: 1412}
-    expandedSlots: []
+    expandedSlots:
+    - {fileID: 8926484042661616428}
     expanded: 0
     supecollapsed: 0
 --- !u!114 &8926484042661616428
