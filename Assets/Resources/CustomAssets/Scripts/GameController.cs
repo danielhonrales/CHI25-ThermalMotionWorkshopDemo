@@ -40,7 +40,7 @@ public class GameController : NetworkBehaviour
 
     public void HandleClientConnected(ulong clientId) {
         if (!IsServer) return;
-        if (connectedClients.Count < 2 && clientId != 0) {
+        if (connectedClients.Count < 2) { // if multiplayer, add  "&& clientId != 0" to prevent spawning for server
             Debug.Log("New client: " + clientId);
             connectedClients.Add(clientId);
             Debug.Log("Spawning client objects");
@@ -126,11 +126,14 @@ public class GameController : NetworkBehaviour
 
     public void ResetOrb(string type) {
         if (!IsServer) return;
+        Vector3 savePosition = currentOrbController.transform.position;
         currentOrbController.gameObject.GetComponent<NetworkObject>().Despawn();
         if (type.Contains("Hot")) {
-            SpawnOrb("Hot");
+            GameObject newOrb = SpawnOrb("Hot");
+            newOrb.transform.position = orbsSpawnPoint1.position + new Vector3(-0.2f, 0, 0);
         } else {
-            SpawnOrb("Cold");
+            GameObject newOrb = SpawnOrb("Cold");
+            newOrb.transform.position = orbsSpawnPoint1.position + new Vector3(0.2f, 0, 0);
         }
     }
 
@@ -210,10 +213,10 @@ public class GameController : NetworkBehaviour
         GameObject clientBeam = beams[connectedClients.IndexOf(NetworkManager.Singleton.LocalClientId)];
         if (type.Contains("Hot")){
             clientBeam.GetComponent<BeamController>().SetHotActiveStateServerRpc(true);
-            clientBeam.GetComponent<BeamController>().SetHotActiveStateServerRpc(false);
+            clientBeam.GetComponent<BeamController>().SetColdActiveStateServerRpc(false);
         } else {
             clientBeam.GetComponent<BeamController>().SetHotActiveStateServerRpc(false);
-            clientBeam.GetComponent<BeamController>().SetHotActiveStateServerRpc(true);
+            clientBeam.GetComponent<BeamController>().SetColdActiveStateServerRpc(true);
         }
     }
 
@@ -222,7 +225,7 @@ public class GameController : NetworkBehaviour
         currentOrbController = null;
         GameObject clientBeam = beams[connectedClients.IndexOf(NetworkManager.Singleton.LocalClientId)];
         clientBeam.GetComponent<BeamController>().SetHotActiveStateServerRpc(false);
-        clientBeam.GetComponent<BeamController>().SetHotActiveStateServerRpc(false);
+        clientBeam.GetComponent<BeamController>().SetColdActiveStateServerRpc(false);
     }
 
     public IEnumerator FindLocalHand()

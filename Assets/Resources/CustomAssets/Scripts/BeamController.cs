@@ -7,8 +7,8 @@ using UnityEngine;
 public class BeamController : NetworkBehaviour 
 {
 
-    private NetworkVariable<bool> isHotActive = new NetworkVariable<bool>(true);
-    private NetworkVariable<bool> isColdActive = new NetworkVariable<bool>(true);
+    private NetworkVariable<bool> isHotActive = new NetworkVariable<bool>(false);
+    private NetworkVariable<bool> isColdActive = new NetworkVariable<bool>(false);
     public GameObject hand;
     public Vector3 followOffset;
     public Vector3 directionOffset;
@@ -50,6 +50,7 @@ public class BeamController : NetworkBehaviour
 
     private void OnHotActiveStateChanged(bool oldValue, bool newValue)
     {
+        Debug.Log("test " + newValue);
         hotBeam.SetActive(newValue);
     }
 
@@ -61,15 +62,15 @@ public class BeamController : NetworkBehaviour
     [ServerRpc]
     public void SetHotActiveStateServerRpc(bool newState)
     {
-        if (!IsServer) return;
-
+        //if (!IsServer) return;
+        Debug.Log("bruh");
         isHotActive.Value = newState;
     }
 
     [ServerRpc]
     public void SetColdActiveStateServerRpc(bool newState)
     {
-        if (!IsServer) return;
+        //if (!IsServer) return;
 
         isColdActive.Value = newState;
     }
