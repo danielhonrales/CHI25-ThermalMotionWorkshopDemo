@@ -17,8 +17,8 @@ public class CommunicationController : MonoBehaviour
 
     public SignalSender signalSender;
 
-    string testDataPath = "Resources\\MotionData\\testData.txt";
-    string demoDataPath = "Resources\\MotionData\\demoData.txt";
+    string testDataPath = "Assets\\Resources\\MotionData\\testData.txt";
+    string demoDataPath = "Assets\\Resources\\MotionData\\demoData.txt";
     string regex = "(?<=\"thermalKeypoints\":\\[\"\\[.*?, .*?, .*?, .*?, )(-?\\d*\\.?\\d+)?(?=\\])";
     //string regex = "(?<=\"thermalKeypoints\":\\[\"\\[.*?,.*?,.*?,.*?,)(-?\\d*\\.?\\d+)";
     //string regex = "(?<=\\[.*?, )\\d+(\\.\\d+)?(?=\\])"
@@ -81,10 +81,10 @@ public class CommunicationController : MonoBehaviour
     public void ReadMotionData()
     {
         // Check if the file exists
-        if (File.Exists(testDataPath))
+        if (File.Exists(demoDataPath))
         {
             // Open the file for reading
-            using (StreamReader reader = new StreamReader(testDataPath))
+            using (StreamReader reader = new StreamReader(demoDataPath))
             {
                 string line;
                 while ((line = reader.ReadLine()) != null)
@@ -95,13 +95,13 @@ public class CommunicationController : MonoBehaviour
         }
         else
         {
-            print("File not found: " + testDataPath);
+            print("File not found: " + demoDataPath);
         }
 
-        if (File.Exists(demoDataPath))
+        if (File.Exists(testDataPath))
         {
             // Open the file for reading
-            using (StreamReader reader = new StreamReader(demoDataPath))
+            using (StreamReader reader = new StreamReader(testDataPath))
             {
                 string line;
                 while ((line = reader.ReadLine()) != null)
@@ -112,7 +112,7 @@ public class CommunicationController : MonoBehaviour
         }
         else
         {
-            print("File not found: " + demoDataPath);
+            print("File not found: " + testDataPath);
         }
     }
 

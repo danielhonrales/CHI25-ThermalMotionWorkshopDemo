@@ -32857,8 +32857,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   motionInfo: []
   testInfo: []
-  hotVoltage: 0
-  coldVoltage: 0
+  hotVoltage: 1.5
+  coldVoltage: 3.4
   signalSender: {fileID: 1171005298}
 --- !u!4 &1171005300
 Transform:

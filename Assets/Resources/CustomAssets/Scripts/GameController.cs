@@ -28,10 +28,10 @@ public class GameController : NetworkBehaviour
     public Material neutralMaterial;
     public List<ulong> connectedClients;
 
-    int hotChargeMessage = 3;
-    int hotDischargeMessage = 2;
-    int coldChargeMessage = 1;
-    int coldDischargeMessage = 0;
+    int hotChargeMessage = 2;
+    int hotDischargeMessage = 3;
+    int coldChargeMessage = 0;
+    int coldDischargeMessage = 1;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
