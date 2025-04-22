@@ -45,7 +45,7 @@ public class OrbController : NetworkBehaviour
     }
 
     public void OnGrab() {
-        if (!IsOwner || gameController.currentOrbController != null) return;
+        //if (!IsOwner || gameController.currentOrbController != null) return;
 
         state = OrbState.Charging;
         touchHandGrabInteractable.enabled = false;
@@ -100,9 +100,8 @@ public class OrbController : NetworkBehaviour
             coldAudio.Play();
             coldBeamAudio.Play();
         }
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(5.5f);
         gameController.rightGrabInteractor.SetActive(true);
-        yield return new WaitForSeconds(1.5f);
 
         gameController.FinishInteraction(gameObject.name);
     }

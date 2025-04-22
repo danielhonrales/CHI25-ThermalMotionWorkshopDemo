@@ -95,6 +95,10 @@ public class GameController : NetworkBehaviour
         {
             StartCoroutine(FindLocalHand());
         }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+
+        }
         orbSpawner.transform.Rotate(0, 1, 0);
     }
 
