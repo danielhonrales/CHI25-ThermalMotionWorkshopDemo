@@ -16,6 +16,9 @@ public class OrbController : NetworkBehaviour
     public AudioSource dischargeAudio;
     public AudioSource hotAudio;
     public AudioSource coldAudio;
+    public AudioSource hotBeamAudio;
+    public AudioSource coldBeamAudio;
+    public AudioSource beamChargeAudio;
     public GameObject visuals;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -28,8 +31,8 @@ public class OrbController : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         state = OrbState.Idle;
-        StartCoroutine(FindLocalHand());
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
+        StartCoroutine(GetGameControllerHand());
     }
 
     // Update is called once per frame
@@ -82,20 +85,33 @@ public class OrbController : NetworkBehaviour
     }
 
     public IEnumerator DischargeSequence() {
+        beamChargeAudio.Play();
+        gameController.TriggerDischargeInitialVisual();
+        yield return new WaitForSeconds(1f);
         gameController.TriggerDischargeMotion(gameObject.name);
         gameController.TriggerDischargeVisuals(gameObject.name);
         if (gameObject.name.Contains("Hot"))
         {
             hotAudio.Play();
+            hotBeamAudio.Play();
         }
         else if (gameObject.name.Contains("Cold"))
         {
             coldAudio.Play();
+            coldBeamAudio.Play();
         }
-        yield return new WaitForSeconds(8f + 2f);
-
+        yield return new WaitForSeconds(4f);
         gameController.rightGrabInteractor.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+
         gameController.FinishInteraction(gameObject.name);
+    }
+
+    public IEnumerator GetGameControllerHand() {
+        while (hand == null) {
+            yield return new WaitForSeconds(.1f);
+            hand = gameController.hand;
+        }
     }
 
     public IEnumerator FindLocalHand()

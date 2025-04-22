@@ -7,14 +7,16 @@ using UnityEngine;
 public class BeamController : NetworkBehaviour 
 {
 
-    private NetworkVariable<bool> isHotActive = new NetworkVariable<bool>(false);
-    private NetworkVariable<bool> isColdActive = new NetworkVariable<bool>(false);
+    public NetworkVariable<bool> isHotActive = new NetworkVariable<bool>(false);
+    public NetworkVariable<bool> isColdActive = new NetworkVariable<bool>(false);
     public GameObject hand;
     public Vector3 followOffset;
     public Vector3 directionOffset;
     public float followSpeed;
     public GameObject hotBeam;
     public GameObject coldBeam;
+    public ParticleSystem chargeParticles;
+    public GameObject beamCollider;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -50,20 +52,20 @@ public class BeamController : NetworkBehaviour
 
     private void OnHotActiveStateChanged(bool oldValue, bool newValue)
     {
-        Debug.Log("test " + newValue);
         hotBeam.SetActive(newValue);
+        beamCollider.SetActive(newValue);
     }
 
     private void OnColdActiveStateChanged(bool oldValue, bool newValue)
     {
         coldBeam.SetActive(newValue);
+        beamCollider.SetActive(newValue);
     }
 
     [ServerRpc]
     public void SetHotActiveStateServerRpc(bool newState)
     {
         //if (!IsServer) return;
-        Debug.Log("bruh");
         isHotActive.Value = newState;
     }
 

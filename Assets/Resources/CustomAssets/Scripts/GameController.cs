@@ -19,8 +19,10 @@ public class GameController : NetworkBehaviour
     public List<GameObject> beams;
     public Transform playerPoint1;
     public Transform playerPoint2;
+    public Transform orbSpawnPoint;
     public Transform orbsSpawnPoint1;
     public Transform orbsSpawnPoint2;
+    public GameObject orbSpawner;
     public GameObject hand;
     public CommunicationController communicationController;
     public SignalSender signalSender;
@@ -56,12 +58,12 @@ public class GameController : NetworkBehaviour
 
             if (connectedClients.Count == 1) {
                 Debug.Log("Assigned new client to 1");
-                hotOrb.transform.position = orbsSpawnPoint1.position + new Vector3(-0.2f, 0, 0);
-                coldOrb.transform.position = orbsSpawnPoint1.position + new Vector3(0.2f, 0, 0);
+                hotOrb.transform.position = orbsSpawnPoint1.position + new Vector3(-0.5f, 0, 0);
+                coldOrb.transform.position = orbsSpawnPoint1.position + new Vector3(0.5f, 0, 0);
             } else if (connectedClients.Count == 2) {
                 Debug.Log("Assigned new client to 2");
-                hotOrb.transform.position = orbsSpawnPoint2.position + new Vector3(-0.2f, 0, 0);
-                coldOrb.transform.position = orbsSpawnPoint2.position + new Vector3(0.2f, 0, 0);
+                hotOrb.transform.position = orbsSpawnPoint2.position + new Vector3(-0.5f, 0, 0);
+                coldOrb.transform.position = orbsSpawnPoint2.position + new Vector3(0.5f, 0, 0);
             }
         } else {
             NetworkManager.Singleton.DisconnectClient(clientId);
@@ -93,6 +95,7 @@ public class GameController : NetworkBehaviour
         {
             StartCoroutine(FindLocalHand());
         }
+        orbSpawner.transform.Rotate(0, 1, 0);
     }
 
     public override void OnNetworkSpawn()
@@ -126,14 +129,15 @@ public class GameController : NetworkBehaviour
 
     public void ResetOrb(string type) {
         if (!IsServer) return;
-        Vector3 savePosition = currentOrbController.transform.position;
         currentOrbController.gameObject.GetComponent<NetworkObject>().Despawn();
         if (type.Contains("Hot")) {
             GameObject newOrb = SpawnOrb("Hot");
-            newOrb.transform.position = orbsSpawnPoint1.position + new Vector3(-0.2f, 0, 0);
+            newOrb.transform.position = orbSpawnPoint.position;
+            StartCoroutine(MoveOrbToPlayer(newOrb.transform, orbsSpawnPoint1.position + new Vector3(-0.5f, 0, 0)));
         } else {
             GameObject newOrb = SpawnOrb("Cold");
-            newOrb.transform.position = orbsSpawnPoint1.position + new Vector3(0.2f, 0, 0);
+            newOrb.transform.position = orbSpawnPoint.position;
+            StartCoroutine(MoveOrbToPlayer(newOrb.transform, orbsSpawnPoint1.position + new Vector3(0.5f, 0, 0)));
         }
     }
 
@@ -147,6 +151,14 @@ public class GameController : NetworkBehaviour
         }
         orbObject.GetComponent<NetworkObject>().Spawn();
         return orbObject;
+    }
+
+    public IEnumerator MoveOrbToPlayer(Transform orb, Vector3 targetPos) {
+        float steps = 100;
+        for (int i = 0; i < steps; i++) {
+            orb.position = Vector3.MoveTowards(orb.position, targetPos, (orb.position - targetPos).magnitude * 5 * Time.deltaTime);
+            yield return new WaitForSeconds(3f / steps);
+        }
     }
 
     public void DetectedReleasePose()
@@ -201,6 +213,11 @@ public class GameController : NetworkBehaviour
                 StartCoroutine(communicationController.LimitVoltage());
             }
         }
+    }
+
+    public void TriggerDischargeInitialVisual() {
+        GameObject clientBeam = beams[connectedClients.IndexOf(NetworkManager.Singleton.LocalClientId)];
+        clientBeam.GetComponent<BeamController>().chargeParticles.Play();
     }
 
     public void TriggerDischargeVisuals(string type) {
