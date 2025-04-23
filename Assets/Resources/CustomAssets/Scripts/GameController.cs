@@ -29,6 +29,9 @@ public class GameController : NetworkBehaviour
     public LEDAnimationManager lEDAnimationManager;
     public Material neutralMaterial;
     public List<ulong> connectedClients;
+    public EnemySpawner enemySpawner;
+    public int hotKills;
+    public int coldKills;
 
     int hotChargeMessage = 2;
     int hotDischargeMessage = 3;
@@ -95,11 +98,15 @@ public class GameController : NetworkBehaviour
         {
             StartCoroutine(FindLocalHand());
         }
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKey(KeyCode.E) && Input.GetKeyDown(KeyCode.Alpha1))
         {
-
+            StartCoroutine(enemySpawner.SpawnEnemy());
         }
-        orbSpawner.transform.Rotate(0, 1, 0);
+        if (Input.GetKey(KeyCode.E) && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            StopCoroutine(enemySpawner.SpawnEnemy());
+            enemySpawner.ClearEnemies();
+        }
     }
 
     public override void OnNetworkSpawn()
