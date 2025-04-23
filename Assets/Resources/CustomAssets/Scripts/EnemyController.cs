@@ -172,16 +172,12 @@ public class EnemyController : MonoBehaviour
         yield return new WaitForSeconds(4);
 
         rb.useGravity = false;
-        if (name.Contains("Hot")) {
-            Instantiate(hotEnemyPrefab, GameObject.Find("HotEnemySpawnPoint").transform.position, Quaternion.Euler(0, -180, 0));
-        } else {
-            Instantiate(coldEnemyPrefab, GameObject.Find("ColdEnemySpawnPoint").transform.position, Quaternion.Euler(0, -180, 0));
-        }
+        GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>().enemyInstances.Remove(gameObject);
         Destroy(gameObject);
     }
 
     public IEnumerator Boop() {
-        if (UnityEngine.Random.Range(0, 3) == 0) {
+        if (UnityEngine.Random.Range(0, 5) == 0) {
             boopAudio.pitch = UnityEngine.Random.Range(.5f, 2f);
             boopAudio.Play();
         }

@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 3086762203582575026}
   - component: {fileID: 3243934130123420337}
   m_Layer: 0
-  m_Name: '[BuildingBlock] TouchHandGrab'
+  m_Name: GrabInteractable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -349,7 +349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 962219951
+  GlobalObjectIdHash: 2044658056
   InScenePlacedSourceGlobalObjectIdHash: 992916067
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1

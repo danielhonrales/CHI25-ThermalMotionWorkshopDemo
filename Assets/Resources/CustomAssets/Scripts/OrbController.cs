@@ -49,7 +49,9 @@ public class OrbController : NetworkBehaviour
 
         state = OrbState.Charging;
         touchHandGrabInteractable.enabled = false;
-        gameController.rightGrabInteractor.SetActive(false);
+        //gameController.rightGrabInteractor.SetActive(false);
+        GameObject.Find("HotOrb(Clone)").transform.Find("GrabInteractable").gameObject.SetActive(false);
+        GameObject.Find("ColdOrb(Clone)").transform.Find("GrabInteractable").gameObject.SetActive(false);
         gameController.currentOrbController = this;
 
         StartCoroutine(ChargeSequence());
@@ -101,7 +103,9 @@ public class OrbController : NetworkBehaviour
             coldBeamAudio.Play();
         }
         yield return new WaitForSeconds(5.5f);
-        gameController.rightGrabInteractor.SetActive(true);
+        //gameController.rightGrabInteractor.SetActive(true);
+        GameObject.Find("HotOrb(Clone)").transform.Find("GrabInteractable").gameObject.SetActive(true);
+        GameObject.Find("ColdOrb(Clone)").transform.Find("GrabInteractable").gameObject.SetActive(true);
 
         gameController.FinishInteraction(gameObject.name);
     }
