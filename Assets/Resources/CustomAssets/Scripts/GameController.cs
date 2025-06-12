@@ -1,22 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using Meta.XR.MultiplayerBlocks.NGO;
+using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 
 public class GameController : NetworkBehaviour
 {
 
-    public GameObject cameraRig;
     public GameObject rightGrabInteractor;
-    public AvatarSpawnerNGO avatarSpawnerNGO;
     public OrbController currentOrbController;
     public GameObject hotOrbPrefab;
     public GameObject coldOrbPrefab;
-    public GameObject beamPrefab;
+    public NetworkObject beamPrefab;
+    public NetworkObject beam;
+    public NetworkObject powerSleevePrefab;
+    public NetworkObject sleevePointPrefab;
+    public NetworkObject ledTubePrefab;
     public List<GameObject> hotOrbs;
     public List<GameObject> coldOrbs;
-    public List<GameObject> beams;
     public Transform playerPoint1;
     public Transform playerPoint2;
     public Transform orbSpawnPoint;
@@ -43,56 +45,87 @@ public class GameController : NetworkBehaviour
         
     }
 
-    public void HandleClientConnected(ulong clientId) {
+    public void PrepareClients()
+    {
         if (!IsServer) return;
-        if (connectedClients.Count < 2) { // if multiplayer, add  "&& clientId != 0" to prevent spawning for server
+
+        foreach (NetworkClient networkClient in NetworkManager.Singleton.ConnectedClientsList)
+        {
+            ulong clientId = networkClient.ClientId;
+            Debug.Log("Client " + clientId + " SpawnObjects");
+
+            NetworkObject ledTube = Instantiate(ledTubePrefab);
+            ledTube.SpawnWithOwnership(clientId);
+
+            NetworkObject sleevePoint = Instantiate(sleevePointPrefab);
+            sleevePoint.SpawnWithOwnership(clientId);
+
+            NetworkObject beam = Instantiate(beamPrefab);
+            beam.SpawnWithOwnership(clientId);
+
+            
+
+        }
+        
+    }
+
+    public void HandleClientConnected(ulong clientId)
+    {
+        if (!IsOwner) return;
+        if (connectedClients.Count < 2)
+        { // if multiplayer, add  "&& clientId != 0" to prevent spawning for server
             Debug.Log("New client: " + clientId);
             connectedClients.Add(clientId);
             Debug.Log("Spawning client objects");
-            
+
             GameObject hotOrb = SpawnOrb("Hot");
             hotOrbs.Add(hotOrb);
             GameObject coldOrb = SpawnOrb("Cold");
             coldOrbs.Add(coldOrb);
 
-            GameObject beam = Instantiate(beamPrefab);
+            GameObject beam = Instantiate(beamPrefab.gameObject);
             beam.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
-            beams.Add(beam);
+            //beams.Add(beam);
 
-            if (connectedClients.Count == 1) {
+            if (connectedClients.Count == 1)
+            {
                 Debug.Log("Assigned new client to 1");
                 hotOrb.transform.position = orbsSpawnPoint1.position + new Vector3(-0.5f, 0, 0);
                 coldOrb.transform.position = orbsSpawnPoint1.position + new Vector3(0.5f, 0, 0);
-            } else if (connectedClients.Count == 2) {
+            }
+            else if (connectedClients.Count == 2)
+            {
                 Debug.Log("Assigned new client to 2");
                 hotOrb.transform.position = orbsSpawnPoint2.position + new Vector3(-0.5f, 0, 0);
                 coldOrb.transform.position = orbsSpawnPoint2.position + new Vector3(0.5f, 0, 0);
             }
-        } else {
+        }
+        else
+        {
             NetworkManager.Singleton.DisconnectClient(clientId);
             Debug.Log("Only 2 players! Disconnecting client " + clientId);
         }
     }
 
     public void HandleClientDisconnected(ulong clientId) {
-        if (!IsServer) return;
+        if (!IsOwner) return;
         int clientIndex = connectedClients.IndexOf(clientId);
         hotOrbs[clientIndex].GetComponent<NetworkObject>().Despawn();
         hotOrbs.RemoveAt(clientIndex);
         coldOrbs[clientIndex].GetComponent<NetworkObject>().Despawn();
         coldOrbs.RemoveAt(clientIndex);
-        beams[clientIndex].GetComponent<NetworkObject>().Despawn();
-        beams.RemoveAt(clientIndex);
+        beam.GetComponent<NetworkObject>().Despawn();
+        beam = null;
         connectedClients.Remove(clientId);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!IsServer) return;
+        if (!IsOwner) return;
         if (Input.GetKeyDown(KeyCode.A))
         {
-            RequestClientsToSpawnAvatarsClientRpc();
+            PrepareClients();
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -109,37 +142,8 @@ public class GameController : NetworkBehaviour
         }
     }
 
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
-        StartCoroutine(FindLocalHand());
-        if (!IsServer) return;
-        if (NetworkManager.Singleton != null) {
-            NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnected;
-            NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnected;
-            Debug.Log("Server listening for clients");
-        } else {
-            throw new System.Exception("NetworkManager does not exist yet!");
-        }
-    }
-
-    [ClientRpc]
-    private void RequestClientsToSpawnAvatarsClientRpc() {
-        if (!IsOwner) return; // Each client responds only for themselves
-        Debug.Log("Client: Received spawn instruction. Sending ServerRpc.");
-        if (!avatarSpawnerNGO.IsSpawned) {
-            avatarSpawnerNGO.SpawnAvatar();
-        }
-    }
-
-    public void SpawnOrbs() {
-        if (!IsServer) return;
-        SpawnOrb("Hot");
-        //SpawnOrb("Cold");
-    }
-
     public void ResetOrb(string type) {
-        if (!IsServer) return;
+        if (!IsOwner) return;
         currentOrbController.gameObject.GetComponent<NetworkObject>().Despawn();
         if (type.Contains("Hot")) {
             GameObject newOrb = SpawnOrb("Hot");
@@ -153,7 +157,7 @@ public class GameController : NetworkBehaviour
     }
 
     public GameObject SpawnOrb(string type) {
-        if (!IsServer) return null;
+        if (!IsOwner) return null;
         GameObject orbObject;
         if (type.Contains("Hot")) {
             orbObject = Instantiate(hotOrbPrefab);
@@ -227,7 +231,7 @@ public class GameController : NetworkBehaviour
     }
 
     public void TriggerDischargeInitialVisual() {
-        GameObject clientBeam = beams[connectedClients.IndexOf(NetworkManager.Singleton.LocalClientId)];
+        GameObject clientBeam = beam.gameObject;
         clientBeam.GetComponent<BeamController>().chargeParticles.Play();
     }
 
@@ -238,7 +242,7 @@ public class GameController : NetworkBehaviour
         lEDAnimationManager.lightColor = new Color32(0, 0, 0, 0);
         lEDAnimationManager.PlayDischargeAnimation();
 
-        GameObject clientBeam = beams[connectedClients.IndexOf(NetworkManager.Singleton.LocalClientId)];
+        GameObject clientBeam = beam.gameObject;
         if (type.Contains("Hot")){
             clientBeam.GetComponent<BeamController>().SetHotActiveStateServerRpc(true);
             clientBeam.GetComponent<BeamController>().SetColdActiveStateServerRpc(false);
@@ -251,7 +255,7 @@ public class GameController : NetworkBehaviour
     public void FinishInteraction(string type) {
         ResetOrb(type);
         currentOrbController = null;
-        GameObject clientBeam = beams[connectedClients.IndexOf(NetworkManager.Singleton.LocalClientId)];
+        GameObject clientBeam = beam.gameObject;
         clientBeam.GetComponent<BeamController>().SetHotActiveStateServerRpc(false);
         clientBeam.GetComponent<BeamController>().SetColdActiveStateServerRpc(false);
     }
@@ -278,14 +282,6 @@ public class GameController : NetworkBehaviour
             Debug.Log("Found local right hand");
         } else {
             StartCoroutine(FindLocalHand());
-        }
-    }
-
-    public void TeleportPlayer(int player) {
-        if (player == 1) {
-            cameraRig.transform.position = playerPoint1.transform.position;
-        } else {
-            cameraRig.transform.position = playerPoint2.transform.position;
         }
     }
 

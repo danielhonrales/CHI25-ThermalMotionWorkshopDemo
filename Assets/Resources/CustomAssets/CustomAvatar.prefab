@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4241672352704102906}
   - component: {fileID: 7640324904365982063}
   - component: {fileID: 7218022689814112206}
+  - component: {fileID: -1188526484541237001}
   m_Layer: 0
   m_Name: CustomAvatar
   m_TagString: Untagged
@@ -48,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 557057368
+  GlobalObjectIdHash: 3521134511
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -210,3 +211,15 @@ MonoBehaviour:
     rightAnkleJoint:
       enableOverride: 0
       overrideTransform: {fileID: 0}
+--- !u!114 &-1188526484541237001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7695565440553817789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e3deafab5d2bfc4babf14ccab32ff94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

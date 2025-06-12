@@ -1,8 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using System.Linq;
+using Unity.Netcode;
 
-public class LEDAnimationManager : MonoBehaviour
+public class LEDAnimationManager : NetworkBehaviour
 {
     public LEDNode[] ledNodes;
 
@@ -32,11 +33,21 @@ public class LEDAnimationManager : MonoBehaviour
     public AudioSource absorbAudio;
     public AudioSource chargeAudio;
 
+    public override void OnNetworkSpawn()
+    {
+        if (!IsOwner) return;
+        base.OnNetworkSpawn();
+        name = name.Replace("(Clone)", "") + " Local";
+        GameObject.Find("GameController").GetComponent<GameController>().lEDAnimationManager = this;
+    }
+
     void Update()
     {
+        if (!IsOwner) return;
+
         if (Input.GetKeyDown(KeyCode.M))
         {
-            
+
             StartCoroutine(PlayLights(0));
         }
 
