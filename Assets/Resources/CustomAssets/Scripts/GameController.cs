@@ -87,11 +87,11 @@ public class GameController : NetworkBehaviour
     {
         if (IsServer)
         {
-            cameraRig.transform.position = playerPoint1.position;
+            cameraRig.transform.SetPositionAndRotation(playerPoint1.position, playerPoint1.rotation);
         }
         else
         {
-            cameraRig.transform.position = playerPoint2.position;
+            cameraRig.transform.SetPositionAndRotation(playerPoint2.position, playerPoint2.rotation);
         }
     }
 
