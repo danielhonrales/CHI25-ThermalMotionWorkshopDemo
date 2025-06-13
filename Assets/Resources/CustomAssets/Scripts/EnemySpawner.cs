@@ -8,6 +8,7 @@ public class EnemySpawner : MonoBehaviour
     public List<GameObject> enemyPrefabs;
     public List<GameObject> enemyInstances;
     public Transform enemySpawnPoint;
+    [Range(0, 30)]
     public int maxEnemyCount;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

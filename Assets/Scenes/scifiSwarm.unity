@@ -5794,6 +5794,72 @@ MonoBehaviour:
   _updateAfter: {fileID: 876600650}
   _iModifyDataFromSourceMono: {fileID: 876600650}
   _applyModifier: 0
+--- !u!1001 &78738341
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1916815288}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.136008
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 36.81
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
+      propertyPath: m_Name
+      value: Platform2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
+--- !u!4 &78738342 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
+  m_PrefabInstance: {fileID: 78738341}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &80107672
 GameObject:
   m_ObjectHideFlags: 0
@@ -7362,9 +7428,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 262938615}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.87, y: 1.546, z: -0.139}
-  m_LocalScale: {x: 0.09, y: 0.33, z: 0.16}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.01, y: 1.559, z: -23.39}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -8388,7 +8454,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.714
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8396,7 +8462,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 60.098
+      value: 62.37
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8428,11 +8494,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
       propertyPath: m_Name
-      value: Props_Base
+      value: Platform1
       objectReference: {fileID: 0}
     - target: {fileID: 1151388028547126963, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.657
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -22685,29 +22751,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fcf57f5001a95a4f8934bce7a866da6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraRig: {fileID: 1404435878}
   rightGrabInteractor: {fileID: 540100911}
-  currentOrbController: {fileID: 0}
-  hotOrbPrefab: {fileID: 7237795749900673682, guid: 0226551ba0809bf489d2fc0f01cb3307, type: 3}
-  coldOrbPrefab: {fileID: 6954049308603000929, guid: 22112d1de09fb87439bef34ff57c1aae, type: 3}
-  beamPrefab: {fileID: 1795004511508666504, guid: c6f83b9f844219c43b40165fa69d35c1, type: 3}
-  beam: {fileID: 0}
-  powerSleevePrefab: {fileID: 182839147131467489, guid: 839b37ca5f5f98641b36fc1ca840638c, type: 3}
-  sleevePointPrefab: {fileID: 2959614568620175850, guid: dd0abeaea8bf4d94ca6aa696d7cd1de2, type: 3}
-  ledTubePrefab: {fileID: 8182004926509835508, guid: 80b524940bc0cf04798bc91ddc5af01d, type: 3}
-  hotOrbs: []
-  coldOrbs: []
+  hand: {fileID: 0}
   playerPoint1: {fileID: 871713562}
   playerPoint2: {fileID: 262938616}
+  communicationController: {fileID: 1171005299}
+  signalSender: {fileID: 1171005298}
+  connectedClients: 
+  currentOrbController: {fileID: 0}
+  hotOrbs: []
+  coldOrbs: []
   orbSpawnPoint: {fileID: 1057520818}
   orbsSpawnPoint1: {fileID: 381584963}
   orbsSpawnPoint2: {fileID: 1992529095}
   orbSpawner: {fileID: 98780420}
-  hand: {fileID: 0}
-  communicationController: {fileID: 1171005299}
-  signalSender: {fileID: 1171005298}
+  beam: {fileID: 0}
   lEDAnimationManager: {fileID: 0}
   neutralMaterial: {fileID: 2100000, guid: 88cb318a7b39ffc44b6551557bdbe0fd, type: 2}
-  connectedClients: 
+  powerSleevePrefab: {fileID: 182839147131467489, guid: 839b37ca5f5f98641b36fc1ca840638c, type: 3}
+  sleevePointPrefab: {fileID: 2959614568620175850, guid: dd0abeaea8bf4d94ca6aa696d7cd1de2, type: 3}
+  ledTubePrefab: {fileID: 8182004926509835508, guid: 80b524940bc0cf04798bc91ddc5af01d, type: 3}
+  hotOrbPrefab: {fileID: 7237795749900673682, guid: 0226551ba0809bf489d2fc0f01cb3307, type: 3}
+  coldOrbPrefab: {fileID: 6954049308603000929, guid: 22112d1de09fb87439bef34ff57c1aae, type: 3}
+  beamPrefab: {fileID: 1795004511508666504, guid: c6f83b9f844219c43b40165fa69d35c1, type: 3}
   enemySpawner: {fileID: 1745538756}
   hotKills: 0
   coldKills: 0
@@ -24755,9 +24822,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 871713561}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.671, y: 1.523, z: -0.139}
-  m_LocalScale: {x: 0.09, y: 0.33, z: 0.16}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.01, y: 1.559, z: 2.1699982}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -41468,6 +41535,7 @@ Transform:
   - {fileID: 1441605046}
   - {fileID: 822292235}
   - {fileID: 191802496}
+  - {fileID: 78738342}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1917607813
@@ -44034,9 +44102,9 @@ SceneRoots:
   - {fileID: 1916815288}
   - {fileID: 1376906601}
   - {fileID: 536055345}
+  - {fileID: 1745538757}
   - {fileID: 1928211596}
   - {fileID: 548185985}
-  - {fileID: 1745538757}
   - {fileID: 1263848453}
   - {fileID: 2131109803}
   - {fileID: 660372207}

@@ -8,32 +8,47 @@ using UnityEngine;
 public class GameController : NetworkBehaviour
 {
 
+    [Header("Game Control")]
+    public GameObject cameraRig;
     public GameObject rightGrabInteractor;
-    public OrbController currentOrbController;
-    public GameObject hotOrbPrefab;
-    public GameObject coldOrbPrefab;
-    public NetworkObject beamPrefab;
-    public NetworkObject beam;
-    public NetworkObject powerSleevePrefab;
-    public NetworkObject sleevePointPrefab;
-    public NetworkObject ledTubePrefab;
-    public List<GameObject> hotOrbs;
-    public List<GameObject> coldOrbs;
+    public GameObject hand;
     public Transform playerPoint1;
     public Transform playerPoint2;
+    public CommunicationController communicationController;
+    public SignalSender signalSender;
+    public List<ulong> connectedClients;
+    [Space(10)]
+
+    [Header("Orbs")]
+    public OrbController currentOrbController;
+    public List<GameObject> hotOrbs;
+    public List<GameObject> coldOrbs;
     public Transform orbSpawnPoint;
     public Transform orbsSpawnPoint1;
     public Transform orbsSpawnPoint2;
     public GameObject orbSpawner;
-    public GameObject hand;
-    public CommunicationController communicationController;
-    public SignalSender signalSender;
+    [Space(10)]
+
+    [Header("Power Sleeves")]
+    public NetworkObject beam;
     public LEDAnimationManager lEDAnimationManager;
     public Material neutralMaterial;
-    public List<ulong> connectedClients;
+    [Space(10)]
+
+    [Header("Prefabs")]
+    public NetworkObject powerSleevePrefab;
+    public NetworkObject sleevePointPrefab;
+    public NetworkObject ledTubePrefab;
+    public GameObject hotOrbPrefab;
+    public GameObject coldOrbPrefab;
+    public NetworkObject beamPrefab;
+    [Space(10)]
+
+    [Header("Enemy Vars")]
     public EnemySpawner enemySpawner;
     public int hotKills;
     public int coldKills;
+    [Space(10)]
 
     int hotChargeMessage = 2;
     int hotDischargeMessage = 3;
@@ -63,10 +78,30 @@ public class GameController : NetworkBehaviour
             NetworkObject beam = Instantiate(beamPrefab);
             beam.SpawnWithOwnership(clientId);
 
-            
+            TelportPlayerClientRpc();
+        }
+    }
+
+    [ClientRpc]
+    public void TelportPlayerClientRpc()
+    {
+        if (IsServer)
+        {
+            cameraRig.transform.position = playerPoint1.position;
+        }
+        else
+        {
+            cameraRig.transform.position = playerPoint2.position;
+        }
+    }
+
+    public void SpawnOrbs()
+    {
+        if (!IsServer) return;
+        foreach (NetworkClient networkClient in NetworkManager.Singleton.ConnectedClientsList)
+        {
 
         }
-        
     }
 
     public void HandleClientConnected(ulong clientId)
@@ -123,7 +158,11 @@ public class GameController : NetworkBehaviour
     void Update()
     {
         if (!IsOwner) return;
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            PrepareClients();
+        }
+        if (Input.GetKeyDown(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha2))
         {
             PrepareClients();
         }
