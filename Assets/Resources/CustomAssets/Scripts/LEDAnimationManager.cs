@@ -35,10 +35,17 @@ public class LEDAnimationManager : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (!IsOwner) return;
         base.OnNetworkSpawn();
-        name = name.Replace("(Clone)", "") + " Local";
-        GameObject.Find("GameController").GetComponent<GameController>().lEDAnimationManager = this;
+        if (IsOwner)
+        {
+            name = name.Replace("(Clone)", "") + " Local";
+            GameObject.Find("GameController").GetComponent<GameController>().lEDAnimationManager = this;
+        }
+        else
+        {
+            name = name.Replace("(Clone)", "") + " Remote";
+        }
+        
     }
 
     void Update()
