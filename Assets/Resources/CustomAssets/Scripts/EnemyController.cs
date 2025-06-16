@@ -30,7 +30,7 @@ public class EnemyController : NetworkBehaviour
     public float bobFrequency = 1f;       // Speed of the bobbing
     private float seed;
     private float idleY;
-    private GameObject player;
+    private Transform finalTarget;
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -77,7 +77,7 @@ public class EnemyController : NetworkBehaviour
             {
                 state.Value = EnemyState.hostileIdle;
                 idleY = transform.position.y;
-                player = GameObject.Find("LocalAvatar");
+                finalTarget = GameObject.Find("EnemyFinalTarget").transform;
             }
         }
 
@@ -112,7 +112,7 @@ public class EnemyController : NetworkBehaviour
 
         if (state.Value == EnemyState.hostileIdle)
         {
-            Vector3 finalDir = (player.transform.position - transform.position).normalized;
+            Vector3 finalDir = (finalTarget.position - transform.position).normalized;
             if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(finalDir)) > 5)
             {
                 transform.rotation = Quaternion.RotateTowards(
@@ -194,6 +194,7 @@ public class EnemyController : NetworkBehaviour
         yield return new WaitForSeconds(4);
 
         rb.useGravity = false;
+        GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>().enemyInstances.Remove(gameObject);
         Destroy(gameObject);
     }
 
