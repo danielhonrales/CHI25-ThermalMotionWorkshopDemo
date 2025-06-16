@@ -1,16 +1,18 @@
 using System;
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : NetworkBehaviour
 {
+
+    public NetworkVariable<EnemyState> state = new(EnemyState.justSpawned);
 
     public Rigidbody rb;
     public ParticleSystem deathParticles;
     public AudioSource deathAudio;
     public AudioSource boopAudio;
     public AudioSource hoverAudio;
-    public EnemyState state;
     public GameObject hotEnemyPrefab;
     public GameObject coldEnemyPrefab;
 
@@ -38,7 +40,7 @@ public class EnemyController : MonoBehaviour
         justSpawnedTargetArea = GameObject.Find("JustSpawnedTargetArea");
         homingInTargetArea = GameObject.Find("HomingInTargetArea");
         targetPoint = GetRandomPointInsideCube(justSpawnedTargetArea);
-        state = EnemyState.justSpawned;
+        state.Value = EnemyState.justSpawned;
         seed = UnityEngine.Random.Range(0f, 100f);
         moveSpeed = 7.5f + UnityEngine.Random.Range(-1f, 1f);
         wiggleAmount = 1;
@@ -64,17 +66,17 @@ public class EnemyController : MonoBehaviour
         }
 
         if (Vector3.Distance(transform.position, targetPoint) < .1f) {
-            if (state == EnemyState.justSpawned) {
-                state = EnemyState.homingIn;
+            if (state.Value == EnemyState.justSpawned) {
+                state.Value = EnemyState.homingIn;
                 targetPoint = GetRandomPointInsideCube(homingInTargetArea);
-            } else if (state == EnemyState.homingIn) {
-                state = EnemyState.hostileIdle;
+            } else if (state.Value == EnemyState.homingIn) {
+                state.Value = EnemyState.hostileIdle;
                 idleY = transform.position.y;
                 player = GameObject.Find("LocalAvatar");
             }
         }
         
-        if (state == EnemyState.justSpawned || state == EnemyState.homingIn) {
+        if (state.Value == EnemyState.justSpawned || state.Value == EnemyState.homingIn) {
             Vector3 toPlayer = (targetPoint - transform.position).normalized;
             float time = Time.time * wiggleSpeed + seed;
 
@@ -101,7 +103,7 @@ public class EnemyController : MonoBehaviour
             }
         }
 
-        if (state == EnemyState.hostileIdle)
+        if (state.Value == EnemyState.hostileIdle)
         {
             Vector3 finalDir = (player.transform.position - transform.position).normalized;
             if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(finalDir)) > 5)
@@ -147,7 +149,7 @@ public class EnemyController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (state != EnemyState.dead && other.gameObject.CompareTag("Beam")) {
+        if (state.Value != EnemyState.dead && other.gameObject.CompareTag("Beam")) {
             GameController gameController = GameObject.Find("GameController").GetComponent<GameController>();
             if (name.Contains("Hot") && other.transform.parent.GetComponent<BeamController>().isHotActive.Value) {
                 gameController.hotKills++;
@@ -155,12 +157,14 @@ public class EnemyController : MonoBehaviour
             if (name.Contains("Cold") && other.transform.parent.GetComponent<BeamController>().isColdActive.Value) {
                 gameController.coldKills++;
             }
-            StartCoroutine(Die());
+            DieServerRpc();
         }
     }
 
-    public IEnumerator Die() {
-        state = EnemyState.dead;
+    [ServerRpc(RequireOwnership = false)]
+    public void DieServerRpc()
+    {
+        state.Value = EnemyState.dead;
         StopCoroutine(Boop());
         rb.useGravity = true;
         //rb.AddForce(Vector3.down * 10, ForceMode.Impulse);
@@ -168,20 +172,28 @@ public class EnemyController : MonoBehaviour
         deathParticles.Play();
         deathAudio.Play();
         hoverAudio.Stop();
+    }
 
+    public IEnumerator Respawn()
+    {
         yield return new WaitForSeconds(4);
 
         rb.useGravity = false;
-        if (name.Contains("Hot")) {
+        if (name.Contains("Hot"))
+        {
             Instantiate(hotEnemyPrefab, GameObject.Find("HotEnemySpawnPoint").transform.position, Quaternion.Euler(0, -180, 0));
-        } else {
+        }
+        else
+        {
             Instantiate(coldEnemyPrefab, GameObject.Find("ColdEnemySpawnPoint").transform.position, Quaternion.Euler(0, -180, 0));
         }
         Destroy(gameObject);
     }
 
-    public IEnumerator Boop() {
-        if (UnityEngine.Random.Range(0, 3) == 0) {
+    public IEnumerator Boop()
+    {
+        if (UnityEngine.Random.Range(0, 3) == 0)
+        {
             boopAudio.pitch = UnityEngine.Random.Range(.5f, 2f);
             boopAudio.Play();
         }
