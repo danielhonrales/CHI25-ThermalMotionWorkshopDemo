@@ -365,7 +365,6 @@ GameObject:
   - component: {fileID: 547773235424505871}
   - component: {fileID: 4306518099668872002}
   - component: {fileID: -1227069784163653766}
-  - component: {fileID: 2760755979891042787}
   m_Layer: 0
   m_Name: HotOrb
   m_TagString: Untagged
@@ -472,7 +471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 992916067
+  GlobalObjectIdHash: 2270768918
   InScenePlacedSourceGlobalObjectIdHash: 992916067
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -1278,19 +1277,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2760755979891042787
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7237795749900673682}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 413bd4e9cbbc96b46ac5a1d62a4105d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UseGravity: 0
 --- !u!1 &7617152279419355680
 GameObject:
   m_ObjectHideFlags: 0

@@ -69,7 +69,6 @@ public class BeamController : NetworkBehaviour
         {
             name = name.Replace("(Clone)", "") + " Remote";
         }
-        StartCoroutine(FindLocalHand());
     }
 
     public override void OnDestroy()
@@ -105,28 +104,4 @@ public class BeamController : NetworkBehaviour
         isColdActive.Value = newState;
     }
 
-    public IEnumerator FindLocalHand()
-    {
-        int findTargetTries = 10;
-        while (hand == null && findTargetTries > 0)
-        {
-            Debug.Log("Trying to find local right hand...");
-            GameObject localAvatar = GameObject.Find("LocalAvatar");
-            if (localAvatar)
-            {
-                Transform rightHandJoint = localAvatar.transform.Find("Joint RightHandWrist");
-                if (rightHandJoint)
-                {
-                    hand = rightHandJoint.gameObject;
-                }
-            }
-            findTargetTries--;
-            yield return new WaitForSeconds(1f);
-        }
-        if (hand != null) {
-            Debug.Log("Found local right hand");
-        } else {
-            StartCoroutine(FindLocalHand());
-        }
-    }
 }
