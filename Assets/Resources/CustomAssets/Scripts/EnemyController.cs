@@ -183,7 +183,10 @@ public class EnemyController : NetworkBehaviour
         deathAudio.Play();
         hoverAudio.Stop();
 
-        StartCoroutine(DeleteSelf());
+        if (IsServer)
+        {
+            StartCoroutine(DeleteSelf());
+        }
     }
 
     public IEnumerator DeleteSelf()
