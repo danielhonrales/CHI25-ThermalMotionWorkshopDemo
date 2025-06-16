@@ -171,7 +171,7 @@ public class EnemyController : NetworkBehaviour
             DieServerRpc();
 
             ArcadeGame arcadeGame = GameObject.Find("ArcadeGame").GetComponent<ArcadeGame>();
-            ulong killerClientId = other.gameObject.GetComponent<NetworkObject>().OwnerClientId;
+            ulong killerClientId = other.transform.parent.gameObject.GetComponent<NetworkObject>().OwnerClientId;
             if (killerClientId == 0)
             {
                 if (name.Contains("Hot"))
