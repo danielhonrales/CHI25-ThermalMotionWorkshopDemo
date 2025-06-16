@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -31,6 +32,7 @@ public class EnemySpawner : MonoBehaviour
                 enemySpawnPoint.position + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f)),
                 Quaternion.identity
             );
+            newEnemy.GetComponent<NetworkObject>().Spawn();
             enemyInstances.Add(newEnemy);
         }
         StartCoroutine(SpawnEnemy());
