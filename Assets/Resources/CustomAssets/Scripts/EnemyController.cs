@@ -52,31 +52,37 @@ public class EnemyController : NetworkBehaviour
         bobAmplitude = 0.5f;
         bobFrequency = 1f;
 
-    float randomScaleChange = UnityEngine.Random.Range(.3f, 1.7f);
+        float randomScaleChange = UnityEngine.Random.Range(.3f, 1.7f);
         transform.localScale *= randomScaleChange;
 
-        
+        state.OnValueChanged += OnStateChanged;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K)) {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
             boopAudio.Play();
         }
 
-        if (Vector3.Distance(transform.position, targetPoint) < .1f) {
-            if (state.Value == EnemyState.justSpawned) {
+        if (Vector3.Distance(transform.position, targetPoint) < .1f)
+        {
+            if (state.Value == EnemyState.justSpawned)
+            {
                 state.Value = EnemyState.homingIn;
                 targetPoint = GetRandomPointInsideCube(homingInTargetArea);
-            } else if (state.Value == EnemyState.homingIn) {
+            }
+            else if (state.Value == EnemyState.homingIn)
+            {
                 state.Value = EnemyState.hostileIdle;
                 idleY = transform.position.y;
                 player = GameObject.Find("LocalAvatar");
             }
         }
-        
-        if (state.Value == EnemyState.justSpawned || state.Value == EnemyState.homingIn) {
+
+        if (state.Value == EnemyState.justSpawned || state.Value == EnemyState.homingIn)
+        {
             Vector3 toPlayer = (targetPoint - transform.position).normalized;
             float time = Time.time * wiggleSpeed + seed;
 
@@ -91,10 +97,11 @@ public class EnemyController : NetworkBehaviour
             Vector3 separation = GetSeparation();
 
             Vector3 finalDir = (toPlayer + wiggle + separation * separationWeight).normalized;
-            float newMoveSpeed = Math.Min(7.5f, moveSpeed *  Vector3.Distance(transform.position, targetPoint));
+            float newMoveSpeed = Math.Min(7.5f, moveSpeed * Vector3.Distance(transform.position, targetPoint));
             rb.MovePosition(rb.position + newMoveSpeed * Time.deltaTime * finalDir);
 
-            if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(finalDir)) > 5) {
+            if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(finalDir)) > 5)
+            {
                 transform.rotation = Quaternion.RotateTowards(
                     transform.rotation,
                     Quaternion.LookRotation(finalDir),
@@ -122,11 +129,11 @@ public class EnemyController : NetworkBehaviour
             transform.position = new Vector3(newX, newY, newZ);
         }
 
-            /* if (transform.position.y < minAltitude)
-            {
-                rb.AddForce(Vector3.up * boostForce, ForceMode.Acceleration);
-            } */
-        }
+        /* if (transform.position.y < minAltitude)
+        {
+            rb.AddForce(Vector3.up * boostForce, ForceMode.Acceleration);
+        } */
+    }
 
     Vector3 GetSeparation()
     {
@@ -165,6 +172,9 @@ public class EnemyController : NetworkBehaviour
     public void DieServerRpc()
     {
         state.Value = EnemyState.dead;
+    }
+
+    public void Die() {
         StopCoroutine(Boop());
         rb.useGravity = true;
         //rb.AddForce(Vector3.down * 10, ForceMode.Impulse);
@@ -172,21 +182,15 @@ public class EnemyController : NetworkBehaviour
         deathParticles.Play();
         deathAudio.Play();
         hoverAudio.Stop();
+
+        StartCoroutine(DeleteSelf());
     }
 
-    public IEnumerator Respawn()
+    public IEnumerator DeleteSelf()
     {
         yield return new WaitForSeconds(4);
 
         rb.useGravity = false;
-        if (name.Contains("Hot"))
-        {
-            Instantiate(hotEnemyPrefab, GameObject.Find("HotEnemySpawnPoint").transform.position, Quaternion.Euler(0, -180, 0));
-        }
-        else
-        {
-            Instantiate(coldEnemyPrefab, GameObject.Find("ColdEnemySpawnPoint").transform.position, Quaternion.Euler(0, -180, 0));
-        }
         Destroy(gameObject);
     }
 
@@ -214,6 +218,14 @@ public class EnemyController : NetworkBehaviour
         );
 
         return center + cube.transform.rotation * randomOffset;
+    }
+
+    private void OnStateChanged(EnemyState oldValue, EnemyState newValue)
+    {
+        if (newValue == EnemyState.dead)
+        {
+            Die();
+        }
     }
 
     public enum EnemyState
