@@ -156,15 +156,44 @@ public class EnemyController : NetworkBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (state.Value != EnemyState.dead && other.gameObject.CompareTag("Beam")) {
+        if (state.Value != EnemyState.dead && other.gameObject.CompareTag("Beam"))
+        {
             GameController gameController = GameObject.Find("GameController").GetComponent<GameController>();
-            if (name.Contains("Hot") && other.transform.parent.GetComponent<BeamController>().isHotActive.Value) {
+            if (name.Contains("Hot") && other.transform.parent.GetComponent<BeamController>().isHotActive.Value)
+            {
                 gameController.hotKills++;
             }
-            if (name.Contains("Cold") && other.transform.parent.GetComponent<BeamController>().isColdActive.Value) {
+            if (name.Contains("Cold") && other.transform.parent.GetComponent<BeamController>().isColdActive.Value)
+            {
                 gameController.coldKills++;
             }
+
             DieServerRpc();
+
+            ArcadeGame arcadeGame = GameObject.Find("ArcadeGame").GetComponent<ArcadeGame>();
+            ulong killerClientId = other.gameObject.GetComponent<NetworkObject>().OwnerClientId;
+            if (killerClientId == 0)
+            {
+                if (name.Contains("Hot"))
+                {
+                    arcadeGame.SetP1HotKillsServerRpc(arcadeGame.p1HotKills.Value++);
+                }
+                if (name.Contains("Cold"))
+                {
+                    arcadeGame.SetP1HotKillsServerRpc(arcadeGame.p1ColdKills.Value++);
+                }
+            }
+            else
+            {
+                if (name.Contains("Hot"))
+                {
+                    arcadeGame.SetP2HotKillsServerRpc(arcadeGame.p2HotKills.Value++);
+                }
+                if (name.Contains("Cold"))
+                {
+                    arcadeGame.SetP2HotKillsServerRpc(arcadeGame.p2ColdKills.Value++);
+                }
+            }
         }
     }
 

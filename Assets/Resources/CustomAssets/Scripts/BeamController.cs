@@ -80,23 +80,29 @@ public class BeamController : NetworkBehaviour
     private void OnHotActiveStateChanged(bool oldValue, bool newValue)
     {
         hotBeam.SetActive(newValue);
-        beamCollider.SetActive(newValue);
+        if (IsOwner)
+        {
+            beamCollider.SetActive(newValue);
+        }
     }
 
     private void OnColdActiveStateChanged(bool oldValue, bool newValue)
     {
         coldBeam.SetActive(newValue);
-        beamCollider.SetActive(newValue);
+        if (IsOwner)
+        {
+            beamCollider.SetActive(newValue);
+        }
     }
 
-    [ServerRpc ]
+    [ServerRpc(RequireOwnership = false)]
     public void SetHotActiveStateServerRpc(bool newState)
     {
         //if (!IsServer) return;
         isHotActive.Value = newState;
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void SetColdActiveStateServerRpc(bool newState)
     {
         //if (!IsServer) return;

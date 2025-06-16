@@ -25,28 +25,28 @@ public class ArcadeGame : NetworkBehaviour
 
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void SetP1HotKillsServerRpc(ulong newVal)
     {
         //if (!IsServer) return;
         p1HotKills.Value = newVal;
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void SetP1ColdKillsServerRpc(ulong newVal)
     {
         //if (!IsServer) return;
         p1ColdKills.Value = newVal;
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void SetP2HotKillsServerRpc(ulong newVal)
     {
         //if (!IsServer) return;
         p2HotKills.Value = newVal;
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void SetP2ColdKillsServerRpc(ulong newVal)
     {
         //if (!IsServer) return;

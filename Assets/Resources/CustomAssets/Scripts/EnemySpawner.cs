@@ -26,7 +26,6 @@ public class EnemySpawner : MonoBehaviour
 
     public IEnumerator SpawnEnemy() {
         yield return new WaitForSeconds(.5f);
-        Debug.Log("Attempting enemy spawn");
         if (enemyInstances.Count < maxEnemyCount)
         {
             GameObject newEnemy = Instantiate(
