@@ -5812,7 +5812,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 36.81
+      value: 40.498
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7429,7 +7429,7 @@ Transform:
   m_GameObject: {fileID: 262938615}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.01, y: 1.559, z: -23.39}
+  m_LocalPosition: {x: 0.01, y: 1.559, z: -19.702}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8462,7 +8462,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 62.37
+      value: 61.559998
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fa1d0943159cb0f4fb47b403ef9acdfc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8864,37 +8864,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 378333831}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &381584962
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 381584963}
-  m_Layer: 0
-  m_Name: OrbsSpawnPoint1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &381584963
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 381584962}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.005, y: 2.667, z: 0.16}
-  m_LocalScale: {x: 0.09, y: 0.33, z: 0.16}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &384809550
 GameObject:
   m_ObjectHideFlags: 0
@@ -22763,8 +22732,8 @@ MonoBehaviour:
   hotOrbs: []
   coldOrbs: []
   orbSpawnPoint: {fileID: 1057520818}
-  orbsSpawnPoint1: {fileID: 381584963}
-  orbsSpawnPoint2: {fileID: 1992529095}
+  orbPlayerPoint: {fileID: 871713562}
+  orbPlayerOffset: {x: 0.3, y: 0.7, z: 0.3}
   orbSpawner: {fileID: 98780420}
   beam: {fileID: 0}
   lEDAnimationManager: {fileID: 0}
@@ -22778,6 +22747,7 @@ MonoBehaviour:
   enemySpawner: {fileID: 1745538756}
   hotKills: 0
   coldKills: 0
+  targetClient: 0
 --- !u!4 &707722004
 Transform:
   m_ObjectHideFlags: 0
@@ -24822,13 +24792,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 871713561}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.01, y: 1.559, z: 2.1699982}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0.01, y: 1.559, z: 1.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &872614500
 GameObject:
   m_ObjectHideFlags: 0
@@ -31910,7 +31880,7 @@ Transform:
   m_GameObject: {fileID: 1057520817}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.814, z: 3.968}
+  m_LocalPosition: {x: 0, y: 0.814, z: -9.185999}
   m_LocalScale: {x: 0.09, y: 0.33, z: 0.16}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -35029,7 +34999,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3a821ead7bccf5947a4c59a047495054, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 64.17
+      value: 51.016
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3a821ead7bccf5947a4c59a047495054, type: 3}
       propertyPath: m_LocalRotation.w
@@ -42161,37 +42131,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1986780859}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1992529094
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1992529095}
-  m_Layer: 0
-  m_Name: OrbsSpawnPoint2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1992529095
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1992529094}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.9, y: 2.66, z: 0.528}
-  m_LocalScale: {x: 0.09, y: 0.33, z: 0.16}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1996256853
 GameObject:
   m_ObjectHideFlags: 0
@@ -44086,8 +44025,6 @@ SceneRoots:
   - {fileID: 871713562}
   - {fileID: 262938616}
   - {fileID: 1057520818}
-  - {fileID: 381584963}
-  - {fileID: 1992529095}
   - {fileID: 295265928}
   - {fileID: 1788413646}
   - {fileID: 1957877156}
@@ -44096,9 +44033,9 @@ SceneRoots:
   - {fileID: 691511885}
   - {fileID: 453987606}
   - {fileID: 641264805}
-  - {fileID: 83113801}
   - {fileID: 410087041}
   - {fileID: 832575519}
+  - {fileID: 83113801}
   - {fileID: 1916815288}
   - {fileID: 1376906601}
   - {fileID: 536055345}

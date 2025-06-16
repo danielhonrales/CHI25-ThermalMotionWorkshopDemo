@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Meta.XR.MultiplayerBlocks.NGO;
-using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -24,8 +22,8 @@ public class GameController : NetworkBehaviour
     public List<GameObject> hotOrbs;
     public List<GameObject> coldOrbs;
     public Transform orbSpawnPoint;
-    public Transform orbsSpawnPoint1;
-    public Transform orbsSpawnPoint2;
+    public Transform orbPlayerPoint;
+    public Vector3 orbPlayerOffset;
     public GameObject orbSpawner;
     [Space(10)]
 
@@ -50,10 +48,15 @@ public class GameController : NetworkBehaviour
     public int coldKills;
     [Space(10)]
 
+    [Header("Testing")]
+    public ulong targetClient;
+    [Space(10)]
+
     int hotChargeMessage = 2;
     int hotDischargeMessage = 3;
     int coldChargeMessage = 0;
     int coldDischargeMessage = 1;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -95,13 +98,35 @@ public class GameController : NetworkBehaviour
         }
     }
 
-    public void SpawnOrbs()
+    public void SpawnOrbs(ulong targetClientId)
     {
         if (!IsServer) return;
-        foreach (NetworkClient networkClient in NetworkManager.Singleton.ConnectedClientsList)
-        {
 
+        Vector3 targetPos = (targetClientId == 0) ? playerPoint1.position : playerPoint2.position;
+        Vector3 orbOffset = (targetClientId == 0) ? new Vector3(orbPlayerOffset.x, orbPlayerOffset.y, -orbPlayerOffset.z) : orbPlayerOffset;
+
+        GameObject hotOrb = SpawnOrb("Hot");
+        hotOrb.transform.position = orbSpawnPoint.position;
+        StartCoroutine(MoveOrbToPlayer(hotOrb.transform, targetPos + new Vector3(-orbOffset.x, orbOffset.y, orbOffset.z)));
+        GameObject coldOrb = SpawnOrb("Cold");
+        coldOrb.transform.position = orbSpawnPoint.position;
+        StartCoroutine(MoveOrbToPlayer(coldOrb.transform, targetPos + new Vector3(orbOffset.x, orbOffset.y, orbOffset.z)));
+    }
+
+    public GameObject SpawnOrb(string type)
+    {
+        if (!IsOwner) return null;
+        GameObject orbObject;
+        if (type.Contains("Hot"))
+        {
+            orbObject = Instantiate(hotOrbPrefab);
         }
+        else
+        {
+            orbObject = Instantiate(coldOrbPrefab);
+        }
+        orbObject.GetComponent<NetworkObject>().Spawn();
+        return orbObject;
     }
 
     public void HandleClientConnected(ulong clientId)
@@ -125,14 +150,14 @@ public class GameController : NetworkBehaviour
             if (connectedClients.Count == 1)
             {
                 Debug.Log("Assigned new client to 1");
-                hotOrb.transform.position = orbsSpawnPoint1.position + new Vector3(-0.5f, 0, 0);
-                coldOrb.transform.position = orbsSpawnPoint1.position + new Vector3(0.5f, 0, 0);
+                hotOrb.transform.position = playerPoint1.position + new Vector3(-orbPlayerOffset.x, orbPlayerOffset.y, -orbPlayerOffset.z);
+                coldOrb.transform.position = playerPoint1.position + new Vector3(orbPlayerOffset.x, orbPlayerOffset.y, -orbPlayerOffset.z);
             }
             else if (connectedClients.Count == 2)
             {
                 Debug.Log("Assigned new client to 2");
-                hotOrb.transform.position = orbsSpawnPoint2.position + new Vector3(-0.5f, 0, 0);
-                coldOrb.transform.position = orbsSpawnPoint2.position + new Vector3(0.5f, 0, 0);
+                hotOrb.transform.position = playerPoint2.position + new Vector3(-orbPlayerOffset.x, orbPlayerOffset.y, orbPlayerOffset.z);
+                coldOrb.transform.position = playerPoint2.position + new Vector3(orbPlayerOffset.x, orbPlayerOffset.y, orbPlayerOffset.z);
             }
         }
         else
@@ -158,13 +183,13 @@ public class GameController : NetworkBehaviour
     void Update()
     {
         if (!IsOwner) return;
-        if (Input.GetKeyDown(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha1))
         {
             PrepareClients();
         }
-        if (Input.GetKeyDown(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha2))
         {
-            PrepareClients();
+            SpawnOrbs(targetClient);
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -187,24 +212,12 @@ public class GameController : NetworkBehaviour
         if (type.Contains("Hot")) {
             GameObject newOrb = SpawnOrb("Hot");
             newOrb.transform.position = orbSpawnPoint.position;
-            StartCoroutine(MoveOrbToPlayer(newOrb.transform, orbsSpawnPoint1.position + new Vector3(-0.5f, 0, 0)));
+            StartCoroutine(MoveOrbToPlayer(newOrb.transform, orbPlayerPoint.position + new Vector3(-0.5f, 0, 0)));
         } else {
             GameObject newOrb = SpawnOrb("Cold");
             newOrb.transform.position = orbSpawnPoint.position;
-            StartCoroutine(MoveOrbToPlayer(newOrb.transform, orbsSpawnPoint1.position + new Vector3(0.5f, 0, 0)));
+            StartCoroutine(MoveOrbToPlayer(newOrb.transform, orbPlayerPoint.position + new Vector3(0.5f, 0, 0)));
         }
-    }
-
-    public GameObject SpawnOrb(string type) {
-        if (!IsOwner) return null;
-        GameObject orbObject;
-        if (type.Contains("Hot")) {
-            orbObject = Instantiate(hotOrbPrefab);
-        } else {
-            orbObject = Instantiate(coldOrbPrefab);
-        }
-        orbObject.GetComponent<NetworkObject>().Spawn();
-        return orbObject;
     }
 
     public IEnumerator MoveOrbToPlayer(Transform orb, Vector3 targetPos) {

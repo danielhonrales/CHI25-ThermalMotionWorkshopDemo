@@ -7,8 +7,8 @@ using UnityEngine;
 public class BeamController : NetworkBehaviour 
 {
 
-    public NetworkVariable<bool> isHotActive = new NetworkVariable<bool>(false);
-    public NetworkVariable<bool> isColdActive = new NetworkVariable<bool>(false);
+    public NetworkVariable<bool> isHotActive = new(false);
+    public NetworkVariable<bool> isColdActive = new(false);
     public GameObject hand;
     public Vector3 followOffset;
     public Vector3 directionOffset;
@@ -31,10 +31,23 @@ public class BeamController : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (hand != null) {
+        if (hand != null)
+        {
             Vector3 targetPos = hand.transform.position + (followOffset.x * hand.transform.right) + (followOffset.y * hand.transform.up) + (followOffset.z * hand.transform.forward);
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, (transform.position - targetPos).magnitude * followSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.LookRotation(hand.transform.up);
+            transform.SetPositionAndRotation(
+                Vector3.MoveTowards(transform.position, targetPos, (transform.position - targetPos).magnitude * followSpeed * Time.deltaTime),
+                Quaternion.LookRotation(hand.transform.up)
+            );
+        }
+        if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            SetHotActiveStateServerRpc(true);
+            SetColdActiveStateServerRpc(false);
+        }
+        if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            SetHotActiveStateServerRpc(false);
+            SetColdActiveStateServerRpc(true);
         }
     }
 
