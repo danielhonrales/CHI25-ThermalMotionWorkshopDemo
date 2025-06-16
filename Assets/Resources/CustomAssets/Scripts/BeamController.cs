@@ -54,6 +54,14 @@ public class BeamController : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+        if (IsOwner)
+        {
+            name = name.Replace("(Clone)", "") + " Local";
+        }
+        else
+        {
+            name = name.Replace("(Clone)", "") + " Remote";
+        }
         StartCoroutine(FindLocalHand());
     }
 
@@ -75,7 +83,7 @@ public class BeamController : NetworkBehaviour
         beamCollider.SetActive(newValue);
     }
 
-    [ServerRpc]
+    [ServerRpc ]
     public void SetHotActiveStateServerRpc(bool newState)
     {
         //if (!IsServer) return;
