@@ -31,7 +31,14 @@ public class BeamController : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (hand != null)
+        // tracking both sleeves locally to reduce network load
+        string targetClient = IsOwner ? "LocalAvatar" : "RemoteAvatar";
+
+        if (hand == null)
+        {
+            hand = GameObject.Find(targetClient).transform.Find("Joint RightHandWrist").gameObject;
+        }
+        else
         {
             Vector3 targetPos = hand.transform.position + (followOffset.x * hand.transform.right) + (followOffset.y * hand.transform.up) + (followOffset.z * hand.transform.forward);
             transform.SetPositionAndRotation(

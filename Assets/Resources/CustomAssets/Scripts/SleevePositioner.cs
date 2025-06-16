@@ -52,8 +52,8 @@ public class SleevePositioner : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!IsOwner) return;
-        string targetClient = "LocalAvatar";
+        // tracking both sleeves locally to reduce network load
+        string targetClient = IsOwner ? "LocalAvatar" : "RemoteAvatar";
 
         if (lower == null)
             {
