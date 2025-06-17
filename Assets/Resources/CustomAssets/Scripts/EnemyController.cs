@@ -189,18 +189,18 @@ public class EnemyController : NetworkBehaviour
                 }
                 if (name.Contains("Cold"))
                 {
-                    arcadeGame.SetP1HotKillsServerRpc(arcadeGame.p1ColdKills.Value++);
+                    arcadeGame.SetP1ColdKillsServerRpc(arcadeGame.p1ColdKills.Value++);
                 }
             }
             else
             {
                 if (name.Contains("Hot"))
                 {
-                    arcadeGame.SetP2HotKillsServerRpc(arcadeGame.p2HotKills.Value++);
+                    arcadeGame.SetP2HotKillsServerRpc(NetworkManager.Singleton.LocalClientId, arcadeGame.p2HotKills.Value++);
                 }
                 if (name.Contains("Cold"))
                 {
-                    arcadeGame.SetP2HotKillsServerRpc(arcadeGame.p2ColdKills.Value++);
+                    arcadeGame.SetP2ColdKillsServerRpc(arcadeGame.p2ColdKills.Value++);
                 }
             }
         }

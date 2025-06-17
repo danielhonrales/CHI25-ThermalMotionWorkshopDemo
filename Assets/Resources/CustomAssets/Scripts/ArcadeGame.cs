@@ -40,9 +40,10 @@ public class ArcadeGame : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void SetP2HotKillsServerRpc(ulong newVal)
+    public void SetP2HotKillsServerRpc(ulong clientId, ulong newVal)
     {
         //if (!IsServer) return;
+        Debug.Log("client " + clientId + " is attempting to change P2HotKills");
         p2HotKills.Value = newVal;
     }
 
