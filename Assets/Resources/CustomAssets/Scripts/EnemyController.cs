@@ -40,7 +40,6 @@ public class EnemyController : NetworkBehaviour
         justSpawnedTargetArea = GameObject.Find("JustSpawnedTargetArea");
         homingInTargetArea = GameObject.Find("HomingInTargetArea");
         targetPoint = GetRandomPointInsideCube(justSpawnedTargetArea);
-        state.Value = EnemyState.justSpawned;
         seed = UnityEngine.Random.Range(0f, 100f);
         moveSpeed = 7.5f + UnityEngine.Random.Range(-1f, 1f);
         wiggleAmount = 1;
@@ -56,6 +55,12 @@ public class EnemyController : NetworkBehaviour
         transform.localScale *= randomScaleChange;
 
         state.OnValueChanged += OnStateChanged;
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        SetStateServerRpc(EnemyState.justSpawned);
     }
 
     // Update is called once per frame
@@ -135,6 +140,12 @@ public class EnemyController : NetworkBehaviour
         } */
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    public void SetStateServerRpc(EnemyState newState)
+    {
+        state.Value = newState;
+    }
+
     Vector3 GetSeparation()
     {
         Vector3 sep = Vector3.zero;
@@ -168,7 +179,7 @@ public class EnemyController : NetworkBehaviour
                 gameController.coldKills++;
             }
 
-            DieServerRpc();
+            SetStateServerRpc(EnemyState.dead);
 
             ArcadeGame arcadeGame = GameObject.Find("ArcadeGame").GetComponent<ArcadeGame>();
             ulong killerClientId = other.transform.parent.gameObject.GetComponent<NetworkObject>().OwnerClientId;
@@ -195,12 +206,6 @@ public class EnemyController : NetworkBehaviour
                 }
             }
         }
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void DieServerRpc()
-    {
-        state.Value = EnemyState.dead;
     }
 
     public void Die() {
