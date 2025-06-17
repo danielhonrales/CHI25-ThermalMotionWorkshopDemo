@@ -64,6 +64,7 @@ public class EnemyController : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!IsServer) return;
         if (Input.GetKeyDown(KeyCode.K))
         {
             boopAudio.Play();
