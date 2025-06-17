@@ -49,6 +49,7 @@ public class GameController : NetworkBehaviour
     [Space(10)]
 
     [Header("Testing")]
+    public ulong myClientId;
     public ulong targetClient;
     [Space(10)]
 
@@ -61,6 +62,12 @@ public class GameController : NetworkBehaviour
     void Start()
     {
         
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        myClientId = NetworkManager.Singleton.LocalClientId;
     }
 
     public void PrepareClients()

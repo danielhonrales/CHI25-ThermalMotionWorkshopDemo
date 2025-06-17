@@ -13,8 +13,6 @@ public class EnemyController : NetworkBehaviour
     public AudioSource deathAudio;
     public AudioSource boopAudio;
     public AudioSource hoverAudio;
-    public GameObject hotEnemyPrefab;
-    public GameObject coldEnemyPrefab;
 
     public Vector3 targetPoint;
     public GameObject justSpawnedTargetArea;
