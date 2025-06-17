@@ -48,8 +48,8 @@ public class BeamController : NetworkBehaviour
         }
         if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha3))
         {
-            SetHotActiveStateServerRpc(true);
             SetColdActiveStateServerRpc(false);
+            SetHotActiveStateServerRpc(true);
         }
         if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha4))
         {
@@ -61,14 +61,7 @@ public class BeamController : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        if (IsOwner)
-        {
-            name = name.Replace("(Clone)", "") + " Local";
-        }
-        else
-        {
-            name = name.Replace("(Clone)", "") + " Remote";
-        }
+        name = name.Replace("(Clone)", "") + " " + GetComponent<NetworkObject>().OwnerClientId;
     }
 
     public override void OnDestroy()

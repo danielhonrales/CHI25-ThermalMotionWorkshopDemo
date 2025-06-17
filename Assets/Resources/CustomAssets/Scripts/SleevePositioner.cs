@@ -37,16 +37,8 @@ public class SleevePositioner : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        if (IsOwner)
-        {
-            name = name.Replace("(Clone)", "") + " Local";
-            LED_tube = GameObject.Find("ledTube Local");
-        }
-        else
-        {
-            name = name.Replace("(Clone)", "") + " Remote";
-            LED_tube = GameObject.Find("ledTube Remote");
-        }
+        name = name.Replace("(Clone)", "") + " " + GetComponent<NetworkObject>().OwnerClientId;
+        LED_tube = GameObject.Find("ledTube " + GetComponent<NetworkObject>().OwnerClientId);
     }
 
     // Update is called once per frame

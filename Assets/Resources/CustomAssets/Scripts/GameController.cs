@@ -77,7 +77,6 @@ public class GameController : NetworkBehaviour
         foreach (NetworkClient networkClient in NetworkManager.Singleton.ConnectedClientsList)
         {
             ulong clientId = networkClient.ClientId;
-            Debug.Log("Client " + clientId + " SpawnObjects");
 
             NetworkObject ledTube = Instantiate(ledTubePrefab);
             ledTube.SpawnWithOwnership(clientId);
@@ -85,8 +84,12 @@ public class GameController : NetworkBehaviour
             NetworkObject sleevePoint = Instantiate(sleevePointPrefab);
             sleevePoint.SpawnWithOwnership(clientId);
 
-            NetworkObject beam = Instantiate(beamPrefab);
-            beam.SpawnWithOwnership(clientId);
+            NetworkObject clientBeam = Instantiate(beamPrefab);
+            clientBeam.SpawnWithOwnership(clientId);
+            if (clientId == NetworkManager.Singleton.LocalClientId)
+            {
+                beam = clientBeam;
+            }
 
             TelportPlayerClientRpc();
         }
@@ -103,6 +106,7 @@ public class GameController : NetworkBehaviour
         {
             cameraRig.transform.SetPositionAndRotation(playerPoint2.position, playerPoint2.rotation);
         }
+        StartCoroutine(FindLocalHand());
     }
 
     public void SpawnOrbs(ulong targetClientId)
@@ -112,15 +116,15 @@ public class GameController : NetworkBehaviour
         Vector3 targetPos = (targetClientId == 0) ? playerPoint1.position : playerPoint2.position;
         Vector3 orbOffset = (targetClientId == 0) ? new Vector3(orbPlayerOffset.x, orbPlayerOffset.y, -orbPlayerOffset.z) : orbPlayerOffset;
 
-        GameObject hotOrb = SpawnOrb("Hot");
+        GameObject hotOrb = SpawnOrb("Hot", targetClientId);
         hotOrb.transform.position = orbSpawnPoint.position;
         StartCoroutine(MoveOrbToPlayer(hotOrb.transform, targetPos + new Vector3(-orbOffset.x, orbOffset.y, orbOffset.z)));
-        GameObject coldOrb = SpawnOrb("Cold");
+        GameObject coldOrb = SpawnOrb("Cold", targetClientId);
         coldOrb.transform.position = orbSpawnPoint.position;
         StartCoroutine(MoveOrbToPlayer(coldOrb.transform, targetPos + new Vector3(orbOffset.x, orbOffset.y, orbOffset.z)));
     }
 
-    public GameObject SpawnOrb(string type)
+    public GameObject SpawnOrb(string type, ulong clientId)
     {
         if (!IsOwner) return null;
         GameObject orbObject;
@@ -132,46 +136,8 @@ public class GameController : NetworkBehaviour
         {
             orbObject = Instantiate(coldOrbPrefab);
         }
-        orbObject.GetComponent<NetworkObject>().Spawn();
+        orbObject.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
         return orbObject;
-    }
-
-    public void HandleClientConnected(ulong clientId)
-    {
-        if (!IsOwner) return;
-        if (connectedClients.Count < 2)
-        { // if multiplayer, add  "&& clientId != 0" to prevent spawning for server
-            Debug.Log("New client: " + clientId);
-            connectedClients.Add(clientId);
-            Debug.Log("Spawning client objects");
-
-            GameObject hotOrb = SpawnOrb("Hot");
-            hotOrbs.Add(hotOrb);
-            GameObject coldOrb = SpawnOrb("Cold");
-            coldOrbs.Add(coldOrb);
-
-            GameObject beam = Instantiate(beamPrefab.gameObject);
-            beam.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
-            //beams.Add(beam);
-
-            if (connectedClients.Count == 1)
-            {
-                Debug.Log("Assigned new client to 1");
-                hotOrb.transform.position = playerPoint1.position + new Vector3(-orbPlayerOffset.x, orbPlayerOffset.y, -orbPlayerOffset.z);
-                coldOrb.transform.position = playerPoint1.position + new Vector3(orbPlayerOffset.x, orbPlayerOffset.y, -orbPlayerOffset.z);
-            }
-            else if (connectedClients.Count == 2)
-            {
-                Debug.Log("Assigned new client to 2");
-                hotOrb.transform.position = playerPoint2.position + new Vector3(-orbPlayerOffset.x, orbPlayerOffset.y, orbPlayerOffset.z);
-                coldOrb.transform.position = playerPoint2.position + new Vector3(orbPlayerOffset.x, orbPlayerOffset.y, orbPlayerOffset.z);
-            }
-        }
-        else
-        {
-            NetworkManager.Singleton.DisconnectClient(clientId);
-            Debug.Log("Only 2 players! Disconnecting client " + clientId);
-        }
     }
 
     public void HandleClientDisconnected(ulong clientId) {
@@ -215,13 +181,14 @@ public class GameController : NetworkBehaviour
 
     public void ResetOrb(string type) {
         if (!IsOwner) return;
+        ulong ownerId = currentOrbController.gameObject.GetComponent<NetworkObject>().OwnerClientId;
         currentOrbController.gameObject.GetComponent<NetworkObject>().Despawn();
         if (type.Contains("Hot")) {
-            GameObject newOrb = SpawnOrb("Hot");
+            GameObject newOrb = SpawnOrb("Hot", ownerId);
             newOrb.transform.position = orbSpawnPoint.position;
             StartCoroutine(MoveOrbToPlayer(newOrb.transform, orbPlayerPoint.position + new Vector3(-0.5f, 0, 0)));
         } else {
-            GameObject newOrb = SpawnOrb("Cold");
+            GameObject newOrb = SpawnOrb("Cold", ownerId);
             newOrb.transform.position = orbSpawnPoint.position;
             StartCoroutine(MoveOrbToPlayer(newOrb.transform, orbPlayerPoint.position + new Vector3(0.5f, 0, 0)));
         }
@@ -321,7 +288,7 @@ public class GameController : NetworkBehaviour
 
     public IEnumerator FindLocalHand()
     {
-        int findTargetTries = 10;
+        int findTargetTries = 2;
         while (hand == null && findTargetTries > 0)
         {
             Debug.Log("Trying to find local right hand...");
