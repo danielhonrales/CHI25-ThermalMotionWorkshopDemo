@@ -47,6 +47,7 @@ public class OrbController : NetworkBehaviour
     public void OnGrab() {
         //if (!IsOwner || gameController.currentOrbController != null) return;
 
+        TransferOwnershipServerRpc(NetworkManager.Singleton.LocalClientId);
         state = OrbState.Charging;
         touchHandGrabInteractable.enabled = false;
         gameController.rightGrabInteractor.SetActive(false);
@@ -55,7 +56,14 @@ public class OrbController : NetworkBehaviour
         StartCoroutine(ChargeSequence());
     }
 
-    public IEnumerator ChargeSequence() {
+    [ServerRpc]
+    public void TransferOwnershipServerRpc(ulong newOwnerId)
+    {
+        GetComponent<NetworkObject>().ChangeOwnership(newOwnerId);   
+    }
+
+    public IEnumerator ChargeSequence()
+    {
         Debug.Log("charge sequence");
         gameController.TriggerChargeMotion(gameObject.name);
 
@@ -67,11 +75,12 @@ public class OrbController : NetworkBehaviour
         float steps = 100f;
         float shrinkStep = transform.localScale.x / steps;
         Debug.Log("Shrink " + shrinkStep);
-        for (int i = 0; i < steps; i++) {
+        for (int i = 0; i < steps; i++)
+        {
             transform.localScale = transform.localScale - new Vector3(shrinkStep, shrinkStep, shrinkStep);
             yield return new WaitForSeconds(3f / steps);
         }
-        
+
         // Finish charge
         visuals.SetActive(false);
         state = OrbState.Charged;
