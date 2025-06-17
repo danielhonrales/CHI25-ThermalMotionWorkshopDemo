@@ -59,6 +59,7 @@ public class OrbController : NetworkBehaviour
     [ServerRpc]
     public void TransferOwnershipServerRpc(ulong newOwnerId)
     {
+        Debug.Log("transferring ownership to " + newOwnerId);
         GetComponent<NetworkObject>().ChangeOwnership(newOwnerId);   
     }
 
