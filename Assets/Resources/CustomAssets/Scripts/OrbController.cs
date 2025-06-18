@@ -52,8 +52,9 @@ public class OrbController : NetworkBehaviour
             Vector3 targetPos = hand.transform.position + (followOffset.y * hand.transform.up) + (followOffset.z * hand.transform.right);
             transform.position = Vector3.MoveTowards(transform.position, targetPos, (transform.position - targetPos).magnitude * followSpeed * Time.deltaTime);
         }
-        if (state.Value == OrbState.Charged && released == false && gameController.releasePoseActive)
+        if (IsOwner && state.Value == OrbState.Charged && released == false && gameController.releasePoseActive == true)
         {
+            Debug.Log("release");
             released = true;
             SetStateServerRpc(OrbState.Discharging);
         }

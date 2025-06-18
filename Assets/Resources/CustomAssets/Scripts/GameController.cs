@@ -100,6 +100,7 @@ public class GameController : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         myClientId = NetworkManager.Singleton.LocalClientId;
+        releasePoseActive = false;
     }
 
     public void PrepareClients()
