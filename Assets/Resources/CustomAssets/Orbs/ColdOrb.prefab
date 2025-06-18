@@ -359,12 +359,12 @@ MonoBehaviour:
   SyncPositionX: 1
   SyncPositionY: 1
   SyncPositionZ: 1
-  SyncRotAngleX: 1
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 1
+  SyncRotAngleX: 0
+  SyncRotAngleY: 0
+  SyncRotAngleZ: 0
   SyncScaleX: 1
-  SyncScaleY: 0
-  SyncScaleZ: 0
+  SyncScaleY: 1
+  SyncScaleZ: 1
   PositionThreshold: 0.001
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01
@@ -386,8 +386,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 023667dc6a3a3874ca140694a991175e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state:
+    m_InternalValue: 0
   hand: {fileID: 0}
-  state: 0
   followOffset: {x: 0, y: -0.06, z: -0.08}
   followSpeed: 5
   touchHandGrabInteractable: {fileID: 3243934130123420337}

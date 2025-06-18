@@ -41,9 +41,9 @@ public class OrbController : NetworkBehaviour
     {
         if (hand == null)
         {
-            hand = gameController.hand;
+            hand = IsOwner ? gameController.hand : gameController.remoteHand;
         }
-        if (IsOwner && state.Value == OrbState.Charging)
+        if (state.Value == OrbState.Charging)
         {
             Vector3 targetPos = hand.transform.position + (followOffset.y * hand.transform.up) + (followOffset.z * hand.transform.right);
             transform.position = Vector3.MoveTowards(transform.position, targetPos, (transform.position - targetPos).magnitude * followSpeed * Time.deltaTime);
@@ -92,6 +92,10 @@ public class OrbController : NetworkBehaviour
             gameController.currentOrbController = this;
             gameController.TriggerChargeMotion(gameObject.name);
             gameController.TriggerChargeVisuals(gameObject.name);
+        }
+        else
+        {
+            hand = gameController.remoteHand;
         }
 
         chargeAudio.Play();

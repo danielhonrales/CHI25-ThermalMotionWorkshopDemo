@@ -10,6 +10,7 @@ public class GameController : NetworkBehaviour
     public GameObject cameraRig;
     public GameObject rightGrabInteractor;
     public GameObject hand;
+    public GameObject remoteHand;
     public Transform playerPoint1;
     public Transform playerPoint2;
     public CommunicationController communicationController;
@@ -64,6 +65,33 @@ public class GameController : NetworkBehaviour
         
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        if (!IsOwner) return;
+        if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            PrepareClients();
+        }
+        if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            SpawnOrbs(targetClient);
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            StartCoroutine(FindLocalHand());
+        }
+        if (Input.GetKey(KeyCode.E) && Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            StartCoroutine(enemySpawner.SpawnEnemy());
+        }
+        if (Input.GetKey(KeyCode.E) && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            StopCoroutine(enemySpawner.SpawnEnemy());
+            enemySpawner.ClearEnemies();
+        }
+    }
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -107,6 +135,7 @@ public class GameController : NetworkBehaviour
             cameraRig.transform.SetPositionAndRotation(playerPoint2.position, playerPoint2.rotation);
         }
         StartCoroutine(FindLocalHand());
+        StartCoroutine(FindRemoteHand());
     }
 
     public void SpawnOrbs(ulong targetClientId)
@@ -152,33 +181,6 @@ public class GameController : NetworkBehaviour
         connectedClients.Remove(clientId);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (!IsOwner) return;
-        if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            PrepareClients();
-        }
-        if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SpawnOrbs(targetClient);
-        }
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            StartCoroutine(FindLocalHand());
-        }
-        if (Input.GetKey(KeyCode.E) && Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            StartCoroutine(enemySpawner.SpawnEnemy());
-        }
-        if (Input.GetKey(KeyCode.E) && Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            StopCoroutine(enemySpawner.SpawnEnemy());
-            enemySpawner.ClearEnemies();
-        }
-    }
-
     public void ResetOrb(string type) {
         if (!IsOwner) return;
         ulong ownerId = currentOrbController.gameObject.GetComponent<NetworkObject>().OwnerClientId;
@@ -204,7 +206,6 @@ public class GameController : NetworkBehaviour
 
     public void DetectedReleasePose()
     {
-        if (!IsOwner) return;
         Debug.Log("Detected release pose");
         if (currentOrbController) {
             currentOrbController.OnRelease();
@@ -311,7 +312,36 @@ public class GameController : NetworkBehaviour
         }
     }
 
-    public void ListGameObjects() {
+    public IEnumerator FindRemoteHand()
+    {
+        int findTargetTries = 2;
+        while (remoteHand == null && findTargetTries > 0)
+        {
+            Debug.Log("Trying to find remote right hand...");
+            GameObject remoteAvatar = GameObject.Find("RemoteAvatar");
+            if (remoteAvatar)
+            {
+                Transform rightHandJoint = remoteAvatar.transform.Find("Joint RightHandWrist");
+                if (rightHandJoint)
+                {
+                    remoteHand = rightHandJoint.gameObject;
+                }
+            }
+            findTargetTries--;
+            yield return new WaitForSeconds(1f);
+        }
+        if (remoteHand != null)
+        {
+            Debug.Log("Found remote right hand");
+        }
+        else
+        {
+            StartCoroutine(FindRemoteHand());
+        }
+    }
+
+    public void ListGameObjects()
+    {
         GameObject[] allObjects = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
 
         foreach (GameObject go in allObjects)
