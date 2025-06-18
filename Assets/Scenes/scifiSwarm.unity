@@ -22735,12 +22735,12 @@ MonoBehaviour:
   communicationController: {fileID: 1171005299}
   signalSender: {fileID: 1171005298}
   connectedClients: 
-  arcadeGame: {fileID: 0}
+  arcadeGame: {fileID: 2018029348}
   currentOrbController: {fileID: 0}
   orbs: []
   orbSpawnPoint: {fileID: 1057520818}
   orbPlayerPoint: {fileID: 871713562}
-  orbPlayerOffset: {x: 0.3, y: 0.7, z: 0.3}
+  orbPlayerOffset: {x: 0.3, y: 1, z: 0.5}
   orbSpawner: {fileID: 98780420}
   releasePoseActive: 0
   beam: {fileID: 0}
