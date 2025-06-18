@@ -141,15 +141,15 @@ public class GameController : NetworkBehaviour
         Vector3 targetPos = (targetClientId == 0) ? playerPoint1.position : playerPoint2.position;
         Vector3 orbOffset = (targetClientId == 0) ? new Vector3(orbPlayerOffset.x, orbPlayerOffset.y, -orbPlayerOffset.z) : orbPlayerOffset;
 
-        GameObject hotOrb = SpawnOrb("Hot", targetClientId);
+        GameObject hotOrb = SpawnOrb("Hot");
         hotOrb.transform.position = orbSpawnPoint.position;
         StartCoroutine(MoveOrbToPlayer(hotOrb.transform, targetPos + new Vector3(-orbOffset.x, orbOffset.y, orbOffset.z)));
-        GameObject coldOrb = SpawnOrb("Cold", targetClientId);
+        GameObject coldOrb = SpawnOrb("Cold");
         coldOrb.transform.position = orbSpawnPoint.position;
         StartCoroutine(MoveOrbToPlayer(coldOrb.transform, targetPos + new Vector3(orbOffset.x, orbOffset.y, orbOffset.z)));
     }
 
-    public GameObject SpawnOrb(string type, ulong clientId)
+    public GameObject SpawnOrb(string type)
     {
         if (!IsOwner) return null;
         GameObject orbObject;
@@ -177,16 +177,20 @@ public class GameController : NetworkBehaviour
         connectedClients.Remove(clientId);
     }
 
-    public void ResetOrb(string type) {
-        if (!IsOwner) return;
-        ulong ownerId = currentOrbController.gameObject.GetComponent<NetworkObject>().OwnerClientId;
-        currentOrbController.gameObject.GetComponent<NetworkObject>().Despawn();
-        if (type.Contains("Hot")) {
-            GameObject newOrb = SpawnOrb("Hot", ownerId);
+    [ServerRpc(RequireOwnership = false)]
+    public void ResetOrbServerRpc(NetworkObject orb)
+    {
+        string orbName = orb.gameObject.name;
+        orb.Despawn();
+        if (orbName.Contains("Hot"))
+        {
+            GameObject newOrb = SpawnOrb("Hot");
             newOrb.transform.position = orbSpawnPoint.position;
             StartCoroutine(MoveOrbToPlayer(newOrb.transform, orbPlayerPoint.position + new Vector3(-0.5f, 0, 0)));
-        } else {
-            GameObject newOrb = SpawnOrb("Cold", ownerId);
+        }
+        else
+        {
+            GameObject newOrb = SpawnOrb("Cold");
             newOrb.transform.position = orbSpawnPoint.position;
             StartCoroutine(MoveOrbToPlayer(newOrb.transform, orbPlayerPoint.position + new Vector3(0.5f, 0, 0)));
         }
@@ -275,8 +279,8 @@ public class GameController : NetworkBehaviour
         }
     }
 
-    public void FinishInteraction(string type) {
-        ResetOrb(type);
+    public void FinishInteraction(NetworkObject orb) {
+        ResetOrbServerRpc(orb);
         currentOrbController = null;
         BeamController localBeamController = beam.gameObject.GetComponent<BeamController>();
         localBeamController.SetHotActiveStateServerRpc(false);

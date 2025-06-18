@@ -31,7 +31,7 @@ public class AvatarController : NetworkBehaviour
 
     IEnumerator SetAvatar()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(2);
 
         bool avatarIndexSet = false;
         AvatarBehaviourNGO avatarBehaviourNGO = GetComponent<AvatarBehaviourNGO>();
@@ -40,6 +40,7 @@ public class AvatarController : NetworkBehaviour
             avatarBehaviourNGO.LocalAvatarIndex = goodAvatarIndices[UnityEngine.Random.Range(0, goodAvatarIndices.Count())];
             avatarIndexSet = true;
             StartCoroutine(gameController.FindLocalHand());
+            StartCoroutine(gameController.FindRemoteHand());
         }
 
         if (!avatarIndexSet)

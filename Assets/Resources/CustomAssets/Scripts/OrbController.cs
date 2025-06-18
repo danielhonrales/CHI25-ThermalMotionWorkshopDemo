@@ -145,7 +145,7 @@ public class OrbController : NetworkBehaviour
         if (IsOwner)
         {
             gameController.rightGrabInteractor.SetActive(true);
-            gameController.FinishInteraction(gameObject.name);
+            gameController.FinishInteraction(GetComponent<NetworkObject>());
         }
     }
 
