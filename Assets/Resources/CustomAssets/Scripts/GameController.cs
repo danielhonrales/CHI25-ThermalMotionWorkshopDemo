@@ -282,8 +282,10 @@ public class GameController : NetworkBehaviour
     public void ResetOrbServerRpc(ulong orbNetworkId)
     {
         NetworkObject orb = NetworkManager.Singleton.SpawnManager.SpawnedObjects[orbNetworkId];
-        SpawnOrbs(orb.OwnerClientId);
+        ulong targetClientId = orb.OwnerClientId;
         orb.Despawn();
+        SpawnOrbs(targetClientId);
+        
     }
 
     public IEnumerator FindLocalHand()
