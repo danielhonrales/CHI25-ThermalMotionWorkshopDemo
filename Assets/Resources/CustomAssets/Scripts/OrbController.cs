@@ -54,7 +54,6 @@ public class OrbController : NetworkBehaviour
         }
         if (IsOwner && state.Value == OrbState.Charged && released == false && gameController.releasePoseActive == true)
         {
-            Debug.Log("release");
             released = true;
             SetStateServerRpc(OrbState.Discharging);
         }
