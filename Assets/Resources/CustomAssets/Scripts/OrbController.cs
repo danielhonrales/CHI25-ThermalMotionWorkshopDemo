@@ -35,7 +35,7 @@ public class OrbController : NetworkBehaviour
         SetStateServerRpc(OrbState.Idle);
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         hand = gameController.hand;
-        name = name.Replace("(Clone)", "") + " " + targetClientId;
+        name = name.Replace("(Clone)", "") + " " + targetClientId.Value;
     }
 
     // Update is called once per frame

@@ -75,7 +75,10 @@ public class GameController : NetworkBehaviour
         }
         if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha2))
         {
-            SpawnOrbs(targetClient);
+            foreach (NetworkClient networkClient in NetworkManager.Singleton.ConnectedClientsList)
+            {
+                SpawnOrbs(networkClient.ClientId);
+            }
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
