@@ -177,25 +177,6 @@ public class GameController : NetworkBehaviour
         connectedClients.Remove(clientId);
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    public void ResetOrbServerRpc(NetworkObject orb)
-    {
-        string orbName = orb.gameObject.name;
-        orb.Despawn();
-        if (orbName.Contains("Hot"))
-        {
-            GameObject newOrb = SpawnOrb("Hot");
-            newOrb.transform.position = orbSpawnPoint.position;
-            StartCoroutine(MoveOrbToPlayer(newOrb.transform, orbPlayerPoint.position + new Vector3(-0.5f, 0, 0)));
-        }
-        else
-        {
-            GameObject newOrb = SpawnOrb("Cold");
-            newOrb.transform.position = orbSpawnPoint.position;
-            StartCoroutine(MoveOrbToPlayer(newOrb.transform, orbPlayerPoint.position + new Vector3(0.5f, 0, 0)));
-        }
-    }
-
     public IEnumerator MoveOrbToPlayer(Transform orb, Vector3 targetPos) {
         float steps = 100;
         for (int i = 0; i < steps; i++) {
@@ -279,12 +260,32 @@ public class GameController : NetworkBehaviour
         }
     }
 
-    public void FinishInteraction(NetworkObject orb) {
-        ResetOrbServerRpc(orb);
+    public void FinishInteraction(ulong orbNetworkId) {
+        ResetOrbServerRpc(orbNetworkId);
         currentOrbController = null;
         BeamController localBeamController = beam.gameObject.GetComponent<BeamController>();
         localBeamController.SetHotActiveStateServerRpc(false);
         localBeamController.SetColdActiveStateServerRpc(false);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void ResetOrbServerRpc(ulong orbNetworkId)
+    {
+        NetworkObject orb = NetworkManager.Singleton.SpawnManager.SpawnedObjects[orbNetworkId];
+        string orbName = orb.gameObject.name;
+        orb.Despawn();
+        if (orbName.Contains("Hot"))
+        {
+            GameObject newOrb = SpawnOrb("Hot");
+            newOrb.transform.position = orbSpawnPoint.position;
+            StartCoroutine(MoveOrbToPlayer(newOrb.transform, orbPlayerPoint.position + new Vector3(-0.5f, 0, 0)));
+        }
+        else
+        {
+            GameObject newOrb = SpawnOrb("Cold");
+            newOrb.transform.position = orbSpawnPoint.position;
+            StartCoroutine(MoveOrbToPlayer(newOrb.transform, orbPlayerPoint.position + new Vector3(0.5f, 0, 0)));
+        }
     }
 
     public IEnumerator FindLocalHand()
@@ -305,9 +306,12 @@ public class GameController : NetworkBehaviour
             findTargetTries--;
             yield return new WaitForSeconds(1f);
         }
-        if (hand != null) {
+        if (hand != null)
+        {
             Debug.Log("Found local right hand");
-        } else {
+        }
+        else
+        {
             StartCoroutine(FindLocalHand());
         }
     }
