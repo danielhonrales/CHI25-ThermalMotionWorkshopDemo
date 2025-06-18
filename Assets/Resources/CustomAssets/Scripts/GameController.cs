@@ -167,7 +167,7 @@ public class GameController : NetworkBehaviour
         {
             orbObject = Instantiate(coldOrbPrefab);
         }
-        orbObject.GetComponent<OrbController>().targetClientId = targetClientId;
+        orbObject.GetComponent<OrbController>().targetClientId.Value = targetClientId;
         orbObject.GetComponent<NetworkObject>().Spawn();
         return orbObject;
     }

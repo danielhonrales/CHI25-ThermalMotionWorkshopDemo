@@ -7,6 +7,7 @@ public class OrbController : NetworkBehaviour
 {
 
     public NetworkVariable<OrbState> state = new(OrbState.Idle);
+    public NetworkVariable<ulong> targetClientId;
 
     public GameObject hand;
     public Vector3 followOffset;
@@ -21,7 +22,6 @@ public class OrbController : NetworkBehaviour
     public AudioSource coldBeamAudio;
     public AudioSource beamChargeAudio;
     public GameObject visuals;
-    public ulong targetClientId;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -35,7 +35,7 @@ public class OrbController : NetworkBehaviour
         SetStateServerRpc(OrbState.Idle);
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         hand = gameController.hand;
-        name = name.Replace("(Clone)", "") + " " + GetComponent<NetworkObject>().OwnerClientId;
+        name = name.Replace("(Clone)", "") + " " + targetClientId;
     }
 
     // Update is called once per frame
