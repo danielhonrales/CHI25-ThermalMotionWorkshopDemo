@@ -46,7 +46,7 @@ public class BeamController : NetworkBehaviour
                 Quaternion.LookRotation(hand.transform.up)
             );
         }
-        if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha3))
+        /* if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha3))
         {
             SetColdActiveStateServerRpc(false);
             SetHotActiveStateServerRpc(true);
@@ -55,7 +55,7 @@ public class BeamController : NetworkBehaviour
         {
             SetHotActiveStateServerRpc(false);
             SetColdActiveStateServerRpc(true);
-        }
+        } */
     }
 
     public override void OnNetworkSpawn()
