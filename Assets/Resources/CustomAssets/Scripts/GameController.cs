@@ -16,12 +16,12 @@ public class GameController : NetworkBehaviour
     public CommunicationController communicationController;
     public SignalSender signalSender;
     public List<ulong> connectedClients;
+    public ArcadeGame arcadeGame;
     [Space(10)]
 
     [Header("Orbs")]
     public OrbController currentOrbController;
-    public List<GameObject> hotOrbs;
-    public List<GameObject> coldOrbs;
+    public List<NetworkObject> orbs;
     public Transform orbSpawnPoint;
     public Transform orbPlayerPoint;
     public Vector3 orbPlayerOffset;
@@ -174,19 +174,8 @@ public class GameController : NetworkBehaviour
         }
         orbObject.GetComponent<OrbController>().targetClientId.Value = targetClientId;
         orbObject.GetComponent<NetworkObject>().Spawn();
+        orbs.Add(orbObject.GetComponent<NetworkObject>());
         return orbObject;
-    }
-
-    public void HandleClientDisconnected(ulong clientId) {
-        if (!IsOwner) return;
-        int clientIndex = connectedClients.IndexOf(clientId);
-        hotOrbs[clientIndex].GetComponent<NetworkObject>().Despawn();
-        hotOrbs.RemoveAt(clientIndex);
-        coldOrbs[clientIndex].GetComponent<NetworkObject>().Despawn();
-        coldOrbs.RemoveAt(clientIndex);
-        beam.GetComponent<NetworkObject>().Despawn();
-        beam = null;
-        connectedClients.Remove(clientId);
     }
 
     public IEnumerator MoveOrbToPlayer(Transform orb, Vector3 targetPos) {
@@ -293,7 +282,19 @@ public class GameController : NetworkBehaviour
         ulong targetClientId = orb.OwnerClientId;
         orb.gameObject.name = "deadorb";
         orb.Despawn();
-        SpawnOrbs(targetClientId);
+        if (arcadeGame.state.Value == ArcadeGame.GameState.Active)
+        {
+            SpawnOrbs(targetClientId);
+        }
+    }
+
+    public void DespawnAllOrbs()
+    {
+        foreach (NetworkObject orb in orbs)
+        {
+            orb.Despawn();
+        }
+        orbs = new List<NetworkObject>();
     }
 
     public IEnumerator FindLocalHand()

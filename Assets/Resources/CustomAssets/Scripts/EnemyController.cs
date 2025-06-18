@@ -205,7 +205,7 @@ public class EnemyController : NetworkBehaviour
             {
                 if (name.Contains("Hot"))
                 {
-                    arcadeGame.SetP2HotKillsServerRpc(NetworkManager.Singleton.LocalClientId, arcadeGame.p2HotKills.Value + 1);
+                    arcadeGame.SetP2HotKillsServerRpc(arcadeGame.p2HotKills.Value + 1);
                 }
                 if (name.Contains("Cold"))
                 {
