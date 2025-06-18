@@ -281,9 +281,9 @@ public class GameController : NetworkBehaviour
     public void FinishInteraction(string type) {
         ResetOrb(type);
         currentOrbController = null;
-        GameObject clientBeam = beam.gameObject;
-        clientBeam.GetComponent<BeamController>().SetHotActiveStateServerRpc(false);
-        clientBeam.GetComponent<BeamController>().SetColdActiveStateServerRpc(false);
+        BeamController localBeamController = beam.gameObject.GetComponent<BeamController>();
+        localBeamController.SetHotActiveStateServerRpc(false);
+        localBeamController.SetColdActiveStateServerRpc(false);
     }
 
     public IEnumerator FindLocalHand()

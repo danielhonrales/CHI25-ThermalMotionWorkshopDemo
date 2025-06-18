@@ -33,13 +33,18 @@ public class OrbController : NetworkBehaviour
         base.OnNetworkSpawn();
         SetStateServerRpc(OrbState.Idle);
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        StartCoroutine(GetGameControllerHand());
+        hand = gameController.hand;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (state.Value == OrbState.Charging) {
+        if (hand == null)
+        {
+            hand = gameController.hand;
+        }
+        if (IsOwner && state.Value == OrbState.Charging)
+        {
             Vector3 targetPos = hand.transform.position + (followOffset.y * hand.transform.up) + (followOffset.z * hand.transform.right);
             transform.position = Vector3.MoveTowards(transform.position, targetPos, (transform.position - targetPos).magnitude * followSpeed * Time.deltaTime);
         }
@@ -53,20 +58,21 @@ public class OrbController : NetworkBehaviour
 
     private void OnStateChanged(OrbState oldValue, OrbState newValue)
     {
-        
+        if (state.Value == OrbState.Charging)
+        {
+            StartCoroutine(ChargeSequence());
+        }
+
+        if (state.Value == OrbState.Discharging)
+        {
+            StartCoroutine(DischargeSequence());
+        }
     }
 
     public void OnGrab()
     {
-        //if (!IsOwner || gameController.currentOrbController != null) return;
-        Debug.Log("Grabbed by client " + NetworkManager.Singleton.LocalClientId);
         TransferOwnershipServerRpc(NetworkManager.Singleton.LocalClientId);
         SetStateServerRpc(OrbState.Charging);
-        touchHandGrabInteractable.enabled = false;
-        gameController.rightGrabInteractor.SetActive(false);
-        gameController.currentOrbController = this;
-
-        StartCoroutine(ChargeSequence());
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -79,13 +85,16 @@ public class OrbController : NetworkBehaviour
 
     public IEnumerator ChargeSequence()
     {
-        Debug.Log("charge sequence");
-        gameController.TriggerChargeMotion(gameObject.name);
+        if (IsOwner)
+        {
+            touchHandGrabInteractable.enabled = false;
+            gameController.rightGrabInteractor.SetActive(false);
+            gameController.currentOrbController = this;
+            gameController.TriggerChargeMotion(gameObject.name);
+            gameController.TriggerChargeVisuals(gameObject.name);
+        }
 
-        // Warmup
         chargeAudio.Play();
-
-        gameController.TriggerChargeVisuals(gameObject.name);
 
         float steps = 100f;
         float shrinkStep = transform.localScale.x / steps;
@@ -98,22 +107,25 @@ public class OrbController : NetworkBehaviour
 
         // Finish charge
         visuals.SetActive(false);
-        SetStateServerRpc(OrbState.Charged);
+        if (IsOwner) SetStateServerRpc(OrbState.Charged);
     }
 
     public void OnRelease() {
         if (state.Value == OrbState.Charged) {
             SetStateServerRpc(OrbState.Discharging);
-            StartCoroutine(DischargeSequence());
         }
     }
 
     public IEnumerator DischargeSequence() {
         beamChargeAudio.Play();
-        gameController.TriggerDischargeInitialVisual();
+        if (IsOwner) gameController.TriggerDischargeInitialVisual();
         yield return new WaitForSeconds(1f);
-        gameController.TriggerDischargeMotion(gameObject.name);
-        gameController.TriggerDischargeVisuals(gameObject.name);
+
+        if (IsOwner)
+        {
+            gameController.TriggerDischargeMotion(gameObject.name);
+            gameController.TriggerDischargeVisuals(gameObject.name);
+        }
         if (gameObject.name.Contains("Hot"))
         {
             hotAudio.Play();
@@ -125,40 +137,11 @@ public class OrbController : NetworkBehaviour
             coldBeamAudio.Play();
         }
         yield return new WaitForSeconds(5.5f);
-        gameController.rightGrabInteractor.SetActive(true);
 
-        gameController.FinishInteraction(gameObject.name);
-    }
-
-    public IEnumerator GetGameControllerHand() {
-        while (hand == null) {
-            yield return new WaitForSeconds(.1f);
-            hand = gameController.hand;
-        }
-    }
-
-    public IEnumerator FindLocalHand()
-    {
-        int findTargetTries = 10;
-        while (hand == null && findTargetTries > 0)
+        if (IsOwner)
         {
-            Debug.Log("Trying to find local right hand...");
-            GameObject localAvatar = GameObject.Find("LocalAvatar");
-            if (localAvatar)
-            {
-                Transform rightHandJoint = localAvatar.transform.Find("Joint RightHandWrist");
-                if (rightHandJoint)
-                {
-                    hand = rightHandJoint.gameObject;
-                }
-            }
-            findTargetTries--;
-            yield return new WaitForSeconds(1f);
-        }
-        if (hand != null) {
-            Debug.Log("Found local right hand");
-        } else {
-            StartCoroutine(FindLocalHand());
+            gameController.rightGrabInteractor.SetActive(true);
+            gameController.FinishInteraction(gameObject.name);
         }
     }
 
