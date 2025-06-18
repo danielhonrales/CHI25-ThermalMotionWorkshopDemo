@@ -114,11 +114,6 @@ public class GameController : NetworkBehaviour
 
             NetworkObject clientBeam = Instantiate(beamPrefab);
             clientBeam.SpawnWithOwnership(clientId);
-            if (clientId == NetworkManager.Singleton.LocalClientId)
-            {
-                beam = clientBeam;
-            }
-
             TelportPlayerClientRpc();
         }
     }
@@ -136,6 +131,7 @@ public class GameController : NetworkBehaviour
         }
         StartCoroutine(FindLocalHand());
         StartCoroutine(FindRemoteHand());
+        StartCoroutine(FindLocalBeam());
     }
 
     public void SpawnOrbs(ulong targetClientId)
@@ -337,6 +333,30 @@ public class GameController : NetworkBehaviour
         else
         {
             StartCoroutine(FindRemoteHand());
+        }
+    }
+
+    public IEnumerator FindLocalBeam()
+    {
+        int findTargetTries = 2;
+        while (beam == null && findTargetTries > 0)
+        {
+            Debug.Log("Trying to find local beam...");
+            GameObject beamObject = GameObject.Find("Beam " + NetworkManager.Singleton.LocalClientId);
+            if (beamObject)
+            {
+                beam = beamObject.GetComponent<NetworkObject>();
+            }
+            findTargetTries--;
+            yield return new WaitForSeconds(1f);
+        }
+        if (beam != null)
+        {
+            Debug.Log("Found beam");
+        }
+        else
+        {
+            StartCoroutine(FindLocalBeam());
         }
     }
 
