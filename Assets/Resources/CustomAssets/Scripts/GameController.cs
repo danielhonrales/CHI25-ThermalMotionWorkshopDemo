@@ -141,15 +141,21 @@ public class GameController : NetworkBehaviour
         Vector3 targetPos = (targetClientId == 0) ? playerPoint1.position : playerPoint2.position;
         Vector3 orbOffset = (targetClientId == 0) ? new Vector3(orbPlayerOffset.x, orbPlayerOffset.y, -orbPlayerOffset.z) : orbPlayerOffset;
 
-        GameObject hotOrb = SpawnOrb("Hot");
-        hotOrb.transform.position = orbSpawnPoint.position;
-        StartCoroutine(MoveOrbToPlayer(hotOrb.transform, targetPos + new Vector3(-orbOffset.x, orbOffset.y, orbOffset.z)));
-        GameObject coldOrb = SpawnOrb("Cold");
-        coldOrb.transform.position = orbSpawnPoint.position;
-        StartCoroutine(MoveOrbToPlayer(coldOrb.transform, targetPos + new Vector3(orbOffset.x, orbOffset.y, orbOffset.z)));
+        if (GameObject.Find("HotOrb " + targetClientId) == null)
+        {
+            GameObject hotOrb = SpawnOrb("Hot", targetClientId);
+            hotOrb.transform.position = orbSpawnPoint.position;
+            StartCoroutine(MoveOrbToPlayer(hotOrb.transform, targetPos + new Vector3(-orbOffset.x, orbOffset.y, orbOffset.z)));
+        }
+        if (GameObject.Find("ColdOrb " + targetClientId) == null)
+        {
+            GameObject coldOrb = SpawnOrb("Cold", targetClientId);
+            coldOrb.transform.position = orbSpawnPoint.position;
+            StartCoroutine(MoveOrbToPlayer(coldOrb.transform, targetPos + new Vector3(orbOffset.x, orbOffset.y, orbOffset.z)));
+        }
     }
 
-    public GameObject SpawnOrb(string type)
+    public GameObject SpawnOrb(string type, ulong targetClientId)
     {
         if (!IsOwner) return null;
         GameObject orbObject;
@@ -161,6 +167,7 @@ public class GameController : NetworkBehaviour
         {
             orbObject = Instantiate(coldOrbPrefab);
         }
+        orbObject.GetComponent<OrbController>().targetClientId = targetClientId;
         orbObject.GetComponent<NetworkObject>().Spawn();
         return orbObject;
     }
@@ -272,20 +279,8 @@ public class GameController : NetworkBehaviour
     public void ResetOrbServerRpc(ulong orbNetworkId)
     {
         NetworkObject orb = NetworkManager.Singleton.SpawnManager.SpawnedObjects[orbNetworkId];
-        string orbName = orb.gameObject.name;
+        SpawnOrbs(orb.OwnerClientId);
         orb.Despawn();
-        if (orbName.Contains("Hot"))
-        {
-            GameObject newOrb = SpawnOrb("Hot");
-            newOrb.transform.position = orbSpawnPoint.position;
-            StartCoroutine(MoveOrbToPlayer(newOrb.transform, orbPlayerPoint.position + new Vector3(-0.5f, 0, 0)));
-        }
-        else
-        {
-            GameObject newOrb = SpawnOrb("Cold");
-            newOrb.transform.position = orbSpawnPoint.position;
-            StartCoroutine(MoveOrbToPlayer(newOrb.transform, orbPlayerPoint.position + new Vector3(0.5f, 0, 0)));
-        }
     }
 
     public IEnumerator FindLocalHand()
