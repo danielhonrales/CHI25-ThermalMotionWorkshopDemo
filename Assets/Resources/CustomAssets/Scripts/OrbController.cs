@@ -6,8 +6,9 @@ using UnityEngine;
 public class OrbController : NetworkBehaviour
 {
 
+    public NetworkVariable<OrbState> state = new(OrbState.Idle);
+
     public GameObject hand;
-    public OrbState state;
     public Vector3 followOffset;
     public float followSpeed;
     public TouchHandGrabInteractable touchHandGrabInteractable;
@@ -24,13 +25,13 @@ public class OrbController : NetworkBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        state.OnValueChanged += OnStateChanged;
     }
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        state = OrbState.Idle;
+        SetStateServerRpc(OrbState.Idle);
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         StartCoroutine(GetGameControllerHand());
     }
@@ -38,17 +39,29 @@ public class OrbController : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (state == OrbState.Charging) {
+        if (state.Value == OrbState.Charging) {
             Vector3 targetPos = hand.transform.position + (followOffset.y * hand.transform.up) + (followOffset.z * hand.transform.right);
             transform.position = Vector3.MoveTowards(transform.position, targetPos, (transform.position - targetPos).magnitude * followSpeed * Time.deltaTime);
         }
     }
 
-    public void OnGrab() {
-        //if (!IsOwner || gameController.currentOrbController != null) return;
+    [ServerRpc(RequireOwnership = false)]
+    public void SetStateServerRpc(OrbState newState)
+    {
+        state.Value = newState;
+    }
 
+    private void OnStateChanged(OrbState oldValue, OrbState newValue)
+    {
+        
+    }
+
+    public void OnGrab()
+    {
+        //if (!IsOwner || gameController.currentOrbController != null) return;
+        Debug.Log("Grabbed by client " + NetworkManager.Singleton.LocalClientId);
         TransferOwnershipServerRpc(NetworkManager.Singleton.LocalClientId);
-        state = OrbState.Charging;
+        SetStateServerRpc(OrbState.Charging);
         touchHandGrabInteractable.enabled = false;
         gameController.rightGrabInteractor.SetActive(false);
         gameController.currentOrbController = this;
@@ -56,10 +69,11 @@ public class OrbController : NetworkBehaviour
         StartCoroutine(ChargeSequence());
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void TransferOwnershipServerRpc(ulong newOwnerId)
     {
         Debug.Log("transferring ownership to " + newOwnerId);
+        GetComponent<NetworkObject>().RemoveOwnership();
         GetComponent<NetworkObject>().ChangeOwnership(newOwnerId);   
     }
 
@@ -84,12 +98,12 @@ public class OrbController : NetworkBehaviour
 
         // Finish charge
         visuals.SetActive(false);
-        state = OrbState.Charged;
+        SetStateServerRpc(OrbState.Charged);
     }
 
     public void OnRelease() {
-        if (state == OrbState.Charged) {
-            state = OrbState.Discharging;
+        if (state.Value == OrbState.Charged) {
+            SetStateServerRpc(OrbState.Discharging);
             StartCoroutine(DischargeSequence());
         }
     }

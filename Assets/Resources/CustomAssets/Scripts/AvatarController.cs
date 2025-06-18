@@ -11,6 +11,7 @@ public class AvatarController : NetworkBehaviour
 
     public int avatarIndex; //10 = female, 21 = male
     public int[] goodAvatarIndices = {10, 21};
+    public GameController gameController;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -38,6 +39,7 @@ public class AvatarController : NetworkBehaviour
         {
             avatarBehaviourNGO.LocalAvatarIndex = goodAvatarIndices[UnityEngine.Random.Range(0, goodAvatarIndices.Count())];
             avatarIndexSet = true;
+            gameController.FindLocalHand();
         }
 
         if (!avatarIndexSet)

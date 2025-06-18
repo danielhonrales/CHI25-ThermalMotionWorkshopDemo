@@ -145,6 +145,14 @@ public class EnemyController : NetworkBehaviour
         state.Value = newState;
     }
 
+    private void OnStateChanged(EnemyState oldValue, EnemyState newValue)
+    {
+        if (newValue == EnemyState.dead)
+        {
+            Die();
+        }
+    }
+
     Vector3 GetSeparation()
     {
         Vector3 sep = Vector3.zero;
@@ -255,14 +263,6 @@ public class EnemyController : NetworkBehaviour
         );
 
         return center + cube.transform.rotation * randomOffset;
-    }
-
-    private void OnStateChanged(EnemyState oldValue, EnemyState newValue)
-    {
-        if (newValue == EnemyState.dead)
-        {
-            Die();
-        }
     }
 
     public enum EnemyState
