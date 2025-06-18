@@ -22,11 +22,13 @@ public class OrbController : NetworkBehaviour
     public AudioSource coldBeamAudio;
     public AudioSource beamChargeAudio;
     public GameObject visuals;
+    public bool released;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         state.OnValueChanged += OnStateChanged;
+        released = false;
     }
 
     public override void OnNetworkSpawn()
@@ -49,6 +51,12 @@ public class OrbController : NetworkBehaviour
         {
             Vector3 targetPos = hand.transform.position + (followOffset.y * hand.transform.up) + (followOffset.z * hand.transform.right);
             transform.position = Vector3.MoveTowards(transform.position, targetPos, (transform.position - targetPos).magnitude * followSpeed * Time.deltaTime);
+        }
+        if (state.Value == OrbState.Charged && released == false && gameController.releasePoseActive)
+        {
+            Debug.Log("release");
+            released = true;
+            SetStateServerRpc(OrbState.Discharging);
         }
     }
 
@@ -114,12 +122,6 @@ public class OrbController : NetworkBehaviour
         // Finish charge
         visuals.SetActive(false);
         if (IsOwner) SetStateServerRpc(OrbState.Charged);
-    }
-
-    public void OnRelease() {
-        if (state.Value == OrbState.Charged) {
-            SetStateServerRpc(OrbState.Discharging);
-        }
     }
 
     public IEnumerator DischargeSequence() {

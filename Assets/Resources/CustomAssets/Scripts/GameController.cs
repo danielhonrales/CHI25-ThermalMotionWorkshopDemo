@@ -26,6 +26,7 @@ public class GameController : NetworkBehaviour
     public Transform orbPlayerPoint;
     public Vector3 orbPlayerOffset;
     public GameObject orbSpawner;
+    public bool releasePoseActive;
     [Space(10)]
 
     [Header("Power Sleeves")]
@@ -197,19 +198,25 @@ public class GameController : NetworkBehaviour
 
     public void DetectedReleasePose()
     {
-        Debug.Log("Detected release pose");
-        if (currentOrbController) {
-            currentOrbController.OnRelease();
-        }
+        releasePoseActive = true;
     }
 
-    public void TriggerChargeMotion(string type) {
+    public void UnselectReleasePose()
+    {
+        releasePoseActive = false;
+    }
+
+    public void TriggerChargeMotion(string type)
+    {
         if (signalSender.connected)
         {
-            if (type.Contains("Hot")) {
+            if (type.Contains("Hot"))
+            {
                 communicationController.SendMotionInfo(hotChargeMessage);
                 StartCoroutine(communicationController.LimitVoltage());
-            } else {
+            }
+            else
+            {
                 communicationController.SendMotionInfo(coldChargeMessage);
                 StartCoroutine(communicationController.LimitVoltage());
             }
@@ -291,7 +298,7 @@ public class GameController : NetworkBehaviour
         {
             SpawnOrb("Cold", targetClientId);
         }
-        
+
         orb.Despawn();
     }
 
