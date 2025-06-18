@@ -39,7 +39,7 @@ public class AvatarController : NetworkBehaviour
         {
             avatarBehaviourNGO.LocalAvatarIndex = goodAvatarIndices[UnityEngine.Random.Range(0, goodAvatarIndices.Count())];
             avatarIndexSet = true;
-            gameController.FindLocalHand();
+            StartCoroutine(gameController.FindLocalHand());
         }
 
         if (!avatarIndexSet)
