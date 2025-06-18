@@ -22735,9 +22735,9 @@ MonoBehaviour:
   communicationController: {fileID: 1171005299}
   signalSender: {fileID: 1171005298}
   connectedClients: 
+  arcadeGame: {fileID: 0}
   currentOrbController: {fileID: 0}
-  hotOrbs: []
-  coldOrbs: []
+  orbs: []
   orbSpawnPoint: {fileID: 1057520818}
   orbPlayerPoint: {fileID: 871713562}
   orbPlayerOffset: {x: 0.3, y: 0.7, z: 0.3}
@@ -24476,12 +24476,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 98780420}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47819c309c51a934f8aa85750453c2ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
+  rotationSpeed: 7
 --- !u!1 &824405880
 GameObject:
   m_ObjectHideFlags: 0
@@ -42462,6 +42462,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dd42c7c93432ca458ffaefe8e67b722, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state:
+    m_InternalValue: 0
+  countdown:
+    m_InternalValue: -1
   p1HotKills:
     m_InternalValue: 0
   p1ColdKills:
@@ -42470,6 +42474,10 @@ MonoBehaviour:
     m_InternalValue: 0
   p2ColdKills:
     m_InternalValue: 0
+  gameController: {fileID: 0}
+  enemySpawner: {fileID: 0}
+  countdownText: {fileID: 0}
+  countdownSound: {fileID: 0}
 --- !u!1 &2019473080
 GameObject:
   m_ObjectHideFlags: 0

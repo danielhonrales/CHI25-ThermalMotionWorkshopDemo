@@ -142,7 +142,7 @@ public class GameController : NetworkBehaviour
     public void SpawnOrbs(ulong targetClientId)
     {
         if (!IsServer) return;
-
+        StartCoroutine(SpinOrbSpawner());
         Vector3 targetPos = (targetClientId == 0) ? playerPoint1.position : playerPoint2.position;
         Vector3 orbOffset = (targetClientId == 0) ? new Vector3(orbPlayerOffset.x, orbPlayerOffset.y, -orbPlayerOffset.z) : orbPlayerOffset;
 
@@ -158,6 +158,13 @@ public class GameController : NetworkBehaviour
             coldOrb.transform.position = orbSpawnPoint.position;
             StartCoroutine(MoveOrbToPlayer(coldOrb.transform, targetPos + new Vector3(orbOffset.x, orbOffset.y, orbOffset.z)));
         }
+    }
+
+    private IEnumerator SpinOrbSpawner()
+    {
+        orbSpawner.GetComponent<Spin>().enabled = true;
+        yield return new WaitForSeconds(1.3f);
+        orbSpawner.GetComponent<Spin>().enabled = false;
     }
 
     public GameObject SpawnOrb(string type, ulong targetClientId)
