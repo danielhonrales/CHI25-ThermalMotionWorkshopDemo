@@ -290,16 +290,9 @@ public class GameController : NetworkBehaviour
     {
         NetworkObject orb = NetworkManager.Singleton.SpawnManager.SpawnedObjects[orbNetworkId];
         ulong targetClientId = orb.OwnerClientId;
-        if (orb.gameObject.name.Contains("Hot"))
-        {
-            SpawnOrb("Hot", targetClientId);
-        }
-        else
-        {
-            SpawnOrb("Cold", targetClientId);
-        }
-
+        orb.gameObject.name = "deadorb";
         orb.Despawn();
+        SpawnOrbs(targetClientId);
     }
 
     public IEnumerator FindLocalHand()

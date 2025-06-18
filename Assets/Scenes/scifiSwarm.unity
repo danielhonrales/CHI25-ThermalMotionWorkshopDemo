@@ -22723,6 +22723,7 @@ MonoBehaviour:
   cameraRig: {fileID: 1404435878}
   rightGrabInteractor: {fileID: 540100911}
   hand: {fileID: 0}
+  remoteHand: {fileID: 0}
   playerPoint1: {fileID: 871713562}
   playerPoint2: {fileID: 262938616}
   communicationController: {fileID: 1171005299}
@@ -22735,6 +22736,7 @@ MonoBehaviour:
   orbPlayerPoint: {fileID: 871713562}
   orbPlayerOffset: {x: 0.3, y: 0.7, z: 0.3}
   orbSpawner: {fileID: 98780420}
+  releasePoseActive: 0
   beam: {fileID: 0}
   lEDAnimationManager: {fileID: 0}
   neutralMaterial: {fileID: 2100000, guid: 88cb318a7b39ffc44b6551557bdbe0fd, type: 2}
@@ -22747,6 +22749,7 @@ MonoBehaviour:
   enemySpawner: {fileID: 1745538756}
   hotKills: 0
   coldKills: 0
+  myClientId: 0
   targetClient: 0
 --- !u!4 &707722004
 Transform:
@@ -34417,7 +34420,19 @@ MonoBehaviour:
         m_CallState: 2
   _whenUnselected:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 707722003}
+        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
+        m_MethodName: UnselectReleasePose
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1268341106
 MonoBehaviour:
   m_ObjectHideFlags: 0
