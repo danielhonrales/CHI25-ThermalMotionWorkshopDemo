@@ -145,19 +145,18 @@ public class GameController : NetworkBehaviour
         if (!IsServer) return;
         StartCoroutine(SpinOrbSpawner());
         Vector3 targetPos = (targetClientId == 0) ? playerPoint1.position : playerPoint2.position;
-        Vector3 orbOffset = (targetClientId == 0) ? new Vector3(orbPlayerOffset.x, orbPlayerOffset.y, -orbPlayerOffset.z) : orbPlayerOffset;
 
         if (GameObject.Find("HotOrb " + targetClientId) == null)
         {
             GameObject hotOrb = SpawnOrb("Hot", targetClientId);
             hotOrb.transform.position = orbSpawnPoint.position;
-            StartCoroutine(MoveOrbToPlayer(hotOrb.transform, targetPos + new Vector3(-orbOffset.x, orbOffset.y, orbOffset.z)));
+            StartCoroutine(MoveOrbToPlayer(hotOrb.transform, targetPos + new Vector3(-orbPlayerOffset.x, orbPlayerOffset.y, orbPlayerOffset.z)));
         }
         if (GameObject.Find("ColdOrb " + targetClientId) == null)
         {
             GameObject coldOrb = SpawnOrb("Cold", targetClientId);
             coldOrb.transform.position = orbSpawnPoint.position;
-            StartCoroutine(MoveOrbToPlayer(coldOrb.transform, targetPos + new Vector3(orbOffset.x, orbOffset.y, orbOffset.z)));
+            StartCoroutine(MoveOrbToPlayer(coldOrb.transform, targetPos + new Vector3(orbPlayerOffset.x, orbPlayerOffset.y, orbPlayerOffset.z)));
         }
     }
 
@@ -207,20 +206,17 @@ public class GameController : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void TriggerChargeMotionServerRpc(string type, ulong clientId)
     {
-        if (signalSender.connected)
+        if (type.Contains("Hot"))
         {
-            if (type.Contains("Hot"))
-            {
-                int message = (clientId == 0) ? hotChargeMessage : hotChargeMessage + 4;
-                communicationController.SendMotionInfo(message);
-                //StartCoroutine(communicationController.LimitVoltage());
-            }
-            else
-            {
-                int message = (clientId == 0) ? coldChargeMessage : coldChargeMessage + 4;
-                communicationController.SendMotionInfo(message);
-                //StartCoroutine(communicationController.LimitVoltage());
-            }
+            int message = (clientId == 0) ? hotChargeMessage : hotChargeMessage + 4;
+            communicationController.SendMotionInfo(message);
+            //StartCoroutine(communicationController.LimitVoltage());
+        }
+        else
+        {
+            int message = (clientId == 0) ? coldChargeMessage : coldChargeMessage + 4;
+            communicationController.SendMotionInfo(message);
+            //StartCoroutine(communicationController.LimitVoltage());
         }
     }
 
@@ -241,20 +237,17 @@ public class GameController : NetworkBehaviour
 
     [ServerRpc(RequireOwnership = false)]
     public void TriggerDischargeMotionServerRpc(string type, ulong clientId) {
-        if (signalSender.connected)
+        if (type.Contains("Hot"))
         {
-            if (type.Contains("Hot"))
-            {
-                int message = (clientId == 0) ? hotDischargeMessage : hotDischargeMessage + 4;
-                communicationController.SendMotionInfo(message);
-                //StartCoroutine(communicationController.LimitVoltage());
-            }
-            else
-            {
-                int message = (clientId == 0) ? coldDischargeMessage : coldDischargeMessage + 4;
-                communicationController.SendMotionInfo(message);
-                //StartCoroutine(communicationController.LimitVoltage());
-            }
+            int message = (clientId == 0) ? hotDischargeMessage : hotDischargeMessage + 4;
+            communicationController.SendMotionInfo(message);
+            //StartCoroutine(communicationController.LimitVoltage());
+        }
+        else
+        {
+            int message = (clientId == 0) ? coldDischargeMessage : coldDischargeMessage + 4;
+            communicationController.SendMotionInfo(message);
+            //StartCoroutine(communicationController.LimitVoltage());
         }
     }
 
