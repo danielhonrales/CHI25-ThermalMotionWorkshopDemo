@@ -99,7 +99,7 @@ public class OrbController : NetworkBehaviour
             touchHandGrabInteractable.enabled = false;
             gameController.rightGrabInteractor.SetActive(false);
             gameController.currentOrbController = this;
-            gameController.TriggerChargeMotion(gameObject.name, NetworkManager.Singleton.LocalClientId);
+            gameController.TriggerChargeMotionServerRpc(gameObject.name, NetworkManager.Singleton.LocalClientId);
             gameController.TriggerChargeVisuals(gameObject.name);
         }
         else
@@ -130,7 +130,7 @@ public class OrbController : NetworkBehaviour
 
         if (IsOwner)
         {
-            gameController.TriggerDischargeMotion(gameObject.name, NetworkManager.Singleton.LocalClientId);
+            gameController.TriggerDischargeMotionServerRpc(gameObject.name, NetworkManager.Singleton.LocalClientId);
             gameController.TriggerDischargeVisuals(gameObject.name);
         }
         if (gameObject.name.Contains("Hot"))

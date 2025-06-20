@@ -204,7 +204,8 @@ public class GameController : NetworkBehaviour
         releasePoseActive = false;
     }
 
-    public void TriggerChargeMotion(string type, ulong clientId)
+    [ServerRpc(RequireOwnership = false)]
+    public void TriggerChargeMotionServerRpc(string type, ulong clientId)
     {
         if (signalSender.connected)
         {
@@ -238,8 +239,8 @@ public class GameController : NetworkBehaviour
         lEDAnimationManager.PlayChargeAnimation();
     }
 
-
-    public void TriggerDischargeMotion(string type, ulong clientId) {
+    [ServerRpc(RequireOwnership = false)]
+    public void TriggerDischargeMotionServerRpc(string type, ulong clientId) {
         if (signalSender.connected)
         {
             if (type.Contains("Hot"))
