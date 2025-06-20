@@ -19,7 +19,7 @@ public class CommunicationController : MonoBehaviour
 
     string testDataPath = "Assets\\Resources\\MotionData\\testData.txt";
     string demoDataPath = "Assets\\Resources\\MotionData\\demoData.txt";
-    string regex = "(?<=\"thermalKeypoints\":\\[\"\\[.*?, .*?, .*?, .*?, )(-?\\d*\\.?\\d+)?(?=\\])";
+    string thermalRegex = "(?<=\"thermalKeypoints\":\\[\"\\[.*?, .*?, .*?, .*?, )(-?\\d*\\.?\\d+)?(?=\\])";
     //string regex = "(?<=\"thermalKeypoints\":\\[\"\\[.*?,.*?,.*?,.*?,)(-?\\d*\\.?\\d+)";
     //string regex = "(?<=\\[.*?, )\\d+(\\.\\d+)?(?=\\])"
 
@@ -120,19 +120,23 @@ public class CommunicationController : MonoBehaviour
     {
         if (hot)
         {
-            motionInfo[2] = Regex.Replace(motionInfo[2], regex, hotVoltage.ToString());
-            motionInfo[3] = Regex.Replace(motionInfo[3], regex, hotVoltage.ToString());
+            motionInfo[2] = Regex.Replace(motionInfo[2], thermalRegex, hotVoltage.ToString());
+            motionInfo[3] = Regex.Replace(motionInfo[3], thermalRegex, hotVoltage.ToString());
+            motionInfo[6] = Regex.Replace(motionInfo[6], thermalRegex, hotVoltage.ToString());
+            motionInfo[7] = Regex.Replace(motionInfo[7], thermalRegex, hotVoltage.ToString());
         }
         else
         {
-            motionInfo[0] = Regex.Replace(motionInfo[0], regex, coldVoltage.ToString());
-            motionInfo[1] = Regex.Replace(motionInfo[1], regex, coldVoltage.ToString());
+            motionInfo[0] = Regex.Replace(motionInfo[0], thermalRegex, coldVoltage.ToString());
+            motionInfo[1] = Regex.Replace(motionInfo[1], thermalRegex, coldVoltage.ToString());
+            motionInfo[4] = Regex.Replace(motionInfo[4], thermalRegex, coldVoltage.ToString());
+            motionInfo[5] = Regex.Replace(motionInfo[5], thermalRegex, coldVoltage.ToString());
         }
     }
 
     public void UpdateTestVoltage()
     {
-        testInfo[0] = Regex.Replace(testInfo[0], regex, hotVoltage.ToString());
+        testInfo[0] = Regex.Replace(testInfo[0], thermalRegex, hotVoltage.ToString());
     }
 
     public void SendMotionInfo(int line)
@@ -148,6 +152,7 @@ public class CommunicationController : MonoBehaviour
 
     public string GetVoltageString(int line)
     {
+        line %= 4;
         if (line == 0 || line == 1)
         {
             return coldVoltage.ToString();

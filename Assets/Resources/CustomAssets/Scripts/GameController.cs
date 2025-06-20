@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Oculus.Platform;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -203,19 +204,21 @@ public class GameController : NetworkBehaviour
         releasePoseActive = false;
     }
 
-    public void TriggerChargeMotion(string type)
+    public void TriggerChargeMotion(string type, ulong clientId)
     {
         if (signalSender.connected)
         {
             if (type.Contains("Hot"))
             {
-                communicationController.SendMotionInfo(hotChargeMessage);
-                StartCoroutine(communicationController.LimitVoltage());
+                int message = (clientId == 0) ? hotChargeMessage : hotChargeMessage + 4;
+                communicationController.SendMotionInfo(message);
+                //StartCoroutine(communicationController.LimitVoltage());
             }
             else
             {
-                communicationController.SendMotionInfo(coldChargeMessage);
-                StartCoroutine(communicationController.LimitVoltage());
+                int message = (clientId == 0) ? coldChargeMessage : coldChargeMessage + 4;
+                communicationController.SendMotionInfo(message);
+                //StartCoroutine(communicationController.LimitVoltage());
             }
         }
     }
@@ -236,18 +239,20 @@ public class GameController : NetworkBehaviour
     }
 
 
-    public void TriggerDischargeMotion(string type) {
+    public void TriggerDischargeMotion(string type, ulong clientId) {
         if (signalSender.connected)
         {
             if (type.Contains("Hot"))
             {
-                communicationController.SendMotionInfo(hotDischargeMessage);
-                StartCoroutine(communicationController.LimitVoltage());
+                int message = (clientId == 0) ? hotDischargeMessage : hotDischargeMessage + 4;
+                communicationController.SendMotionInfo(message);
+                //StartCoroutine(communicationController.LimitVoltage());
             }
             else
             {
-                communicationController.SendMotionInfo(coldDischargeMessage);
-                StartCoroutine(communicationController.LimitVoltage());
+                int message = (clientId == 0) ? coldDischargeMessage : coldDischargeMessage + 4;
+                communicationController.SendMotionInfo(message);
+                //StartCoroutine(communicationController.LimitVoltage());
             }
         }
     }
