@@ -133,7 +133,7 @@ public class ArcadeGame : NetworkBehaviour
         {
             panel2.SetActive(true);
         }
-        //Cleanup();
+        Cleanup();
     }
 
     public void Cleanup()
@@ -180,11 +180,6 @@ public class ArcadeGame : NetworkBehaviour
         {
             timer1.color = Color.white;
             timer2.color = Color.white;
-
-            if (newValue == 0)
-            {
-                Cleanup();
-            }
         }
 
         timer1.text = timer.Value.ToString();

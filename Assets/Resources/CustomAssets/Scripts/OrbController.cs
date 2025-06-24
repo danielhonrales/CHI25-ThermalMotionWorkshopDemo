@@ -152,6 +152,11 @@ public class OrbController : NetworkBehaviour
         }
     }
 
+    public override void OnDestroy()
+    {
+        gameController.FinishInteraction(GetComponent<NetworkObject>().NetworkObjectId);
+    }
+
     public enum OrbState
     {
         Idle,
