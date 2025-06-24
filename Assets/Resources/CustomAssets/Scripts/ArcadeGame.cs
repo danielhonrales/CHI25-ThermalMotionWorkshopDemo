@@ -58,6 +58,16 @@ public class ArcadeGame : NetworkBehaviour
         }
     }
 
+    public override void OnNetworkSpawn()
+    {
+        if (IsServer) {
+            SetP1HotKillsServerRpc(100);
+            SetP1ColdKillsServerRpc(100);
+            SetP2HotKillsServerRpc(100);
+            SetP2ColdKillsServerRpc(100);
+        }
+    }
+
     public void ResetAndStart()
     {
         StopCoroutine(enemySpawner.SpawnEnemy());

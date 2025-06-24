@@ -287,6 +287,7 @@ public class GameController : NetworkBehaviour
         NetworkObject orb = NetworkManager.Singleton.SpawnManager.SpawnedObjects[orbNetworkId];
         ulong targetClientId = orb.OwnerClientId;
         orb.gameObject.name = "deadorb";
+        orbs.Remove(orb);
         orb.Despawn();
         if (arcadeGame.state.Value == ArcadeGame.GameState.Active)
         {
