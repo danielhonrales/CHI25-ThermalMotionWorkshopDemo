@@ -163,8 +163,7 @@ public class ArcadeGame : NetworkBehaviour
     {
         yield return new WaitForSeconds(5);
 
-        panel1.SetActive(false);
-        panel2.SetActive(false);
+        HandlePanelsClientRpc(0);
         SetP1HotKillsServerRpc(0);
         SetP1ColdKillsServerRpc(0);
         SetP2HotKillsServerRpc(0);
