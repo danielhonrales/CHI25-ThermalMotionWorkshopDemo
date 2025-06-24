@@ -152,15 +152,6 @@ public class OrbController : NetworkBehaviour
         }
     }
 
-    public void Cleanup()
-    {
-        if (state.Value == OrbState.Charging || state.Value == OrbState.Charged) {
-            gameController.TriggerDischargeVisuals(gameObject.name);
-        }
-        gameController.rightGrabInteractor.SetActive(true);
-        gameController.FinishInteraction(GetComponent<NetworkObject>().NetworkObjectId);
-    }
-
     public enum OrbState
     {
         Idle,

@@ -72,7 +72,7 @@ public class ArcadeGame : NetworkBehaviour
     {
         enemySpawner.StopSpawning();
         enemySpawner.ClearEnemies();
-        gameController.DespawnAllOrbs();
+        gameController.ResetPlayerInteractions();
 
         panel1.SetActive(false);
         panel2.SetActive(false);
@@ -142,7 +142,7 @@ public class ArcadeGame : NetworkBehaviour
     {
         enemySpawner.StopSpawning();
         enemySpawner.ClearEnemies();
-        gameController.DespawnAllOrbs();
+        gameController.ResetPlayerInteractions();
 
         StartCoroutine(ResetGame());
     }

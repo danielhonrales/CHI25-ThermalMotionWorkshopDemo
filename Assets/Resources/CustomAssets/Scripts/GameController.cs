@@ -273,7 +273,7 @@ public class GameController : NetworkBehaviour
         }
     }
 
-    public void FinishInteraction(ulong orbNetworkId) {
+    public void FinishInteraction(ulong orbNetworkId = 0) {
         if (arcadeGame.state.Value == ArcadeGame.GameState.Active)
         {
             ResetOrbServerRpc(orbNetworkId);
@@ -298,11 +298,28 @@ public class GameController : NetworkBehaviour
         }
     }
 
+    public void ResetPlayerInteractions()
+    {
+        DespawnAllOrbs();
+        ResetPlayerClientRpc();
+    }
+
+    [ClientRpc]
+    public void ResetPlayerClientRpc()
+    {
+        FinishInteraction();
+        rightGrabInteractor.SetActive(true);
+        lEDAnimationManager.isFire = false;
+        lEDAnimationManager.isIce = false;
+        lEDAnimationManager.activeMaterial = neutralMaterial;
+        lEDAnimationManager.lightColor = new Color32(0, 0, 0, 0);
+        lEDAnimationManager.PlayDischargeAnimation();
+    }
+
     public void DespawnAllOrbs()
     {
         foreach (NetworkObject orb in orbs)
         {
-            orb.GetComponent<OrbController>().Cleanup();
             orb.Despawn();
         }
         orbs = new List<NetworkObject>();
