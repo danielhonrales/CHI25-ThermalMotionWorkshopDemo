@@ -41408,6 +41408,7 @@ MonoBehaviour:
   enemyInstances: []
   enemySpawnPoint: {fileID: 1263848453}
   maxEnemyCount: 10
+  active: 0
 --- !u!4 &1745538757
 Transform:
   m_ObjectHideFlags: 0
@@ -44250,6 +44251,7 @@ MonoBehaviour:
     m_InternalValue: 0
   timer:
     m_InternalValue: -1
+  roundTime: 60
   p1HotKills:
     m_InternalValue: 0
   p1ColdKills:
@@ -44260,7 +44262,6 @@ MonoBehaviour:
     m_InternalValue: 0
   gameController: {fileID: 707722003}
   enemySpawner: {fileID: 1745538756}
-  countdownText: {fileID: 0}
   countdownSound: {fileID: 2018029349}
   localHotScore: {fileID: 34972809}
   localColdScore: {fileID: 1484957333}

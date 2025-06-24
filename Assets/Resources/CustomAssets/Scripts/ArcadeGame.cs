@@ -11,6 +11,7 @@ public class ArcadeGame : NetworkBehaviour
     [Header("GameInfo")]
     public NetworkVariable<GameState> state = new(GameState.Inactive);
     public NetworkVariable<int> timer = new(-1);
+    public int roundTime;
     public NetworkVariable<ulong> p1HotKills = new(100);
     public NetworkVariable<ulong> p1ColdKills = new(100);
 
@@ -60,12 +61,10 @@ public class ArcadeGame : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (IsServer) {
-            SetP1HotKillsServerRpc(100);
-            SetP1ColdKillsServerRpc(100);
-            SetP2HotKillsServerRpc(100);
-            SetP2ColdKillsServerRpc(100);
-        }
+        localHotScore.text = p1HotKills.Value.ToString();
+        localColdScore.text = p1ColdKills.Value.ToString();
+        remoteHotScore.text = p2HotKills.Value.ToString();
+        remoteColdScore.text = p2ColdKills.Value.ToString();
     }
 
     public void ResetAndStart()
@@ -74,8 +73,7 @@ public class ArcadeGame : NetworkBehaviour
         enemySpawner.ClearEnemies();
         gameController.ResetPlayerInteractions();
 
-        panel1.SetActive(false);
-        panel2.SetActive(false);
+        HandlePanelsClientRpc(0);
         SetP1HotKillsServerRpc(0);
         SetP1ColdKillsServerRpc(0);
         SetP2HotKillsServerRpc(0);
@@ -109,7 +107,7 @@ public class ArcadeGame : NetworkBehaviour
         yield return new WaitForSeconds(1f);
         state.Value = GameState.Active;
 
-        timer.Value = 99;
+        timer.Value = roundTime;
         while (timer.Value > 0)
         {
             yield return new WaitForSecondsRealtime(1f);
@@ -125,17 +123,31 @@ public class ArcadeGame : NetworkBehaviour
         countdownSound.pitch = 1.15f;
         countdownSound.Play();
 
-        if (p1HotKills.Value > p2HotKills.Value && p1ColdKills.Value > p2ColdKills.Value)
-        {
-            panel1.SetActive(true);
-        }
-        if (p2HotKills.Value > p1HotKills.Value && p2ColdKills.Value > p1ColdKills.Value)
-        {
-            panel2.SetActive(true);
-        }
+        HandlePanelsClientRpc(1);
 
         state.Value = GameState.Winddown;
         Cleanup();
+    }
+
+    [ClientRpc]
+    public void HandlePanelsClientRpc(int mode)
+    {
+        if (mode == 0)
+        {
+            panel1.SetActive(false);
+            panel2.SetActive(false);
+        }
+        if (mode == 1)
+            {
+            if (p1HotKills.Value > p2HotKills.Value && p1ColdKills.Value > p2ColdKills.Value)
+            {
+                panel1.SetActive(true);
+            }
+            if (p2HotKills.Value > p1HotKills.Value && p2ColdKills.Value > p1ColdKills.Value)
+            {
+                panel2.SetActive(true);
+            }
+        }
     }
 
     public void Cleanup()
