@@ -299,6 +299,7 @@ public class GameController : NetworkBehaviour
     {
         foreach (NetworkObject orb in orbs)
         {
+            orb.GetComponent<OrbController>().Cleanup();
             orb.Despawn();
         }
         orbs = new List<NetworkObject>();

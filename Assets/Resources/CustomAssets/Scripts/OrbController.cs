@@ -152,8 +152,10 @@ public class OrbController : NetworkBehaviour
         }
     }
 
-    public override void OnDestroy()
+    public void Cleanup()
     {
+        gameController.TriggerDischargeVisuals(gameObject.name);
+        gameController.rightGrabInteractor.SetActive(true);
         gameController.FinishInteraction(GetComponent<NetworkObject>().NetworkObjectId);
     }
 
