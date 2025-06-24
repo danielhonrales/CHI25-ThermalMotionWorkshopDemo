@@ -43,7 +43,7 @@ public class BeamController : NetworkBehaviour
             Vector3 targetPos = hand.transform.position + (followOffset.x * hand.transform.right) + (followOffset.y * hand.transform.up) + (followOffset.z * hand.transform.forward);
             transform.SetPositionAndRotation(
                 Vector3.MoveTowards(transform.position, targetPos, (transform.position - targetPos).magnitude * followSpeed * Time.deltaTime),
-                Quaternion.LookRotation(hand.transform.up)
+                Quaternion.LookRotation(hand.transform.up + directionOffset)
             );
         }
         /* if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha3))

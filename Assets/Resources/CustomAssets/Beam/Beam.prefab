@@ -4996,7 +4996,7 @@ MonoBehaviour:
     m_InternalValue: 0
   hand: {fileID: 0}
   followOffset: {x: -0.08, y: -0.08, z: 0}
-  directionOffset: {x: 0, y: 0, z: 15}
+  directionOffset: {x: 0, y: -0.5, z: 0}
   followSpeed: 100
   hotBeam: {fileID: 5322553135593822471}
   coldBeam: {fileID: 7309052438871234652}

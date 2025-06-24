@@ -64,12 +64,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5000845653107414860}
+  - component: {fileID: 1630177040929204045}
   - component: {fileID: 3539174431266924687}
   - component: {fileID: 2615767869408660662}
   - component: {fileID: 8275693624880836165}
   - component: {fileID: 1217453963218760507}
   - component: {fileID: 6608198578328443437}
-  - component: {fileID: 1630177040929204045}
   - component: {fileID: 5799780978463707291}
   - component: {fileID: -8987405687449930832}
   m_Layer: 0
@@ -98,6 +98,27 @@ Transform:
   - {fileID: 4552934512254706626}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
+--- !u!114 &1630177040929204045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013685473822835884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 206115644
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &3539174431266924687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,14 +131,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a116a39ba53d96e42a3d85f39e29197d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state:
+    m_InternalValue: 0
   rb: {fileID: 2615767869408660662}
   deathParticles: {fileID: 1147019697116762218}
   deathAudio: {fileID: 6608198578328443437}
   boopAudio: {fileID: 8275693624880836165}
   hoverAudio: {fileID: 1217453963218760507}
-  state: 0
-  hotEnemyPrefab: {fileID: 5244846456204999681, guid: 5987c2a9003f91e4c9b0669ccd8f58ad, type: 3}
-  coldEnemyPrefab: {fileID: 2013685473822835884}
   targetPoint: {x: 0, y: 0, z: 0}
   justSpawnedTargetArea: {fileID: 0}
   homingInTargetArea: {fileID: 0}
@@ -448,27 +468,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1630177040929204045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2013685473822835884}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 206115644
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!114 &5799780978463707291
 MonoBehaviour:
   m_ObjectHideFlags: 0

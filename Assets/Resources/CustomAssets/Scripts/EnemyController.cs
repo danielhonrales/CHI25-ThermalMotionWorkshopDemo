@@ -98,9 +98,7 @@ public class EnemyController : NetworkBehaviour
 
             wiggle *= wiggleAmount;
 
-            Vector3 separation = GetSeparation();
-
-            Vector3 finalDir = (toPlayer + wiggle + separation * separationWeight).normalized;
+            Vector3 finalDir = (toPlayer + wiggle).normalized;
             float newMoveSpeed = Math.Min(7.5f, moveSpeed * Vector3.Distance(transform.position, targetPoint));
             rb.MovePosition(rb.position + newMoveSpeed * Time.deltaTime * finalDir);
 
@@ -174,7 +172,12 @@ public class EnemyController : NetworkBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (state.Value != EnemyState.dead && other.gameObject.CompareTag("Beam"))
+        if (
+            state.Value != EnemyState.dead &&
+            other.gameObject.CompareTag("Beam") && 
+            ((gameObject.name.Contains("Hot") && other.transform.parent.Find("HotBeam").gameObject.activeSelf) ||
+            (gameObject.name.Contains("Cold") && other.transform.parent.Find("ColdBeam").gameObject.activeSelf))
+        )
         {
             GameController gameController = GameObject.Find("GameController").GetComponent<GameController>();
             if (name.Contains("Hot") && other.transform.parent.GetComponent<BeamController>().isHotActive.Value)
