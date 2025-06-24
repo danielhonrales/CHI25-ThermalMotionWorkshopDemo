@@ -133,6 +133,8 @@ public class ArcadeGame : NetworkBehaviour
         {
             panel2.SetActive(true);
         }
+
+        state.Value = GameState.Winddown;
         Cleanup();
     }
 
