@@ -112,15 +112,24 @@ public class GameController : NetworkBehaviour
         {
             ulong clientId = networkClient.ClientId;
 
-            NetworkObject ledTube = Instantiate(ledTubePrefab);
-            ledTube.SpawnWithOwnership(clientId);
+            if (GameObject.Find("ledTube " + clientId) == null)
+            {
+                NetworkObject ledTube = Instantiate(ledTubePrefab);
+                ledTube.SpawnWithOwnership(clientId);
+            }
 
-            NetworkObject sleevePoint = Instantiate(sleevePointPrefab);
-            sleevePoint.SpawnWithOwnership(clientId);
+            if (GameObject.Find("SleevePoint " + clientId) == null)
+            {
+                NetworkObject sleevePoint = Instantiate(sleevePointPrefab);
+                sleevePoint.SpawnWithOwnership(clientId);
+            }
 
-            NetworkObject clientBeam = Instantiate(beamPrefab);
-            clientBeam.SpawnWithOwnership(clientId);
-            TelportPlayerClientRpc();
+            if (GameObject.Find("Beam " + clientId) == null)
+            {
+                NetworkObject clientBeam = Instantiate(beamPrefab);
+                clientBeam.SpawnWithOwnership(clientId);
+                TelportPlayerClientRpc();
+            }
         }
     }
 
