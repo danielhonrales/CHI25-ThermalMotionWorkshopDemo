@@ -273,11 +273,14 @@ public class GameController : NetworkBehaviour
         }
     }
 
-    public void FinishInteraction(ulong orbNetworkId = 0) {
-        if (arcadeGame.state.Value == ArcadeGame.GameState.Active)
-        {
-            ResetOrbServerRpc(orbNetworkId);
-        }
+    public void FinishOrbInteraction(ulong orbNetworkId)
+    {
+        ResetOrbServerRpc(orbNetworkId);
+        FinishInteraction();
+    }
+
+    public void FinishInteraction()
+    {
         currentOrbController = null;
         BeamController localBeamController = beam.gameObject.GetComponent<BeamController>();
         localBeamController.SetHotActiveStateServerRpc(false);
