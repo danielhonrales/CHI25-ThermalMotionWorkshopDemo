@@ -70,7 +70,7 @@ public class ArcadeGame : NetworkBehaviour
 
     public void ResetAndStart()
     {
-        StopCoroutine(enemySpawner.SpawnEnemy());
+        enemySpawner.StopSpawning();
         enemySpawner.ClearEnemies();
         gameController.DespawnAllOrbs();
 
@@ -95,7 +95,7 @@ public class ArcadeGame : NetworkBehaviour
         {
             gameController.SpawnOrbs(networkClient.ClientId);
         }
-        StartCoroutine(enemySpawner.SpawnEnemy());
+        enemySpawner.StartSpawning();
         yield return new WaitForSeconds(1f);
         timer.Value = 1;
         yield return new WaitForSeconds(1f);
@@ -124,14 +124,6 @@ public class ArcadeGame : NetworkBehaviour
 
         countdownSound.pitch = 1.15f;
         countdownSound.Play();
-        Cleanup();
-    }
-
-    public void Cleanup()
-    {
-        StopCoroutine(enemySpawner.SpawnEnemy());
-        enemySpawner.ClearEnemies();
-        gameController.DespawnAllOrbs();
 
         if (p1HotKills.Value > p2HotKills.Value && p1ColdKills.Value > p2ColdKills.Value)
         {
@@ -141,6 +133,14 @@ public class ArcadeGame : NetworkBehaviour
         {
             panel2.SetActive(true);
         }
+        //Cleanup();
+    }
+
+    public void Cleanup()
+    {
+        enemySpawner.StopSpawning();
+        enemySpawner.ClearEnemies();
+        gameController.DespawnAllOrbs();
 
         StartCoroutine(ResetGame());
     }

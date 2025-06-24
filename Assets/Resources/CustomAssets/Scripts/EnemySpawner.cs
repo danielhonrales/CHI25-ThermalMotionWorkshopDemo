@@ -11,6 +11,7 @@ public class EnemySpawner : MonoBehaviour
     public Transform enemySpawnPoint;
     [Range(0, 30)]
     public int maxEnemyCount;
+    public bool active;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,19 +25,36 @@ public class EnemySpawner : MonoBehaviour
         
     }
 
-    public IEnumerator SpawnEnemy() {
-        yield return new WaitForSeconds(.5f);
-        if (enemyInstances.Count < maxEnemyCount)
-        {
-            GameObject newEnemy = Instantiate(
-                enemyPrefabs[Random.Range(0, enemyPrefabs.Count)],
-                enemySpawnPoint.position + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f)),
-                Quaternion.identity
-            );
-            newEnemy.GetComponent<NetworkObject>().Spawn();
-            enemyInstances.Add(newEnemy);
-        }
+    public void StartSpawning()
+    {
+        active = true;
         StartCoroutine(SpawnEnemy());
+    }
+
+    public void StopSpawning()
+    {
+        active = false;
+        StopCoroutine(SpawnEnemy());
+    }
+
+    public IEnumerator SpawnEnemy()
+    {
+        Debug.Log("Spawning enemies");
+        yield return new WaitForSeconds(.5f);
+        if (active)
+        {
+            if (enemyInstances.Count < maxEnemyCount)
+            {
+                GameObject newEnemy = Instantiate(
+                    enemyPrefabs[Random.Range(0, enemyPrefabs.Count)],
+                    enemySpawnPoint.position + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f)),
+                    Quaternion.identity
+                );
+                newEnemy.GetComponent<NetworkObject>().Spawn();
+                enemyInstances.Add(newEnemy);
+            }
+            StartCoroutine(SpawnEnemy());
+        }
     }
 
     public void ClearEnemies() {

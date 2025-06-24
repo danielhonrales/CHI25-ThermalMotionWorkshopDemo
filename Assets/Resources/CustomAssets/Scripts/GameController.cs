@@ -88,11 +88,11 @@ public class GameController : NetworkBehaviour
         }
         if (Input.GetKey(KeyCode.E) && Input.GetKeyDown(KeyCode.Alpha1))
         {
-            StartCoroutine(enemySpawner.SpawnEnemy());
+            enemySpawner.StartSpawning();
         }
         if (Input.GetKey(KeyCode.E) && Input.GetKeyDown(KeyCode.Alpha2))
         {
-            StopCoroutine(enemySpawner.SpawnEnemy());
+            enemySpawner.StopSpawning();
             enemySpawner.ClearEnemies();
         }
     }
