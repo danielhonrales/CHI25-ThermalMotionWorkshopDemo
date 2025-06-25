@@ -1,4 +1,5 @@
 using System.Collections;
+using Meta.XR.MultiplayerBlocks.Shared;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -36,7 +37,7 @@ public class BeamController : NetworkBehaviour
 
         if (hand == null)
         {
-            hand = GameObject.FindWithTag("AvatarContainer").transform.Find(targetClient + "/Joint RightHandWrist").gameObject;
+            hand = GameObject.FindWithTag("AvatarContainer").transform.Find(targetClient).GetComponent<AvatarEntity>().GetSkeletonTransform(Oculus.Avatar2.CAPI.ovrAvatar2JointType.RightHandWrist).gameObject;
         }
         else
         {

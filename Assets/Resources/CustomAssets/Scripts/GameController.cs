@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Meta.XR.MultiplayerBlocks.Shared;
 using Oculus.Platform;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameController : NetworkBehaviour
@@ -353,7 +355,11 @@ public class GameController : NetworkBehaviour
             GameObject localAvatar = avatarContainer.Find("LocalAvatar").gameObject;
             if (localAvatar)
             {
-                Transform rightHandJoint = localAvatar.transform.Find("Joint RightHandWrist");
+                foreach (Oculus.Avatar2.CAPI.ovrAvatar2JointType joint in localAvatar.GetComponent<AvatarEntity>().GetCriticalJoints())
+                {
+                    Debug.Log("RAH " + joint);
+                }
+                Transform rightHandJoint = localAvatar.GetComponent<AvatarEntity>().GetSkeletonTransform(Oculus.Avatar2.CAPI.ovrAvatar2JointType.RightHandWrist);
                 if (rightHandJoint)
                 {
                     hand = rightHandJoint.gameObject;
@@ -381,7 +387,7 @@ public class GameController : NetworkBehaviour
             GameObject remoteAvatar = avatarContainer.Find("RemoteAvatar").gameObject;
             if (remoteAvatar)
             {
-                Transform rightHandJoint = remoteAvatar.transform.Find("Joint RightHandWrist");
+                Transform rightHandJoint = remoteAvatar.GetComponent<AvatarEntity>().GetSkeletonTransform(Oculus.Avatar2.CAPI.ovrAvatar2JointType.RightHandWrist);
                 if (rightHandJoint)
                 {
                     remoteHand = rightHandJoint.gameObject;

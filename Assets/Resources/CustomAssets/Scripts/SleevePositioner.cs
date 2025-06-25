@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using Meta.XR.MultiplayerBlocks.Shared;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -50,11 +51,11 @@ public class SleevePositioner : NetworkBehaviour
 
         if (lower == null)
             {
-                lower = GameObject.FindWithTag("AvatarContainer").transform.Find(targetClient + "/Joint RightArmLower").gameObject;
+                lower = GameObject.FindWithTag("AvatarContainer").transform.Find(targetClient).GetComponent<AvatarEntity>().GetSkeletonTransform(Oculus.Avatar2.CAPI.ovrAvatar2JointType.RightHandWrist).gameObject;
             }
         if (upper == null)
         {
-            upper = GameObject.FindWithTag("AvatarContainer").transform.Find(targetClient + "/Joint RightHandWrist").gameObject;
+            upper = GameObject.FindWithTag("AvatarContainer").transform.Find(targetClient).GetComponent<AvatarEntity>().GetSkeletonTransform(Oculus.Avatar2.CAPI.ovrAvatar2JointType.RightHandWrist).gameObject;
         }
 
         if (lower != null && upper != null)
