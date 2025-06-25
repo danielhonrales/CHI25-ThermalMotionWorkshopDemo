@@ -38,11 +38,11 @@ public class GameController : NetworkBehaviour
     [Space(10)]
 
     [Header("Prefabs")]
-    public GameObject sleevePointPrefab;
-    public GameObject ledTubePrefab;
+    public NetworkObject sleevePointPrefab;
+    public NetworkObject ledTubePrefab;
     public GameObject hotOrbPrefab;
     public GameObject coldOrbPrefab;
-    public GameObject beamPrefab;
+    public NetworkObject beamPrefab;
     [Space(10)]
 
     [Header("Enemy Vars")]
@@ -120,20 +120,20 @@ public class GameController : NetworkBehaviour
 
             if (ledTubeContainer.Find("ledTube " + clientId) == null)
             {
-                GameObject ledTube = Instantiate(ledTubePrefab, ledTubeContainer);
-                ledTube.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
+                NetworkObject ledTube = Instantiate(ledTubePrefab, ledTubeContainer);
+                ledTube.SpawnWithOwnership(clientId);
             }
 
             if (sleevePointContainer.Find("SleevePoint " + clientId) == null)
             {
-                GameObject sleevePoint = Instantiate(sleevePointPrefab, sleevePointContainer);
-                sleevePoint.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
+                NetworkObject sleevePoint = Instantiate(sleevePointPrefab, sleevePointContainer);
+                sleevePoint.SpawnWithOwnership(clientId);
             }
 
             if (beamContainer.Find("Beam " + clientId) == null)
             {
-                GameObject clientBeam = Instantiate(beamPrefab, beamContainer);
-                clientBeam.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
+                NetworkObject clientBeam = Instantiate(beamPrefab, beamContainer);
+                clientBeam.SpawnWithOwnership(clientId);
                 TelportPlayerClientRpc();
             }
         }
