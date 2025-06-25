@@ -36,7 +36,7 @@ public class BeamController : NetworkBehaviour
 
         if (hand == null)
         {
-            hand = GameObject.Find(targetClient).transform.Find("Joint RightHandWrist").gameObject;
+            hand = GameObject.FindWithTag("AvatarContainer").transform.Find(targetClient + "/Joint RightHandWrist").gameObject;
         }
         else
         {

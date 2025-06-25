@@ -55,6 +55,7 @@ public class GameController : NetworkBehaviour
     public Transform ledTubeContainer;
     public Transform sleevePointContainer;
     public Transform beamContainer;
+    public Transform orbContainer;
     [Space(10)]
 
     [Header("Testing")]
@@ -161,13 +162,13 @@ public class GameController : NetworkBehaviour
         StartCoroutine(SpinOrbSpawner());
         Vector3 targetPos = (targetClientId == 0) ? playerPoint1.position : playerPoint2.position;
 
-        if (GameObject.Find("HotOrb " + targetClientId) == null)
+        if (orbContainer.Find("HotOrb " + targetClientId) == null)
         {
             GameObject hotOrb = SpawnOrb("Hot", targetClientId);
             hotOrb.transform.position = orbSpawnPoint.position;
             StartCoroutine(MoveOrbToPlayer(hotOrb.transform, targetPos + new Vector3(-orbPlayerOffset.x, orbPlayerOffset.y, orbPlayerOffset.z)));
         }
-        if (GameObject.Find("ColdOrb " + targetClientId) == null)
+        if (orbContainer.Find("ColdOrb " + targetClientId) == null)
         {
             GameObject coldOrb = SpawnOrb("Cold", targetClientId);
             coldOrb.transform.position = orbSpawnPoint.position;
@@ -188,11 +189,11 @@ public class GameController : NetworkBehaviour
         GameObject orbObject;
         if (type.Contains("Hot"))
         {
-            orbObject = Instantiate(hotOrbPrefab);
+            orbObject = Instantiate(hotOrbPrefab, orbContainer);
         }
         else
         {
-            orbObject = Instantiate(coldOrbPrefab);
+            orbObject = Instantiate(coldOrbPrefab, orbContainer);
         }
         orbObject.GetComponent<OrbController>().targetClientId.Value = targetClientId;
         orbObject.GetComponent<NetworkObject>().Spawn();

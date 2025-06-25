@@ -10,6 +10,13 @@ TagManager:
   - ledTubeContainer
   - BeamContainer
   - SleevePointContainer
+  - OrbContainer
+  - JustSpawnedTargetArea
+  - HomingInTargetArea
+  - EnemyFinalTarget
+  - GameControllerTag
+  - ArcadeGame
+  - EnemySpawner
   layers:
   - Default
   - TransparentFX

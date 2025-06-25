@@ -38,6 +38,7 @@ public class OrbController : NetworkBehaviour
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         hand = gameController.hand;
         name = name.Replace("(Clone)", "") + " " + targetClientId.Value;
+        transform.parent = GameObject.FindWithTag("OrbContainer").transform;
     }
 
     // Update is called once per frame

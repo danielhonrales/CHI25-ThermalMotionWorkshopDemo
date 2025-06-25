@@ -50,11 +50,11 @@ public class SleevePositioner : NetworkBehaviour
 
         if (lower == null)
             {
-                lower = GameObject.Find(targetClient).transform.Find("Joint RightArmLower").gameObject;
+                lower = GameObject.FindWithTag("AvatarContainer").transform.Find(targetClient + "/Joint RightArmLower").gameObject;
             }
         if (upper == null)
         {
-            upper = GameObject.Find(targetClient).transform.Find("Joint RightHandWrist").gameObject;
+            upper = GameObject.FindWithTag("AvatarContainer").transform.Find(targetClient + "/Joint RightHandWrist").gameObject;
         }
 
         if (lower != null && upper != null)

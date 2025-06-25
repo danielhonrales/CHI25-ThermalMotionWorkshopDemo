@@ -35,8 +35,8 @@ public class EnemyController : NetworkBehaviour
     void Start()
     {
         StartCoroutine(Boop());
-        justSpawnedTargetArea = GameObject.Find("JustSpawnedTargetArea");
-        homingInTargetArea = GameObject.Find("HomingInTargetArea");
+        justSpawnedTargetArea = GameObject.FindWithTag("JustSpawnedTargetArea");
+        homingInTargetArea = GameObject.FindWithTag("HomingInTargetArea");
         targetPoint = GetRandomPointInsideCube(justSpawnedTargetArea);
         seed = UnityEngine.Random.Range(0f, 100f);
         moveSpeed = 7.5f + UnityEngine.Random.Range(-1f, 1f);
@@ -81,7 +81,7 @@ public class EnemyController : NetworkBehaviour
             {
                 state.Value = EnemyState.hostileIdle;
                 idleY = transform.position.y;
-                finalTarget = GameObject.Find("EnemyFinalTarget").transform;
+                finalTarget = GameObject.FindWithTag("EnemyFinalTarget").transform;
             }
         }
 
@@ -179,7 +179,7 @@ public class EnemyController : NetworkBehaviour
             (gameObject.name.Contains("Cold") && other.transform.parent.Find("ColdBeam").gameObject.activeSelf))
         )
         {
-            GameController gameController = GameObject.Find("GameController").GetComponent<GameController>();
+            GameController gameController = GameObject.FindWithTag("GameControllerTag").GetComponent<GameController>();
             if (name.Contains("Hot") && other.transform.parent.GetComponent<BeamController>().isHotActive.Value)
             {
                 gameController.hotKills++;
@@ -191,7 +191,7 @@ public class EnemyController : NetworkBehaviour
 
             SetStateServerRpc(EnemyState.dead);
 
-            ArcadeGame arcadeGame = GameObject.Find("ArcadeGame").GetComponent<ArcadeGame>();
+            ArcadeGame arcadeGame = GameObject.FindWithTag("ArcadeGame").GetComponent<ArcadeGame>();
             ulong killerClientId = other.transform.parent.gameObject.GetComponent<NetworkObject>().OwnerClientId;
             if (killerClientId == 0)
             {
@@ -238,7 +238,7 @@ public class EnemyController : NetworkBehaviour
         yield return new WaitForSeconds(4);
 
         rb.useGravity = false;
-        GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>().enemyInstances.Remove(gameObject);
+        GameObject.FindWithTag("EnemySpawner").GetComponent<EnemySpawner>().enemyInstances.Remove(gameObject);
         Destroy(gameObject);
     }
 
