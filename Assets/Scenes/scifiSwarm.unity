@@ -23822,12 +23822,11 @@ MonoBehaviour:
   beam: {fileID: 0}
   lEDAnimationManager: {fileID: 0}
   neutralMaterial: {fileID: 2100000, guid: 88cb318a7b39ffc44b6551557bdbe0fd, type: 2}
-  powerSleevePrefab: {fileID: 182839147131467489, guid: 839b37ca5f5f98641b36fc1ca840638c, type: 3}
-  sleevePointPrefab: {fileID: 2959614568620175850, guid: dd0abeaea8bf4d94ca6aa696d7cd1de2, type: 3}
-  ledTubePrefab: {fileID: 8182004926509835508, guid: 80b524940bc0cf04798bc91ddc5af01d, type: 3}
+  sleevePointPrefab: {fileID: 6810571664571965155, guid: dd0abeaea8bf4d94ca6aa696d7cd1de2, type: 3}
+  ledTubePrefab: {fileID: 1931627203610337431, guid: 80b524940bc0cf04798bc91ddc5af01d, type: 3}
   hotOrbPrefab: {fileID: 7237795749900673682, guid: 0226551ba0809bf489d2fc0f01cb3307, type: 3}
   coldOrbPrefab: {fileID: 6954049308603000929, guid: 22112d1de09fb87439bef34ff57c1aae, type: 3}
-  beamPrefab: {fileID: 1795004511508666504, guid: c6f83b9f844219c43b40165fa69d35c1, type: 3}
+  beamPrefab: {fileID: 5338380720491255087, guid: c6f83b9f844219c43b40165fa69d35c1, type: 3}
   enemySpawner: {fileID: 1745538756}
   hotKills: 0
   coldKills: 0
