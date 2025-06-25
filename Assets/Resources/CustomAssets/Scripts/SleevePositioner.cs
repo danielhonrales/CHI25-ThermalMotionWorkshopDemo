@@ -39,6 +39,7 @@ public class SleevePositioner : NetworkBehaviour
         base.OnNetworkSpawn();
         name = name.Replace("(Clone)", "") + " " + GetComponent<NetworkObject>().OwnerClientId;
         LED_tube = GameObject.Find("ledTube " + GetComponent<NetworkObject>().OwnerClientId);
+        transform.parent = GameObject.FindWithTag("SleevePointContainer").transform;
     }
 
     // Update is called once per frame

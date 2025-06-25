@@ -62,6 +62,7 @@ public class BeamController : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         name = name.Replace("(Clone)", "") + " " + GetComponent<NetworkObject>().OwnerClientId;
+        transform.parent = GameObject.FindWithTag("BeamContainer").transform;
     }
 
     public override void OnDestroy()

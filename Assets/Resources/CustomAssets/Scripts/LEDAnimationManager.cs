@@ -41,6 +41,7 @@ public class LEDAnimationManager : NetworkBehaviour
         {
             GameObject.Find("GameController").GetComponent<GameController>().lEDAnimationManager = this;
         }
+        transform.parent = GameObject.FindWithTag("ledTubeContainer").transform;
     }
 
     void Update()
