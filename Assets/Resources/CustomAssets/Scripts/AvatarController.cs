@@ -29,6 +29,19 @@ public class AvatarController : NetworkBehaviour
         } */
     }
 
+    public override void OnNetworkSpawn()
+    {
+        /*         if (GetComponent<NetworkObject>().OwnerClientId == NetworkManager.Singleton.LocalClientId)
+                {
+                    gameObject.tag = "LocalAvatar";
+                }
+                else
+                {
+                    gameObject.tag = "RemoteAvatar";
+                } */
+        transform.parent = GameObject.FindWithTag("AvatarContainer").transform;
+    }
+
     IEnumerator SetAvatar()
     {
         yield return new WaitForSeconds(2);

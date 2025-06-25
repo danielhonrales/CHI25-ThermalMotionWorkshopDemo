@@ -18,6 +18,7 @@ public class GameController : NetworkBehaviour
     public SignalSender signalSender;
     public List<ulong> connectedClients;
     public ArcadeGame arcadeGame;
+    public Transform avatarContainer;
     [Space(10)]
 
     [Header("Orbs")]
@@ -49,6 +50,12 @@ public class GameController : NetworkBehaviour
     public EnemySpawner enemySpawner;
     public int hotKills;
     public int coldKills;
+    [Space(10)]
+
+    [Header("Containers")]
+    public Transform ledTubeContainer;
+    public Transform sleevePointContainer;
+    public Transform beamContainer;
     [Space(10)]
 
     [Header("Testing")]
@@ -112,21 +119,21 @@ public class GameController : NetworkBehaviour
         {
             ulong clientId = networkClient.ClientId;
 
-            if (GameObject.Find("ledTube " + clientId) == null)
+            if (ledTubeContainer.Find("ledTube " + clientId) == null)
             {
-                NetworkObject ledTube = Instantiate(ledTubePrefab);
+                NetworkObject ledTube = Instantiate(ledTubePrefab, ledTubeContainer);
                 ledTube.SpawnWithOwnership(clientId);
             }
 
-            if (GameObject.Find("SleevePoint " + clientId) == null)
+            if (sleevePointContainer.Find("SleevePoint " + clientId) == null)
             {
-                NetworkObject sleevePoint = Instantiate(sleevePointPrefab);
+                NetworkObject sleevePoint = Instantiate(sleevePointPrefab, sleevePointContainer);
                 sleevePoint.SpawnWithOwnership(clientId);
             }
 
-            if (GameObject.Find("Beam " + clientId) == null)
+            if (beamContainer.Find("Beam " + clientId) == null)
             {
-                NetworkObject clientBeam = Instantiate(beamPrefab);
+                NetworkObject clientBeam = Instantiate(beamPrefab, beamContainer);
                 clientBeam.SpawnWithOwnership(clientId);
                 TelportPlayerClientRpc();
             }
@@ -343,7 +350,7 @@ public class GameController : NetworkBehaviour
         while (hand == null && findTargetTries > 0)
         {
             Debug.Log("Trying to find local right hand...");
-            GameObject localAvatar = GameObject.Find("LocalAvatar");
+            GameObject localAvatar = avatarContainer.Find("LocalAvatar").gameObject;
             if (localAvatar)
             {
                 Transform rightHandJoint = localAvatar.transform.Find("Joint RightHandWrist");
@@ -371,7 +378,7 @@ public class GameController : NetworkBehaviour
         while (remoteHand == null && findTargetTries > 0)
         {
             Debug.Log("Trying to find remote right hand...");
-            GameObject remoteAvatar = GameObject.Find("RemoteAvatar");
+            GameObject remoteAvatar = avatarContainer.Find("RemoteAvatar").gameObject;
             if (remoteAvatar)
             {
                 Transform rightHandJoint = remoteAvatar.transform.Find("Joint RightHandWrist");
@@ -399,7 +406,7 @@ public class GameController : NetworkBehaviour
         while (beam == null && findTargetTries > 0)
         {
             Debug.Log("Trying to find local beam...");
-            GameObject beamObject = GameObject.Find("Beam " + NetworkManager.Singleton.LocalClientId);
+            GameObject beamObject = beamContainer.Find("Beam " + NetworkManager.Singleton.LocalClientId).gameObject;
             if (beamObject)
             {
                 beam = beamObject.GetComponent<NetworkObject>();

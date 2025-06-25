@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -1188526484541237001}
   m_Layer: 0
   m_Name: CustomAvatar
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -223,3 +223,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e3deafab5d2bfc4babf14ccab32ff94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  avatarIndex: 0
+  goodAvatarIndices: 0a00000015000000
+  gameController: {fileID: 0}

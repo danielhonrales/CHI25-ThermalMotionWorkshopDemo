@@ -22,7 +22,6 @@ using Unity.Netcode;
 using UnityEngine;
 using Meta.XR.MultiplayerBlocks.Shared;
 using Random = UnityEngine.Random;
-using System;
 
 #if META_AVATAR_SDK_DEFINED
 using Oculus.Avatar2;
@@ -45,6 +44,7 @@ namespace Meta.XR.MultiplayerBlocks.NGO
 
         [SerializeField] internal GameObject avatarPrefab;
         [SerializeField] internal GameObject avatarPrefabSdk28Plus;
+        public Transform avatarContainer;
 
         [Tooltip(
             "If you're using Avatar Sample Assets as fallback avatars, and has manually adapted the preset zip file " +
@@ -66,10 +66,9 @@ namespace Meta.XR.MultiplayerBlocks.NGO
         [Tooltip("Adjust the update interval used when streaming the avatars.")]
         [SerializeField]
         private float avatarUpdateIntervalInSec = 0.08f;
-
 #pragma warning restore CS0414
 
-
+#if META_AVATAR_SDK_DEFINED
         private PlatformInfo? _platformInfo;
 
         private void OnEnable()
@@ -150,13 +149,16 @@ namespace Meta.XR.MultiplayerBlocks.NGO
         {
 #if META_AVATAR_SDK_28_OR_NEWER
             var go = Instantiate(avatarPrefabSdk28Plus);
+            go.parent = avatarContainer;
 #else
             var go = Instantiate(avatarPrefab);
+            go.parent = avatarContainer;
 #endif
 
             go.GetComponent<NetworkObject>().SpawnWithOwnership(serverRpcParams.Receive.SenderClientId);
             go.GetComponent<AvatarBehaviourNGO>().LocalAvatarIndex = Random.Range(0, preloadedSampleAvatarSize - 1);
             go.GetComponent<AvatarBehaviourNGO>().OculusId = oculusId;
         }
+#endif // META_AVATAR_SDK_DEFINED
     }
 }
