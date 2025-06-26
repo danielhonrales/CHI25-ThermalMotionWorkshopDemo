@@ -17,6 +17,8 @@ public class ArcadeGame : NetworkBehaviour
 
     public NetworkVariable<ulong> p2HotKills = new(100);
     public NetworkVariable<ulong> p2ColdKills = new(100);
+    public Coroutine runningStartup;
+    public Coroutine runningGame;
     [Space(10)]
 
     [Header("Refs")]
@@ -49,6 +51,8 @@ public class ArcadeGame : NetworkBehaviour
         if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha3))
         {
             state.Value = GameState.Startup;
+            if (runningStartup != null) StopCoroutine(runningStartup);
+            if (runningGame != null) StopCoroutine(runningGame);
             ResetAndStart();
         }
         if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha4))
@@ -81,7 +85,7 @@ public class ArcadeGame : NetworkBehaviour
 
         state.Value = GameState.Inactive;
 
-        StartCoroutine(Startup());
+        runningStartup = StartCoroutine(Startup());
     }
 
     public IEnumerator Startup()
@@ -99,7 +103,7 @@ public class ArcadeGame : NetworkBehaviour
         yield return new WaitForSeconds(1f);
         timer.Value = 0;
 
-        StartCoroutine(RunGame());
+        runningGame = StartCoroutine(RunGame());
     }
 
     public IEnumerator RunGame()

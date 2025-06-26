@@ -17,13 +17,12 @@ public class SleevePositioner : NetworkBehaviour
     // Start is called before the first frame update
 
     public Transform hand;
-    public float yChange;
-    public float yStart;
-    public float yEnd;
     public MeshRenderer[] meshes;
     //public GameObject avatarHandler;
     //public VRMap rightHand;
     public Vector3 offset;
+    public Quaternion rotationOffset;
+
     public GameObject LED_tube;
 
     public GameObject lower;
@@ -51,7 +50,7 @@ public class SleevePositioner : NetworkBehaviour
 
         if (lower == null)
             {
-                lower = GameObject.FindWithTag("AvatarContainer").transform.Find(targetClient).GetComponent<AvatarEntity>().GetSkeletonTransform(Oculus.Avatar2.CAPI.ovrAvatar2JointType.RightHandWrist).gameObject;
+                lower = GameObject.FindWithTag("AvatarContainer").transform.Find(targetClient).GetComponent<AvatarEntity>().GetSkeletonTransform(Oculus.Avatar2.CAPI.ovrAvatar2JointType.RightArmLower).gameObject;
             }
         if (upper == null)
         {
@@ -68,7 +67,7 @@ public class SleevePositioner : NetworkBehaviour
 
             // Update the position of the GameObject to the midpoint
             // Rotate the GameObject to match the direction from startPos to endPos
-            LED_tube.transform.SetPositionAndRotation(midpoint + offset, Quaternion.LookRotation(endPos.position - startPos.position, Vector3.up) * Quaternion.Euler(0f, -90f, 0f));
+            LED_tube.transform.SetPositionAndRotation(midpoint + offset, Quaternion.LookRotation(endPos.position - startPos.position, Vector3.up) * rotationOffset);
         }
     
         

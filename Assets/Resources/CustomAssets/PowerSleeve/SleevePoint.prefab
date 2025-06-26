@@ -148,11 +148,9 @@ MonoBehaviour:
   endPos: {fileID: 0}
   frames: 180
   hand: {fileID: 3162529706148713456}
-  yChange: -0.4
-  yStart: 0.5
-  yEnd: 0.9
   meshes: []
-  offset: {x: 0.03, y: -0.02, z: 0.01}
+  offset: {x: -0.01, y: -0.015, z: 0.018}
+  rotationOffset: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
   LED_tube: {fileID: 0}
   lower: {fileID: 0}
   upper: {fileID: 0}

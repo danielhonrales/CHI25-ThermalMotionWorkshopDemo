@@ -355,10 +355,6 @@ public class GameController : NetworkBehaviour
             GameObject localAvatar = avatarContainer.Find("LocalAvatar").gameObject;
             if (localAvatar)
             {
-                foreach (Oculus.Avatar2.CAPI.ovrAvatar2JointType joint in localAvatar.GetComponent<AvatarEntity>().GetCriticalJoints())
-                {
-                    Debug.Log("RAH " + joint);
-                }
                 Transform rightHandJoint = localAvatar.GetComponent<AvatarEntity>().GetSkeletonTransform(Oculus.Avatar2.CAPI.ovrAvatar2JointType.RightHandWrist);
                 if (rightHandJoint)
                 {
