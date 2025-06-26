@@ -75,6 +75,22 @@ public class CommunicationController : MonoBehaviour
         {
             SendMotionInfo(3);
         }
+        if (Input.GetKey(KeyCode.W) && Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            SendMotionInfo(4);
+        }
+        if (Input.GetKey(KeyCode.W) && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            SendMotionInfo(5);
+        }
+        if (Input.GetKey(KeyCode.W) && Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            SendMotionInfo(6);
+        }
+        if (Input.GetKey(KeyCode.W) && Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            SendMotionInfo(7);
+        }
 
     }
 
