@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyController : NetworkBehaviour
 {
@@ -13,6 +14,7 @@ public class EnemyController : NetworkBehaviour
     public AudioSource deathAudio;
     public AudioSource boopAudio;
     public AudioSource hoverAudio;
+    public GameObject target;
 
     public Vector3 targetPoint;
     public GameObject justSpawnedTargetArea;
@@ -59,6 +61,7 @@ public class EnemyController : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         SetStateServerRpc(EnemyState.justSpawned);
+        target.SetActive(false);
     }
 
     // Update is called once per frame
@@ -220,6 +223,7 @@ public class EnemyController : NetworkBehaviour
 
     public void Die() {
         StopCoroutine(Boop());
+        target.SetActive(false);
         rb.useGravity = true;
         //rb.AddForce(Vector3.down * 10, ForceMode.Impulse);
         rb.AddTorque(UnityEngine.Random.onUnitSphere * UnityEngine.Random.Range(0f, 5f), ForceMode.Impulse);

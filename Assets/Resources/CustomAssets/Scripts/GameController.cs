@@ -104,6 +104,18 @@ public class GameController : NetworkBehaviour
             enemySpawner.StopSpawning();
             enemySpawner.ClearEnemies();
         }
+        if (Input.GetKey(KeyCode.E) && Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            TriggerChargeVisuals("Hot");
+        }
+        if (Input.GetKey(KeyCode.E) && Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            TriggerChargeVisuals("Cold");
+        }
+        if (Input.GetKey(KeyCode.E) && Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            FinishInteraction();
+        }
     }
 
     public override void OnNetworkSpawn()
@@ -244,11 +256,23 @@ public class GameController : NetworkBehaviour
         {
             lEDAnimationManager.isFire = true;
             lEDAnimationManager.isIce = false;
+
+            foreach (GameObject enemy in enemySpawner.enemyInstances) {
+                if (enemy.name.Contains("Hot")) {
+                    enemy.GetComponent<EnemyController>().target.SetActive(true);
+                }
+            }
         }
         else if (type.Contains("Cold"))
         {
             lEDAnimationManager.isIce = true;
             lEDAnimationManager.isFire = false;
+            
+            foreach (GameObject enemy in enemySpawner.enemyInstances) {
+                if (enemy.name.Contains("Cold")) {
+                    enemy.GetComponent<EnemyController>().target.SetActive(true);
+                }
+            }
         }
         lEDAnimationManager.PlayChargeAnimation();
     }
@@ -303,6 +327,10 @@ public class GameController : NetworkBehaviour
         BeamController localBeamController = beam.gameObject.GetComponent<BeamController>();
         localBeamController.SetHotActiveStateServerRpc(false);
         localBeamController.SetColdActiveStateServerRpc(false);
+
+        foreach (GameObject enemy in enemySpawner.enemyInstances) {
+            enemy.GetComponent<EnemyController>().target.SetActive(false);
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]

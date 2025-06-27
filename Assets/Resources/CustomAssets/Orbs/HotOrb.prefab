@@ -430,7 +430,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1843597372320936799
 Rigidbody:
@@ -471,7 +471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 992916067
+  GlobalObjectIdHash: 2270768918
   InScenePlacedSourceGlobalObjectIdHash: 992916067
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -523,8 +523,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 023667dc6a3a3874ca140694a991175e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state:
+    m_InternalValue: 0
+  targetClientId:
+    m_InternalValue: 0
   hand: {fileID: 0}
-  state: 0
   followOffset: {x: 0, y: -0.06, z: -0.08}
   followSpeed: 5
   touchHandGrabInteractable: {fileID: 546283336893987994}
@@ -537,6 +540,7 @@ MonoBehaviour:
   coldBeamAudio: {fileID: 547773235424505871}
   beamChargeAudio: {fileID: 4306518099668872002}
   visuals: {fileID: 6005944547008370164}
+  released: 0
 --- !u!114 &3701112233579225487
 MonoBehaviour:
   m_ObjectHideFlags: 0

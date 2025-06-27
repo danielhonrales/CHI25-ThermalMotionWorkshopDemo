@@ -106,7 +106,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6939968062094395391
 GameObject:
@@ -293,7 +293,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &809145566289239680
 Rigidbody:
@@ -334,7 +334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 962219951
+  GlobalObjectIdHash: 2044658056
   InScenePlacedSourceGlobalObjectIdHash: 992916067
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -388,6 +388,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state:
     m_InternalValue: 0
+  targetClientId:
+    m_InternalValue: 0
   hand: {fileID: 0}
   followOffset: {x: 0, y: -0.06, z: -0.08}
   followSpeed: 5
@@ -401,6 +403,7 @@ MonoBehaviour:
   coldBeamAudio: {fileID: 8231175576399206047}
   beamChargeAudio: {fileID: 7991408839525496905}
   visuals: {fileID: 9161038096991840146}
+  released: 0
 --- !u!114 &8668336128188852332
 MonoBehaviour:
   m_ObjectHideFlags: 0
