@@ -21,6 +21,7 @@ public class GameController : NetworkBehaviour
     public List<ulong> connectedClients;
     public ArcadeGame arcadeGame;
     public Transform avatarContainer;
+    public HandGuideController handGuideController;
     [Space(10)]
 
     [Header("Orbs")]
@@ -173,6 +174,8 @@ public class GameController : NetworkBehaviour
     public void SpawnOrbs(ulong targetClientId)
     {
         if (!IsServer) return;
+        handGuideController.currentGuide = StartCoroutine(handGuideController.GrabGuide());
+
         StartCoroutine(SpinOrbSpawner());
         Vector3 targetPos = (targetClientId == 0) ? playerPoint1.position : playerPoint2.position;
 
@@ -251,6 +254,7 @@ public class GameController : NetworkBehaviour
     }
 
     public void TriggerChargeVisuals(string type) {
+        handGuideController.currentGuide = StartCoroutine(handGuideController.HoldGuide());
         // Charge
         if (type.Contains("Hot"))
         {

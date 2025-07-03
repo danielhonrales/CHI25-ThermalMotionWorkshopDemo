@@ -1175,7 +1175,7 @@ VisualEffect:
       - m_Value: 0.3
         m_Name: ParticlesSize
         m_Overridden: 1
-      - m_Value: 8.61
+      - m_Value: 3
         m_Name: SwirlsRate
         m_Overridden: 1
       - m_Value: 5.5
@@ -1205,7 +1205,7 @@ VisualEffect:
       - m_Value: {x: 0.022329582, y: 0.03319262, z: 0.10923389, w: 1}
         m_Name: CircleColor
         m_Overridden: 1
-      - m_Value: {x: 0.103490815, y: 0.2535525, z: 0.49416864, w: 1}
+      - m_Value: {x: 0.103490815, y: 0.2535525, z: 0.49416864, w: 0.27058825}
         m_Name: SwirlsColor
         m_Overridden: 1
       - m_Value: {x: 0, y: 0.54450226, z: 4, w: 1}
