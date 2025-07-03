@@ -44,10 +44,7 @@ public class OrbController : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (hand == null)
-        {
-            hand = IsOwner ? gameController.hand : gameController.remoteHand;
-        }
+        hand = IsOwner ? gameController.hand : gameController.remoteHand;
         if (state.Value == OrbState.Charging)
         {
             Vector3 targetPos = hand.transform.position + (followOffset.y * hand.transform.up) + (followOffset.z * hand.transform.right);
@@ -79,9 +76,25 @@ public class OrbController : NetworkBehaviour
         }
     }
 
-    public void OnGrab()
+    public void OnTriggerEnter(Collider other)
+    {
+        if (gameController.currentOrbController == null) {
+            StartCoroutine(OnGrab());
+        }
+    }
+
+    public void OnTriggerStay(Collider other)
+    {
+        if (gameController.currentOrbController == null) {
+            StartCoroutine(OnGrab());
+        }
+    }
+
+    public IEnumerator OnGrab()
     {
         TransferOwnershipServerRpc(NetworkManager.Singleton.LocalClientId);
+        gameController.currentOrbController = this;
+        yield return new WaitForSeconds(0.3f);
         SetStateServerRpc(OrbState.Charging);
     }
 

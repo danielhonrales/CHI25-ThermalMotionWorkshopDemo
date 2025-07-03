@@ -17,6 +17,7 @@ TagManager:
   - GameControllerTag
   - ArcadeGame
   - EnemySpawner
+  - Hand
   layers:
   - Default
   - TransparentFX
@@ -24,8 +25,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Orb
+  - Hand
   - 
   - 
   - 

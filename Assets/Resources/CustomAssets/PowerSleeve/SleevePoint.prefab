@@ -150,7 +150,7 @@ MonoBehaviour:
   hand: {fileID: 3162529706148713456}
   meshes: []
   offset: {x: -0.01, y: -0.015, z: 0.018}
-  rotationOffset: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+  rotationOffset: {x: 0, y: 0.70710677, z: 0, w: -0.70710677}
   LED_tube: {fileID: 0}
   lower: {fileID: 0}
   upper: {fileID: 0}

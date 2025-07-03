@@ -4938,7 +4938,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2533460343
+  GlobalObjectIdHash: 2035625799
   InScenePlacedSourceGlobalObjectIdHash: 2533460343
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -5088,7 +5088,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5167775749961452405, guid: e83c04ec05796514db92032760f8fa54, type: 3}
       propertyPath: m_ConstrainProportionsScale
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5167775750080484567, guid: e83c04ec05796514db92032760f8fa54, type: 3}
       propertyPath: m_IsActive
@@ -5295,7 +5295,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5167775749961452405, guid: 3ce6cc08171cb014e8fa11cd824590a2, type: 3}
       propertyPath: m_ConstrainProportionsScale
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5167775750080484584, guid: 3ce6cc08171cb014e8fa11cd824590a2, type: 3}
       propertyPath: m_PropertySheet.m_Float.m_Array.Array.size

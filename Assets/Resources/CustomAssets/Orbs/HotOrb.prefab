@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2838683119786690474}
   - component: {fileID: 4671913896529559269}
   - component: {fileID: 1155944408828583212}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 622805234783903130}
   - component: {fileID: 3618181936469859328}
   - component: {fileID: 989686710194536049}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -365,7 +365,7 @@ GameObject:
   - component: {fileID: 547773235424505871}
   - component: {fileID: 4306518099668872002}
   - component: {fileID: -1227069784163653766}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HotOrb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -430,7 +430,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1
+  m_Radius: 0.75
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1843597372320936799
 Rigidbody:
@@ -562,19 +562,7 @@ MonoBehaviour:
       m_Calls: []
   _whenSelect:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 207546789642281760}
-        m_TargetAssemblyTypeName: OrbController, Assembly-CSharp
-        m_MethodName: OnGrab
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   _whenUnselect:
     m_PersistentCalls:
       m_Calls: []
@@ -1293,13 +1281,13 @@ GameObject:
   - component: {fileID: 5078223965617371943}
   - component: {fileID: 2993808061957559930}
   - component: {fileID: 546283336893987994}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: '[BuildingBlock] TouchHandGrab'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3328701524639747759
 Transform:
   m_ObjectHideFlags: 0

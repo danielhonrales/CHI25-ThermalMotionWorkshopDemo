@@ -175,11 +175,15 @@ public class EnemyController : NetworkBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (
+        /* if (
             state.Value != EnemyState.dead &&
             other.gameObject.CompareTag("Beam") && 
             ((gameObject.name.Contains("Hot") && other.transform.parent.Find("HotBeam").gameObject.activeSelf) ||
             (gameObject.name.Contains("Cold") && other.transform.parent.Find("ColdBeam").gameObject.activeSelf))
+        ) */
+        if (
+            state.Value != EnemyState.dead &&
+            other.gameObject.CompareTag("Beam")
         )
         {
             GameController gameController = GameObject.FindWithTag("GameControllerTag").GetComponent<GameController>();

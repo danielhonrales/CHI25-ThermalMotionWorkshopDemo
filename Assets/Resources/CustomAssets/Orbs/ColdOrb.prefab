@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 423331187112603006}
   - component: {fileID: 9015309919493868575}
   - component: {fileID: 3572172755644758112}
-  - component: {fileID: 7713319132279210920}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,27 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &7713319132279210920
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 488563668866909682}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6939968062094395391
 GameObject:
   m_ObjectHideFlags: 0
@@ -120,13 +98,13 @@ GameObject:
   - component: {fileID: 7790514075968756613}
   - component: {fileID: 3086762203582575026}
   - component: {fileID: 3243934130123420337}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: '[BuildingBlock] TouchHandGrab'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7475913318915256209
 Transform:
   m_ObjectHideFlags: 0
@@ -228,7 +206,7 @@ GameObject:
   - component: {fileID: 7650130600870628765}
   - component: {fileID: 8231175576399206047}
   - component: {fileID: 3153857990477624378}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ColdOrb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +271,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1
+  m_Radius: 0.75
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &809145566289239680
 Rigidbody:
@@ -425,19 +403,7 @@ MonoBehaviour:
       m_Calls: []
   _whenSelect:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5944392626590500490}
-        m_TargetAssemblyTypeName: OrbController, Assembly-CSharp
-        m_MethodName: OnGrab
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   _whenUnselect:
     m_PersistentCalls:
       m_Calls: []
@@ -1156,7 +1122,7 @@ GameObject:
   - component: {fileID: 5032851633725116603}
   - component: {fileID: 8876551648505805696}
   - component: {fileID: 4069042917403529349}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Visual
   m_TagString: Orb
   m_Icon: {fileID: 0}

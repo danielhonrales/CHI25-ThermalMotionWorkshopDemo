@@ -395,6 +395,10 @@ public class GameController : NetworkBehaviour
         if (hand != null)
         {
             Debug.Log("Found local right hand");
+            SphereCollider collider = hand.AddComponent<SphereCollider>();
+            collider.center = new Vector3(-0.05f, -0.03f, 0);
+            collider.radius = 0.03f;
+            hand.layer = LayerMask.NameToLayer("Hand");
         }
         else
         {

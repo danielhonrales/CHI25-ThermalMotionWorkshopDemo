@@ -19,6 +19,7 @@ public class ArcadeGame : NetworkBehaviour
     public NetworkVariable<ulong> p2ColdKills = new(100);
     public Coroutine runningStartup;
     public Coroutine runningGame;
+    public bool infiniteGame;
     [Space(10)]
 
     [Header("Refs")]
@@ -112,16 +113,19 @@ public class ArcadeGame : NetworkBehaviour
         state.Value = GameState.Active;
 
         timer.Value = roundTime;
-        while (timer.Value > 0)
+        while (infiniteGame || timer.Value > 0)
         {
             yield return new WaitForSecondsRealtime(1f);
-            timer.Value--;
+            if (timer.Value > 0)
+            {
+                timer.Value--;
+            }
 
             if (timer.Value == 10)
-            {
-                countdownSound.pitch = 1f;
-                countdownSound.Play();
-            }
+                {
+                    countdownSound.pitch = 1f;
+                    countdownSound.Play();
+                }
         }
 
         countdownSound.pitch = 1.15f;
