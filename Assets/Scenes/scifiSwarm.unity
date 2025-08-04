@@ -39307,6 +39307,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae2c0169fc2e32c439eb8c8fcef6904b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  raspberryPiIP: 169.254.7.17
+  raspberryPiPort: 25567
   connected: 0
 --- !u!114 &1171005299
 MonoBehaviour:
@@ -39322,8 +39324,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   motionInfo: []
   testInfo: []
-  hotVoltage: 2.6
-  coldVoltage: 5
+  hotVoltage: 2
+  coldVoltage: 3
   signalSender: {fileID: 1171005298}
 --- !u!4 &1171005300
 Transform:
@@ -44824,7 +44826,7 @@ Transform:
   m_GameObject: {fileID: 1559850875}
   serializedVersion: 2
   m_LocalRotation: {x: -0.037855297, y: -0.0029537454, z: 0.077737674, w: 0.99625057}
-  m_LocalPosition: {x: -0.5445752, y: 0.285065, z: -0.05031486}
+  m_LocalPosition: {x: -0.53601134, y: 0.2796321, z: -0.049932413}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -51945,7 +51947,7 @@ Transform:
   m_GameObject: {fileID: 1984714239}
   serializedVersion: 2
   m_LocalRotation: {x: -0.037855517, y: -0.002953902, z: 0.07773743, w: 0.99625057}
-  m_LocalPosition: {x: -0.4730059, y: 0.38059184, z: -0.10849515}
+  m_LocalPosition: {x: -0.46581173, y: 0.37360972, z: -0.10691524}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
