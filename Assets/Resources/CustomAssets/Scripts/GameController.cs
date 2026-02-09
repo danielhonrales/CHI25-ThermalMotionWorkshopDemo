@@ -22,6 +22,7 @@ public class GameController : NetworkBehaviour
     public ArcadeGame arcadeGame;
     public Transform avatarContainer;
     public HandGuideController handGuideController;
+    public MovementController movementController;
     [Space(10)]
 
     [Header("Orbs")]
@@ -84,6 +85,7 @@ public class GameController : NetworkBehaviour
         if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha1))
         {
             PrepareClients();
+            StartCoroutine(movementController.FindLocal());
         }
         if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha2))
         {
