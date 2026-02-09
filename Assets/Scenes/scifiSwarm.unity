@@ -39307,7 +39307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae2c0169fc2e32c439eb8c8fcef6904b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  raspberryPiIP: 169.254.7.17
+  raspberryPiIP: 172.16.136.237
   raspberryPiPort: 25567
   connected: 0
 --- !u!114 &1171005299

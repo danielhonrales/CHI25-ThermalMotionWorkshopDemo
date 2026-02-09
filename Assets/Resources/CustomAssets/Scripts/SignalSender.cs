@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class SignalSender : MonoBehaviour
 {
-    public string raspberryPiIP = "169.254.7.17";  // Replace with the Raspberry Pi's IP address
+    public string raspberryPiIP = "172.16.136.236";  // Replace with the Raspberry Pi's IP address
     public int raspberryPiPort = 25567;             // Replace with the port number used on the Raspberry Pi
 
     public TcpClient client;
