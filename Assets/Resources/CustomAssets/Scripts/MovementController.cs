@@ -4,59 +4,81 @@ using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
-
     [Header("References")]
-    public GameObject head;
+    public Transform head;
     public Transform player;
     public Transform platform;
     public Transform avatarContainer;
+    public Transform forwardRef;
+    public Transform localAvatar;
 
-    [Header("Movement Settings")]
-    public float maxTiltAngle = 30f;     // Head tilt for full speed
+    [Header("Movement")]
+    public float maxTiltAngle = 30f;
     public float moveSpeed = 5f;
     public float deadZone = 2f;
+    public float tiltPercent = 0;
 
-    [Header("Platform Tilt")]
-    public float platformMaxTilt = 10f; // Visual tilt of platform
-    public float tiltSmoothSpeed = 5f;
+    [Header("Platform Visual Tilt")]
+    public float platformMaxTilt = 10f;
+    public float tiltSmoothSpeed = 6f;
+
+    Quaternion neutralHeadRotation;
 
     void Update()
     {
-        float headTilt = GetHeadTilt();
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Calibrate();
+        }
 
-        // Normalize head tilt (-1 to 1)
-        float tiltPercent = Mathf.Clamp(headTilt / maxTiltAngle, -1f, 1f);
+        if (head != null && neutralHeadRotation != Quaternion.identity)
+        {
+            float roll = GetHeadRoll();
+            float tiltPercent = Mathf.Clamp(roll / maxTiltAngle, -1f, 1f);
+            if (Mathf.Abs(roll) < deadZone)
+                tiltPercent = 0f;
 
-        // Dead zone
-        if (Mathf.Abs(headTilt) < deadZone)
-            tiltPercent = 0f;
+            // Movement (flip sign if needed)
+            Vector3 move = -forwardRef.right * tiltPercent * moveSpeed * Time.deltaTime;
+            player.position += move;
+            platform.position += move;
 
-        // Movement
-        float movement = tiltPercent * moveSpeed * Time.deltaTime;
-        Vector3 moveVector = Vector3.right * movement;
+            // Platform tilt
+            float targetTilt = -tiltPercent * platformMaxTilt;
+            Quaternion targetRot =
+            Quaternion.AngleAxis(targetTilt, forwardRef.forward);
 
-        player.position += moveVector;
-        platform.position += moveVector;
-
-        // Platform tilt (around Z axis)
-        float targetTilt = -tiltPercent * platformMaxTilt;
-        Quaternion targetRotation = Quaternion.Euler(0f, 0f, targetTilt);
-
-        platform.rotation = Quaternion.Lerp(
+            platform.rotation = Quaternion.Lerp(
             platform.rotation,
-            targetRotation,
+            targetRot,
             tiltSmoothSpeed * Time.deltaTime
-        );
+            );
+        }
+        
     }
 
-    float GetHeadTilt()
+    void LateUpdate()
     {
-        float zAngle = head.transform.localEulerAngles.z;
-        if (zAngle > 180f)
-            zAngle -= 360f;
 
-        return zAngle;
     }
+
+    void Calibrate()
+    {
+        neutralHeadRotation = head.rotation;
+        Debug.Log("Head calibrated");
+    }
+
+    float GetHeadRoll()
+{
+    Quaternion relative =
+        Quaternion.Inverse(neutralHeadRotation) * head.rotation;
+
+    // Extract roll directly
+    Vector3 euler = relative.eulerAngles;
+
+    float roll = Mathf.DeltaAngle(0f, euler.y);
+    return roll;
+}
 
     public IEnumerator FindLocal()
     {
@@ -64,13 +86,13 @@ public class MovementController : MonoBehaviour
         while (head == null && findTargetTries > 0)
         {
             Debug.Log("Trying to find local head...");
-            GameObject localAvatar = avatarContainer.Find("LocalAvatar").gameObject;
+            localAvatar = avatarContainer.Find("LocalAvatar");
             if (localAvatar)
             {
-                Transform headJoint = localAvatar.GetComponent<AvatarEntity>().GetSkeletonTransform(Oculus.Avatar2.CAPI.ovrAvatar2JointType.Head);
+                Transform headJoint = localAvatar.gameObject.GetComponent<AvatarEntity>().GetSkeletonTransform(Oculus.Avatar2.CAPI.ovrAvatar2JointType.Head);
                 if (headJoint)
                 {
-                    head = headJoint.gameObject;
+                    head = headJoint;
                 }
             }
             findTargetTries--;
