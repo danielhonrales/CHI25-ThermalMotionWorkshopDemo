@@ -1437,7 +1437,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1719528360
+  GlobalObjectIdHash: 3291596759
   InScenePlacedSourceGlobalObjectIdHash: 1231535616
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -3052,7 +3052,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 403856068
+  GlobalObjectIdHash: 3291596759
   InScenePlacedSourceGlobalObjectIdHash: 2179617945
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -3077,12 +3077,12 @@ MonoBehaviour:
   endPos: {fileID: 0}
   frames: 180
   hand: {fileID: 4845660368037030279}
-  yChange: -0.4
-  yStart: 0.5
-  yEnd: 0.9
   meshes: []
   offset: {x: 0.03, y: -0.02, z: 0.01}
+  rotationOffset: {x: 0, y: 0, z: 0, w: 0}
   LED_tube: {fileID: 3900696171745984540}
+  lower: {fileID: 0}
+  upper: {fileID: 0}
 --- !u!114 &2781973419816760439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3160,7 +3160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 0
+  GlobalObjectIdHash: 3291596759
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1

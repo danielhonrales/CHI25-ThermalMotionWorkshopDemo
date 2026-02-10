@@ -316,8 +316,8 @@ public class GameController : NetworkBehaviour
             clientBeam.GetComponent<BeamController>().SetHotActiveStateServerRpc(true);
             clientBeam.GetComponent<BeamController>().SetColdActiveStateServerRpc(false);
         } else {
-            clientBeam.GetComponent<BeamController>().SetHotActiveStateServerRpc(false);
-            clientBeam.GetComponent<BeamController>().SetColdActiveStateServerRpc(true);
+            clientBeam.GetComponent<BeamController>().SetHotActiveStateServerRpc(true);     //swapped these for video
+            clientBeam.GetComponent<BeamController>().SetColdActiveStateServerRpc(false);
         }
     }
 
