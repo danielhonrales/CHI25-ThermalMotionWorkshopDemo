@@ -6,9 +6,11 @@ using UnityEngine;
 public class VideoStuff : MonoBehaviour
 {
 
-    public GameObject enemy;
+    public EnemySpawner enemySpawner;
     public GameObject ledTube;
     public GameObject coldOrbPrefab;
+    public GameObject hotOrbPrefab;
+    public int tempType = 1;
     public Transform effects;
     public List<GameObject> shootRings;
 
@@ -33,66 +35,133 @@ public class VideoStuff : MonoBehaviour
         {
             StartCoroutine(Attack());
         }
-
         if (Input.GetKey(KeyCode.Space) && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            StartCoroutine(Attack(true));
+        }
+
+        if (Input.GetKey(KeyCode.Space) && Input.GetKeyDown(KeyCode.Alpha3))
         {
             StartCoroutine(Absorb());
         }
     }
 
-    public IEnumerator Attack()
+    public IEnumerator Attack(bool hit = false)
     {
-        GameObject coldOrb = Instantiate(coldOrbPrefab);
-        coldOrb.GetComponent<OrbController>().targetClientId.Value = 0;
-        coldOrb.GetComponent<NetworkObject>().Spawn();
-        coldOrb.GetComponent<SphereCollider>().enabled = false;
-
-        coldOrb.transform.position = enemy.transform.position;
-
-        Vector3 end = ledTube.transform.position;
-
-        float speed = 17f; // crank this up for FAST
-        while (Vector3.Distance(coldOrb.transform.position, end) > 0.01f)
+        if (tempType % 2 == 0)
         {
-            coldOrb.transform.position = Vector3.MoveTowards(
-                coldOrb.transform.position,
-                end,
-                speed * Time.deltaTime
-            );
+            GameObject coldOrb = Instantiate(coldOrbPrefab);
+            coldOrb.GetComponent<OrbController>().targetClientId.Value = 0;
+            coldOrb.GetComponent<NetworkObject>().Spawn();
+            coldOrb.GetComponent<SphereCollider>().enabled = false;
 
-            yield return null; // update every frame
-        }
+            GameObject randomEnemy = enemySpawner.enemyInstances[Random.Range(0, enemySpawner.enemyInstances.Count)];
+            coldOrb.transform.position = randomEnemy.transform.position;
 
-        coldOrb.transform.position = end;
+            Vector3 end = ledTube.transform.position;
 
-        transform.position = end;
+            float speed = 17f; // crank this up for FAST
+            while (Vector3.Distance(coldOrb.transform.position, end) > 0.01f)
+            {
+                coldOrb.transform.position = Vector3.MoveTowards(
+                    coldOrb.transform.position,
+                    end,
+                    speed * Time.deltaTime
+                );
 
-        effects.Find("ColdHit").GetComponent<ParticleSystem>().Play();
+                yield return null; // update every frame
+            }
 
-        float duration = 0.3f;
-        float elapsed = 0f;
+            coldOrb.transform.position = end;
 
-        Vector3 startScale = coldOrb.transform.localScale;
+            transform.position = end;
 
-        while (elapsed < duration)
+            if (hit)
+                effects.Find("ColdHit").GetComponent<ParticleSystem>().Play();
+
+            float duration = 0.3f;
+            float elapsed = 0f;
+
+            Vector3 startScale = coldOrb.transform.localScale;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
+
+                // Fast linear shrink
+                coldOrb.transform.localScale = Vector3.Lerp(
+                    startScale,
+                    Vector3.zero,
+                    t
+                );
+
+                yield return null;
+            }
+
+            // Ensure it's gone
+            coldOrb.transform.localScale = Vector3.zero;
+
+            Destroy(coldOrb);
+        } else
         {
-            elapsed += Time.deltaTime;
-            float t = elapsed / duration;
+            GameObject hotOrb = Instantiate(hotOrbPrefab);
+            hotOrb.GetComponent<OrbController>().targetClientId.Value = 0;
+            hotOrb.GetComponent<NetworkObject>().Spawn();
+            hotOrb.GetComponent<SphereCollider>().enabled = false;
 
-            // Fast linear shrink
-            coldOrb.transform.localScale = Vector3.Lerp(
-                startScale,
-                Vector3.zero,
-                t
-            );
+            GameObject randomEnemy = enemySpawner.enemyInstances[Random.Range(0, enemySpawner.enemyInstances.Count)];
+            hotOrb.transform.position = randomEnemy.transform.position;
 
-            yield return null;
+            Vector3 end = ledTube.transform.position;
+
+            float speed = 17f; // crank this up for FAST
+            while (Vector3.Distance(hotOrb.transform.position, end) > 0.01f)
+            {
+                hotOrb.transform.position = Vector3.MoveTowards(
+                    hotOrb.transform.position,
+                    end,
+                    speed * Time.deltaTime
+                );
+
+                yield return null; // update every frame
+            }
+
+            hotOrb.transform.position = end;
+
+            transform.position = end;
+
+            if (hit)
+            effects.Find("HotHit").GetComponent<ParticleSystem>().Play();
+
+            float duration = 0.3f;
+            float elapsed = 0f;
+
+            Vector3 startScale = hotOrb.transform.localScale;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
+
+                // Fast linear shrink
+                hotOrb.transform.localScale = Vector3.Lerp(
+                    startScale,
+                    Vector3.zero,
+                    t
+                );
+
+                yield return null;
+            }
+
+            // Ensure it's gone
+            hotOrb.transform.localScale = Vector3.zero;
+
+            Destroy(hotOrb);
         }
+        tempType++;
 
-        // Ensure it's gone
-        coldOrb.transform.localScale = Vector3.zero;
-
-        Destroy(coldOrb);
+        
     }
 
     public IEnumerator Absorb()
@@ -102,7 +171,8 @@ public class VideoStuff : MonoBehaviour
         coldOrb.GetComponent<NetworkObject>().Spawn();
         coldOrb.GetComponent<SphereCollider>().enabled = true;
 
-        coldOrb.transform.position = enemy.transform.position;
+        GameObject randomEnemy = enemySpawner.enemyInstances[Random.Range(0, enemySpawner.enemyInstances.Count)];
+        coldOrb.transform.position = randomEnemy.transform.position;
 
         Vector3 end = avatarContainer.Find("LocalAvatar").Find("Joint RightHandWrist").position;
 
@@ -162,7 +232,7 @@ public class VideoStuff : MonoBehaviour
         int currentLoop = 0;
         int loops = 3;
         int maxActive = 2;
-        float delayBetween = 0.5f;
+        float delayBetween = 0.4f;
 
         while (currentLoop < loops)
         {
