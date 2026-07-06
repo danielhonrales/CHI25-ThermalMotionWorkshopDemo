@@ -1,4 +1,4 @@
-# CHI25-ThermalMotionWorkshopDemo
+# CHI25-ThermalGameDemo
 
 Meta All-In-One package not included to avoid large file uploads
 
